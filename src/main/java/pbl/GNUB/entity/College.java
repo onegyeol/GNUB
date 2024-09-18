@@ -1,6 +1,7 @@
 package pbl.GNUB.entity;
 
 public enum College {
+
     Humanities, // 인문대학
     Social_Science, // 사회과학대학
     Natural_Sciences, // 자연과학대학

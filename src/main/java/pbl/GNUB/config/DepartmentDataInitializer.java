@@ -14,7 +14,7 @@ public class DepartmentDataInitializer {
     private DepartmentService departmentService;
 
     @PostConstruct
-    public void init(){
+    public void init(){ // 각 단과대 소속 학과 저장
         // 인문대학
         departmentService.saveDepartment("영어영문학부 영어영문학전공", College.Humanities);
         departmentService.saveDepartment("영어영문학부 영어전공", College.Humanities);

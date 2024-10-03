@@ -24,11 +24,10 @@ public class Department {
     @Enumerated(EnumType.STRING)
     private College college; // 단과대학 정보
 
-    public Department() {}
+    public Department() {} //매개변수 없는 생성자
 
-    public Department(String name, College college) {
+    public Department(String name, College college) { // 매개변수 있는 생성자
         this.name = name;
         this.college = college;
     }
-
 }

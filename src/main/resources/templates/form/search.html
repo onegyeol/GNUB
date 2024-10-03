@@ -1,0 +1,164 @@
+<!-- Searching Result Page -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>검색 결과 화면</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/foodDetails.css">
+</head>
+
+<body>
+    <div class="header">
+        <!-- Logo image -->
+        <img src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo" class="logo">
+
+        <!-- Updated Search Bar -->
+        <div class="search-bar">
+            <input type="text" placeholder="검색">
+            <button class="search-btn">
+                <img src="https://cdn-icons-png.flaticon.com/512/49/49116.png" alt="Search Icon" width="20" height="20">
+            </button>
+        </div>
+
+        <div class="links">
+            <!--로그인 안했을 때 보이는 메뉴바-->
+            <a href="#">Login</a>
+            <a href="#">Signup</a>
+            <!-- 로그인 했을 때 보이는 메뉴바-->
+            <a href="#">Board</a>
+            <a href="#">Mypage</a>
+            <a href="#">Logout</a>
+        </div>
+    </div>
+    
+    <div class="wrap">
+        <!-- 드롭다운 메뉴 -->
+        <section class="sort-options">
+            <select class="dropdown" id="sort-by-address">
+                <option value="adress">주소 명</option>
+                <option value="address_1">가좌동</option>
+                <option value="address_2">칠암동</option>
+            </select>
+            
+            <select class="dropdown" id="sort-by-tag">
+                <option value="tag_name">태그 명</option>
+                <option value="tag_1">태그 1</option>
+                <option value="tag_2">태그 2</option>
+            </select>
+
+            <select class="dropdown" id="sort-by-random">
+                <option value="random">아무거나</option>
+                <option value="random_1">1</option>
+                <option value="random_2">2</option>
+            </select>
+            
+        </section>
+        
+        <!-- 식당 리스트 -->
+        <main class = "search_menu">
+            <div class="restaurant_list">
+                <div class="restaurant">
+                    <div class="restaurant_content">
+                        <div class="restaurant_img_container">
+                            <img class="restaurant_img" src="../image/restaurant.jpg" alt="가게이미지">
+                        </div>
+                        <div class="restaurant_text">
+                            <span class="restaurant_name">가게1</span>
+                            <div class="restaurant_tags">
+                                <span class="restaurant_tag">#가좌동</span>
+                                <span class="restaurant_tag">#스펀지</span>
+                                <span class="restaurant_tag">#분위기 좋은</span>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <div class="restaurant">
+                    <div class="restaurant_content">
+                        <div class="restaurant_img_container">
+                            <img class="restaurant_img" src="" alt="가게이미지">
+                        </div>
+                        <div class="restaurant_text">
+                            <span class="restaurant_name">가게2</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="restaurant">
+                    <div class="restaurant_content">
+                        <div class="restaurant_img_container">
+                            <img class="restaurant_img" src="" alt="가게이미지">x`
+                        </div>
+                        <div class="restaurant_text">
+                            <span class="restaurant_name">가게3</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="restaurant">
+                    <div class="restaurant_content">
+                        <div class="restaurant_img_container">
+                            <img class="restaurant_img" src="" alt="가게이미지">
+                        </div>
+                        <div class="restaurant_text">
+                            <span class="restaurant_name">가게4</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="restaurant">
+                    <div class="restaurant_content">
+                        <div class="restaurant_img_container">
+                            <img class="restaurant_img" src="../image/restaurant2.jpg" alt="가게이미지">
+                        </div>
+                        <div class="restaurant_text">
+                            <span class="restaurant_name">가게5</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="restaurant">
+                    <div class="restaurant_content">
+                        <div class="restaurant_img_container">
+                            <img class="restaurant_img" src="" alt="가게이미지">
+                        </div>
+                        <div class="restaurant_text">
+                            <span class="restaurant_name">가게6</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="restaurant">
+                    <div class="restaurant_content">
+                        <div class="restaurant_img_container">
+                            <img class="restaurant_img" src="" alt="가게이미지">
+                        </div>
+                        <div class="restaurant_text">
+                            <span class="restaurant_name">가게7</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="restaurant">
+                    <div class="restaurant_content">
+                        <div class="restaurant_img_container">
+                            <img class="restaurant_img" src="" alt="가게이미지">
+                        </div>
+                        <div class="restaurant_text">
+                            <span class="restaurant_name">가게8</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <footer>
+            <p>최김임</p>
+        </footer>
+    </div> 
+</body>
+</html>

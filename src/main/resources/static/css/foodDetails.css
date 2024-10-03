@@ -1,0 +1,131 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.header {
+    background-color: #88CDD0;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    height: 60px; /* Adjust size as needed */
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    width: 60%; /* Adjust width as per the design */
+    border: 2px solid transparent;
+    border-radius: 25px;
+    background-color: white;
+    padding: 5px;
+}
+
+.search-bar input[type="text"] {
+    width: 90%;
+    padding: 10px;
+    border: none;
+    border-radius: 25px;
+    outline: none;
+    background-color: transparent;
+    font-size: 16px;
+}
+
+.search-bar .search-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0 10px;
+}
+
+.header .links {
+    display: flex;
+    align-items: center;
+}
+
+.header a {
+    margin-left: 10px;
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+}
+
+.content {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.content div {
+    margin: 0 20px;
+    text-align: center;
+}
+
+.content img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid lightgray;
+}
+
+.content p {
+    margin-top: 10px;
+    font-size: 18px;
+}
+
+.map {
+    flex: 1;
+    text-align: center;
+    border-right: 1px solid #88CDD0;
+}
+
+.restaurant-details {
+    flex: 1;
+    padding-left: 20px;
+}
+
+.restaurant-details h2 {
+    font-size: 26px;
+}
+
+.info {
+    margin-top: 50px;
+    text-align: center;
+}
+
+.info p {
+    margin: 5px 0;
+}
+
+.actions {
+    display: flex;
+    margin-top: 20px;
+}
+
+.actions div {
+    margin-right: 20px;
+    text-align: center;
+}
+
+.actions img {
+    width: 25px;
+    height: 25px;
+}
+
+.header-container {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    margin: 20px 0; 
+}
+
+.h1 {
+    font-size: 24px; /* Adjust the font size if needed */
+    text-align: center; /* Center the text */
+    margin: 0; /* Remove default margin */
+    margin-top : 50px;
+    margin-bottom: 100px;
+}

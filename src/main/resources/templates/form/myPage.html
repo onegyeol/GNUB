@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마이페이지</title>
+    <!-- 타임리프를 사용한 CSS 경로 -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .content {
+            display: flex;
+            justify-content: center;
+        }
+
+        .content p {
+            font-size : 17px;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="header">
+        <!-- Logo image -->
+        <a href="main.html"> <!-- 메인 페이지 링크 추가 -->
+        <img src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo" class="logo">
+
+
+        <div class="links">
+            <!-- 로그인 했을 때 보이는 메뉴바-->
+            <a href="#">Board</a>
+            <a href="#">Mypage</a>
+            <a href="#">Logout</a>
+        </div>
+    </div>
+
+    <div class="header-container">
+        <h1 class="h1">My Page</h1>
+    </div>
+
+    <div class="content">
+        <div>
+            <a href="myPost.html">
+                <img src="/image/gnub_logo.png" alt="내가 작성한 글">
+            </a>
+            <p> 내가 작성한 글 </p>
+        </div>
+        <div>
+            <a href="likeList.html">
+                <img src="/image/gnub_logo.png" alt="내가 좋아요한 글">
+            </a>
+            <p> 내가 좋아요한 글 </p>
+        </div>
+        <div>
+            <a href="likeList.html">
+                <img src="/image/gnub_logo.png" alt="내가 좋아요한 가게">
+            </a>
+            <p> 내가 좋아요한 가게 </p>
+        </div>
+        <div>
+            <a href="keepList.html">
+                <img src="/image/gnub_logo.png" alt="내가 찜한 가게">
+            </a>
+            <p> 내가 찜한 가게 </p>
+        </div>
+    </div>
+
+    <div class="info">
+        <p>단과대 / 학과: </p>
+        <p>이메일: </p>
+        <p>이름: </p>
+    </div>
+</body>

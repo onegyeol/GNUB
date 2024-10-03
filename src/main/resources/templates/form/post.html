@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글</title>
+    <!-- 타임리프를 사용한 CSS 경로 -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+ </head>
+ <body>
+   <div class="header">
+      <!-- Logo image -->
+      <img src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo" class="logo">
+
+      <!-- Updated Search Bar -->
+      <div class="search-bar">
+          <input type="text" placeholder="검색">
+          <button class="search-btn">
+              <img src="https://cdn-icons-png.flaticon.com/512/49/49116.png" alt="Search Icon" width="20" height="20">
+          </button>
+      </div>
+
+      <div class="links">
+          <!--로그인 안했을 때 보이는 메뉴바-->
+          <a href="#">Login</a>
+          <a href="#">Signup</a>
+          <!-- 로그인 했을 때 보이는 메뉴바-->
+          <a href="#">Board</a>
+          <a href="#">Mypage</a>
+          <a href="#">Logout</a>
+      </div>
+    </div>
+
+    <div class="post-body">
+        <h1>게시물 제목 예시</h1>
+        <div class="post-info">
+            <span class="author">작성자: 홍길동</span>
+            <span class="post-date">작성일: 2024-10-01</span>
+            <span class="post-views">조회수: 20</span>
+        </div>
+        <div class="post-content">
+            <p>
+                게시물 본문
+            </p>
+        </div>
+    </div>
+    <div class="post-actions">
+        <button type="button" onclick="window.history.back();">목록으로</button>
+        <button type="button">수정</button>
+        <button type="button">삭제</button>
+    </div>
+
+ </body>
+ </html>

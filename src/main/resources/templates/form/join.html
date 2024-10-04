@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+    <!-- 타임리프를 사용한 CSS 경로 -->
+    <link rel="stylesheet" th:href="@{/css/join.css}">
+    <script src="../js/join.js" defer></script> <!-- JavaScript 파일 링크 -->
+</head>
+
+
+<body>
+    <div id="header"></div> <!-- 헤더를 삽입할 위치 -->
+    <div>
+        <!-- 회원가입 폼 -->
+        <div class="join-form">
+            <h2>회원가입</h2>
+            <div class="terms-container">
+                <div class="terms-label">GNUB 이용약관</div>
+                <div class="terms-content" id="termsContent1">
+                    <!-- 이용약관 1 내용이 여기에 삽입됩니다. -->
+                </div>
+                <label>
+                    <input type="checkbox" required> 약관에 동의합니다.
+                </label>
+            </div>
+            
+            <div class="terms-container">
+                <div class="terms-label">GNUB 이용약관</div>
+                <div class="terms-content" id="termsContent2">
+                    <!-- 이용약관 2 내용이 여기에 삽입됩니다. -->
+                </div>
+                <label>
+                    <input type="checkbox" required> 약관에 동의합니다.
+                </label>
+            </div>
+
+            <label for="name">성명</label>
+            <input type="text" id="name" placeholder="성명" required>
+
+            <label for="college">단과대</label>
+            <select id="college" onchange="updateDepartments()">
+                <option value="">선택하세요</option>
+                <option value="humanities">인문대학</option>
+                <option value="social_science">사회과학대학</option>
+                <option value="natural_sciences">자연과학대학</option>
+                <option value="business">경영대학</option>
+                <option value="engineering">공과대학</option>
+                <option value="it_engineering">IT 공과대학</option>
+                <option value="space_aeronautics">우주항공대학</option>
+                <option value="agriculture">농업생명과학대학</option>
+                <option value="law">법과대학</option>
+                <option value="education">사범대학</option>
+                <option value="veterinary_medicine">수의과대학</option>
+                <option value="medicine">의과대학</option>
+                <option value="nursing">간호대학</option>
+                <option value="marine_science">해양과학대학</option>
+                <option value="pharmacy">약학대학</option>
+                <option value="civil_environmental_engineering">건설환경공과대학</option>
+                <option value="main_administration">본부대학</option>
+            </select>
+
+            <label for="department">학과</label>
+            <select id="department">
+                <option value="">단과대를 선택하세요</option>
+            </select>
+
+            <label for="username">아이디</label>
+            <div style="display: flex; align-items: center; width: 100%;">
+                <input type="text" id="username" placeholder="아이디" required style="flex: 1; margin-right: 10px;">
+                <button type="button" onclick="checkUsername()" style="width: 90px; height: 100%;">중복 확인</button>
+            </div>
+
+            <label for="password">비밀번호</label>
+            <input type="password" id="password" placeholder="비밀번호" required>
+
+            <label for="confirmPassword">비밀번호 확인</label>
+            <input type="password" id="confirmPassword" placeholder="비밀번호 확인" required oninput="checkPasswordMatch()">
+            
+            <div id="statusMessage" class="status-message"></div>
+            
+            <button type="button" id="registerButton" onclick="showAlert()">회원가입</button>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인</title>
+    <!-- 타임리프를 사용한 CSS 경로 -->
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <script src="../js/login.js" defer></script> <!-- JavaScript 파일 링크 -->
+</head>
+<body>
+    <!-- 로그인 폼 -->
+    <div class="login-form">
+        <a href="#">
+            <img src="https://github.com/onegyeol/GNUB/blob/main/%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9(%E1%84%87%E1%85%A2%E1%84%80%E1%85%A7%E1%86%BCX).png?raw=true" alt="로고" style="max-width: 100%; height: auto; margin-bottom: 20px;">
+        </a>
+        <h2>로그인</h2>
+        <input type="text" id="username" placeholder="아이디" required onkeydown="handleKeyPress(event)">
+        <input type="password" id="password" placeholder="비밀번호" required onkeydown="handleKeyPress(event)">
+        <button type="button" onclick="login()">로그인</button>
+        <div class="footer-links">
+            <a href="#">비밀번호 찾기</a>
+            <a href="#">아이디 찾기</a>
+            <a href="#">회원가입</a> <!-- 회원가입 버튼 수정 -->
+        </div>
+    </div>
+</body>
+</html>

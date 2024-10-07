@@ -41,8 +41,7 @@ input[type="text"],
     resize: vertical;
 }
 
-
-.form-group button {
+.form-group .write-button {
     right:3%;
     position:absolute;
     width: 100px;
@@ -53,10 +52,10 @@ input[type="text"],
     font-size: 15px;
     border-radius: 4px;
     cursor: pointer;
-    margin-top: 30px;
+    margin-top: 30px ;
 }
 
-.form-group button:hover {
+
+.form-group .write-button:hover {
     background-color: #76cacf;
 }
-

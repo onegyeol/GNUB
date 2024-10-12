@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import ch.qos.logback.core.model.Model;
 import jakarta.servlet.http.HttpSession;
 import pbl.GNUB.dto.LikeDto;
 import pbl.GNUB.entity.Like;
@@ -66,22 +67,6 @@ public class LikeController {
         }
     }
 
-    /* 
-    // 특정 회원이 좋아요한 음식점 목록을 반환하는 API
-    @GetMapping("/likes/member")
-    public ResponseEntity<List<Shop>> getLikedShopsByMember(@RequestParam String email) {
-        List<Shop> likedShops = likeService.getLikedShopsByMember(email);
-        return ResponseEntity.ok(likedShops);
-    }
-    */
-
-    // 특정 음식점 대한 좋아요 리스트 목록
-    @GetMapping("/{shopId}/likes")
-    public ResponseEntity<List<Like>> getLikesByShopId(@PathVariable Long shopId){
-        List<Like> likes = likeService.getLikesByShopId(shopId);
-        return ResponseEntity.ok(likes);
-    }
-    
     @PostMapping("/like/likeShop")
     public ResponseEntity<?> likeShop(@RequestBody LikeDto likeDto) {
         int result = likeService.likeShop(likeDto);

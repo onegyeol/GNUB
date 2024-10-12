@@ -7,14 +7,18 @@
     <title>음식점 상세페이지</title>
     <!-- 타임리프를 사용한 CSS 경로 -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script src="/javascript/script.js" defer></script> <!-- script.js 파일을 불러옴 -->
+    
+    
 </head>
 <body>
 
     <div class="header">
         <!-- Logo image -->
-        <a href="main.html"> <!-- 메인 페이지 링크 추가 -->
-        <img src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo" class="logo">
-
+        <a th:href="@{/main}"> <!-- 메인 페이지 링크 추가 -->
+            <img src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo" class="logo">
+        </a>
+            
         <!-- Updated Search Bar -->
         <div class="search-bar">
             <input type="text" placeholder="검색">
@@ -25,12 +29,12 @@
 
         <div class="links">
             <!--로그인 안했을 때 보이는 메뉴바-->
-            <a href="#">Login</a>
-            <a href="#">Signup</a>
+            <a th:href="@{/member/login}">Login</a>
+            <a th:href="@{/member/new}">Signup</a>
             <!-- 로그인 했을 때 보이는 메뉴바-->
-            <a href="#">Board</a>
-            <a href="#">Mypage</a>
-            <a href="#">Logout</a>
+            <a th:href="@{/board/main}">Board</a>
+            <a th:href="@{/mypage}">Mypage</a>
+            <a th:href="@{/member/logout}">Logout</a>
         </div>
     </div>
 
@@ -46,8 +50,9 @@
             </div>
             <div class="actions">
                 <div>
-                    <img src="https://cdn-icons-png.flaticon.com/512/535/535183.png" alt="Heart Icon">
-                    <p>좋아요 수</p>
+                    <img src="https://cdn-icons-png.flaticon.com/512/535/535183.png" alt="Heart Icon" 
+                            onclick="toggleLike(1, 'likeCount')"> <!-- 이미지 클릭 시 toggleLike 실행 -->
+                    <p id="likeCount">0</p> <!-- 좋아요 수를 표시할 요소 -->
                 </div>
                 <div>
                     <img src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png" alt="Star Icon">

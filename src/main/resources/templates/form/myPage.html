@@ -22,15 +22,15 @@
 <body>
     <div class="header">
         <!-- Logo image -->
-        <a href="main.html"> <!-- 메인 페이지 링크 추가 -->
+        <a th:href="@{/main}"> <!-- 메인 페이지 링크 추가 -->
         <img src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo" class="logo">
 
 
         <div class="links">
             <!-- 로그인 했을 때 보이는 메뉴바-->
-            <a href="#">Board</a>
-            <a href="#">Mypage</a>
-            <a href="#">Logout</a>
+            <a th:href="@{/board/main}">Board</a>
+            <a th:href="@{/mypage}">Mypage</a>
+            <a th:href="@{/member/logout}">Logout</a>
         </div>
     </div>
 
@@ -40,25 +40,19 @@
 
     <div class="content">
         <div>
-            <a href="myPost.html">
+            <a th:href="@{/myPost}">
                 <img src="/image/gnub_logo.png" alt="내가 작성한 글">
             </a>
             <p> 내가 작성한 글 </p>
         </div>
         <div>
-            <a href="likeList.html">
-                <img src="/image/gnub_logo.png" alt="내가 좋아요한 글">
-            </a>
-            <p> 내가 좋아요한 글 </p>
-        </div>
-        <div>
-            <a href="likeList.html">
+            <a th:href="@{/likeList}"></a>
                 <img src="/image/gnub_logo.png" alt="내가 좋아요한 가게">
             </a>
             <p> 내가 좋아요한 가게 </p>
         </div>
         <div>
-            <a href="keepList.html">
+            <a th:href="@{/keepList}">
                 <img src="/image/gnub_logo.png" alt="내가 찜한 가게">
             </a>
             <p> 내가 찜한 가게 </p>

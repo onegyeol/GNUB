@@ -7,6 +7,7 @@
     <title>메인화면</title>
     <!-- 타임리프를 사용한 CSS 경로 -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script src="/javascript/script.js" defer></script> <!-- script.js 파일을 불러옴 -->
     
     <style>
         /* 링크 스타일 */
@@ -75,7 +76,7 @@
             margin-top: 10px; /* 글상자와 숫자 간격 */
             font-size: 15px; /* 숫자 크기 */
         }
-        
+
         /* 버튼을 글상자 옆에 붙이기 위해 flex 사용 */
         .text-area-container {
             display: flex; /* 플렉스 박스 사용 */
@@ -118,18 +119,18 @@
     
     <div class="header">
         <!-- 로고 이미지 -->
-        <a href="main.html"> <!-- 메인 페이지 링크 추가 -->
+        <a th:href="@{/main}"> <!-- 메인 페이지 링크 추가 -->
         <img src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo" class="logo">
 
         <div class="links">
-          <!--로그인 안했을 때 보이는 메뉴바-->
-          <a href="#">Login</a>
-          <a href="#">Signup</a>
-          <!-- 로그인 했을 때 보이는 메뉴바-->
-          <a href="board.html">Board</a>
-          <a href="myPage.html">Mypage</a>
-          <a href="#">Logout</a>
-      </div>
+            <!--로그인 안했을 때 보이는 메뉴바-->
+            <a th:href="@{/member/login}">Login</a>
+            <a th:href="@{/member/new}">Signup</a>
+            <!-- 로그인 했을 때 보이는 메뉴바-->
+            <a th:href="@{/board/main}">Board</a>
+            <a th:href="@{/myPage}">Mypage</a>
+            <a th:href="@{/member/logout}">Logout</a>
+        </div>
     </div>
 
     <!-- 검색 창 -->
@@ -177,7 +178,7 @@
                     </div>
                     <div class="image-btn-container">
                         <div class="number-display" id="numberDisplay1">0</div>
-                        <button class="toggle-btn" onclick="toggleNumber('numberDisplay1')">좋아요</button>
+                        <button class="toggle-btn" onclick="toggleLike(1, 'numberDisplay1')">좋아요</button>
                     </div>
                     
                 </div>
@@ -199,7 +200,7 @@
                     </div>
                     <div class="image-btn-container">
                         <div class="number-display" id="numberDisplay2">0</div>
-                        <button class="toggle-btn" onclick="toggleNumber('numberDisplay2')">좋아요</button>
+                        <button class="toggle-btn" onclick="toggleLike(2, 'numberDisplay2')">좋아요</button>
                     </div>
                     
                 </div>
@@ -221,16 +222,13 @@
                     </div>
                     <div class="image-btn-container">
                         <div class="number-display" id="numberDisplay3">0</div>
-                        <button class="toggle-btn" onclick="toggleNumber('numberDisplay3')">좋아요</button>
+                        <button class="toggle-btn" onclick="toggleLike(3, 'numberDisplay3')">좋아요</button>
                     </div>
                     
                 </div>
             </div>
         </div>
     </main>
-
-    <script src="/javascript/script.js"></script>
-
 
 </body>
 </html>

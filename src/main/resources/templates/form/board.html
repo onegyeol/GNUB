@@ -7,14 +7,16 @@
     <title>게시판</title>
     <!-- 타임리프를 사용한 CSS 경로 -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
-
+    
 
 </head>
 <body>
     <div class="header">
         <!-- Logo image -->
-        <img src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo" class="logo">
-
+        <a th:href="@{/main}">
+            <img src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo" class="logo">
+        </a>
+         
         <!-- Updated Search Bar -->
         <div class="search-bar">
             <input type="text" placeholder="검색">
@@ -25,12 +27,12 @@
 
         <div class="links">
             <!--로그인 안했을 때 보이는 메뉴바-->
-            <a href="#">Login</a>
-            <a href="#">Signup</a>
+            <a th:href="@{/member/login}">Login</a>
+            <a th:href="@{/member/new}">Signup</a>
             <!-- 로그인 했을 때 보이는 메뉴바-->
-            <a href="#">Board</a>
-            <a href="#">Mypage</a>
-            <a href="#">Logout</a>
+            <a th:href="@{/board/main}">Board</a>
+            <a th:href="@{/mypage}">Mypage</a>
+            <a th:href="@{/member/logout}">Logout</a>
         </div>
     </div>
 
@@ -70,7 +72,7 @@
                 <a href="#">2</a>
                 <a href="#">3</a>
                 <a href="#">다음 &raquo;</a>
-                <a href="write.html" class="href-write">글쓰기</a>
+                <a th:href="@{/board/write}" class="href-write">글쓰기</a>
             </div>
         </div>
     </div>

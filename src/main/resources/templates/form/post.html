@@ -12,7 +12,10 @@
  <body>
    <div class="header">
       <!-- Logo image -->
-      <img src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo" class="logo">
+      <a th:href="@{/main}">
+        <img src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo" class="logo">
+      </a>
+      
 
       <!-- Updated Search Bar -->
       <div class="search-bar">
@@ -23,14 +26,14 @@
       </div>
 
       <div class="links">
-          <!--로그인 안했을 때 보이는 메뉴바-->
-          <a href="#">Login</a>
-          <a href="#">Signup</a>
-          <!-- 로그인 했을 때 보이는 메뉴바-->
-          <a href="#">Board</a>
-          <a href="#">Mypage</a>
-          <a href="#">Logout</a>
-      </div>
+        <!--로그인 안했을 때 보이는 메뉴바-->
+        <a th:href="@{/member/login}">Login</a>
+        <a th:href="@{/member/new}">Signup</a>
+        <!-- 로그인 했을 때 보이는 메뉴바-->
+        <a th:href="@{/board/main}">Board</a>
+        <a th:href="@{/mypage}">Mypage</a>
+        <a th:href="@{/member/logout}">Logout</a>
+    </div>
     </div>
 
     <div class="post-body">

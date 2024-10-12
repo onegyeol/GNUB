@@ -1,18 +1,21 @@
-<!-- Searching Result Page -->
 <!DOCTYPE html>
-<html lang="ko">
+<html xmlns="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>검색 결과 화면</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/foodDetails.css">
+    <title>검색 결과</title>
+    <!-- 타임리프를 사용한 CSS 경로 -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 
 <body>
     <div class="header">
         <!-- Logo image -->
-        <img src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo" class="logo">
+        <a th:href="@{/main}">
+            <img src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo" class="logo">
+        </a>
+        
 
         <!-- Updated Search Bar -->
         <div class="search-bar">
@@ -24,12 +27,12 @@
 
         <div class="links">
             <!--로그인 안했을 때 보이는 메뉴바-->
-            <a href="#">Login</a>
-            <a href="#">Signup</a>
+            <a th:href="@{/member/login}">Login</a>
+            <a th:href="@{/member/new}">Signup</a>
             <!-- 로그인 했을 때 보이는 메뉴바-->
-            <a href="#">Board</a>
-            <a href="#">Mypage</a>
-            <a href="#">Logout</a>
+            <a th:href="@{/board/main}">Board</a>
+            <a th:href="@{/mypage}">Mypage</a>
+            <a th:href="@{/member/logout}">Logout</a>
         </div>
     </div>
     
@@ -62,7 +65,7 @@
                 <div class="restaurant">
                     <div class="restaurant_content">
                         <div class="restaurant_img_container">
-                            <img class="restaurant_img" src="../image/restaurant.jpg" alt="가게이미지">
+                            <img class="restaurant_img" src="/image/restaurant.jpg" alt="가게이미지">
                         </div>
                         <div class="restaurant_text">
                             <span class="restaurant_name">가게1</span>
@@ -112,7 +115,7 @@
                 <div class="restaurant">
                     <div class="restaurant_content">
                         <div class="restaurant_img_container">
-                            <img class="restaurant_img" src="../image/restaurant2.jpg" alt="가게이미지">
+                            <img class="restaurant_img" src="/image/restaurant2.jpg" alt="가게이미지">
                         </div>
                         <div class="restaurant_text">
                             <span class="restaurant_name">가게5</span>

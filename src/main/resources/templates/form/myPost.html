@@ -22,13 +22,10 @@
         </div>
 
         <div class="links">
-            <!--로그인 안했을 때 보이는 메뉴바-->
-            <a href="#">Login</a>
-            <a href="#">Signup</a>
             <!-- 로그인 했을 때 보이는 메뉴바-->
-            <a href="#">Board</a>
-            <a href="#">Mypage</a>
-            <a href="#">Logout</a>
+            <a th:href="@{/board/main}">Board</a>
+            <a th:href="@{/mypage}">Mypage</a>
+            <a th:href="@{/member/logout}">Logout</a>
         </div>
     </div>
 

@@ -57,7 +57,7 @@ public class MemberService {
     public Boolean isEmailDuplicate(String email) {
         return memberRepository.findByEmail(email).isPresent();
     }
-
+ 
     public MemberFormDto login(MemberFormDto memberFormDto){
         // 이메일 입력 확인
         if (memberFormDto.getEmail() == null || memberFormDto.getEmail().isEmpty()) {

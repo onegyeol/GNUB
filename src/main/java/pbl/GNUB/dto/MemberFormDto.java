@@ -20,8 +20,5 @@ public class MemberFormDto {
 
     @NotEmpty(message = "비밀번호 입력은 필수값입니다.")
     @Length(min = 8, max = 16, message = "비밀번호는 8자 이상, 16자 이하로 입력해주세요.")
-    private String password;
-
-    
-    
+    private String password;    
 }

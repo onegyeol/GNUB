@@ -1,12 +1,9 @@
 let isLoggedIn = false; // 로그인 상태 변수
 
 function login() {
-    const username = document.getElementById('username').value;
+    const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    // 임시 로그인 정보
-    const validUsername = '관리자';
-    const validPassword = '1234';
 
     if (username === validUsername && password === validPassword) {
         isLoggedIn = true; // 로그인 성공 시 상태 변경

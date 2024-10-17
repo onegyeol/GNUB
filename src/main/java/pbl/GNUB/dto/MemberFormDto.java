@@ -31,12 +31,13 @@ public class MemberFormDto {
 
     @NotEmpty(message = "단과대학 입력은 필수값입니다.") // 추가: 필수값 체크
     private Long departmentId;
-
+ 
     public static MemberFormDto toMemberFormDto(Member member){
         MemberFormDto memberFormDto = new MemberFormDto();
         memberFormDto.setEmail(member.getEmail());
         memberFormDto.setName(member.getName());
         memberFormDto.setPassword(member.getPassword());
+
         if (member.getDepartment() != null) {
             memberFormDto.setDepartmentId(member.getDepartment().getId());  // department의 ID를 가져옴
         }

@@ -19,6 +19,7 @@ public class SecurityConfig {
                 .requestMatchers("/member/new", "/member/login", "member/logout").permitAll() // Allow access to sign-up and login pages
                 .anyRequest().authenticated() // All other requests require authentication
             )
+            
             .formLogin(form -> form
                 .loginPage("/member/login") // Custom login page
                 .loginProcessingUrl("/member/login") // 폼 action 경로
@@ -28,12 +29,14 @@ public class SecurityConfig {
             )
             .logout(logout -> logout
                 .logoutUrl("/member/logout")
-                .logoutSuccessUrl("form/main")
+                .logoutSuccessUrl("/main") // 로그아웃 성공 후 메인페이지 이동
+                .invalidateHttpSession(true) // 세션 무효화
                 .permitAll()
             );
 
         return http.build();
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

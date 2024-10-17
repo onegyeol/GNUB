@@ -79,13 +79,10 @@ public class MemberController {
         
     }
     
-
-    // 로그아웃시
     @GetMapping("/logout")
-    public String Logout(HttpSession session){
+    public String Logout(HttpSession session) {
         session.invalidate();
         return "form/main"; // 메인 폼 뷰를 반환
     }
 
-    
 }

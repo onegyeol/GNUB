@@ -7,13 +7,14 @@
     <title>회원가입</title>
     <!-- 타임리프를 사용한 CSS 경로 -->
     <link rel="stylesheet" th:href="@{/css/join.css}">
-    <script src="../js/join.js" defer></script> <!-- JavaScript 파일 링크 -->
 </head>
 
 
 <body>
-    <div id="header"></div> <!-- 헤더를 삽입할 위치 -->
+    <div id="join-header"></div> <!-- 헤더를 삽입할 위치 -->
     <div>
+    <form id="joinForm" action="/member/new" method="post" th:action="@{/member/new}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
         <!-- 회원가입 폼 -->
         <div class="join-form">
             <h2>회원가입</h2>
@@ -38,51 +39,367 @@
             </div>
 
             <label for="name">성명</label>
-            <input type="text" id="name" placeholder="성명" required>
+            <input type="text" id="name" name="name" placeholder="성명" required>
 
             <label for="college">단과대</label>
             <select id="college" onchange="updateDepartments()">
                 <option value="">선택하세요</option>
-                <option value="humanities">인문대학</option>
-                <option value="social_science">사회과학대학</option>
-                <option value="natural_sciences">자연과학대학</option>
-                <option value="business">경영대학</option>
-                <option value="engineering">공과대학</option>
-                <option value="it_engineering">IT 공과대학</option>
-                <option value="space_aeronautics">우주항공대학</option>
-                <option value="agriculture">농업생명과학대학</option>
-                <option value="law">법과대학</option>
-                <option value="education">사범대학</option>
-                <option value="veterinary_medicine">수의과대학</option>
-                <option value="medicine">의과대학</option>
-                <option value="nursing">간호대학</option>
-                <option value="marine_science">해양과학대학</option>
-                <option value="pharmacy">약학대학</option>
-                <option value="civil_environmental_engineering">건설환경공과대학</option>
-                <option value="main_administration">본부대학</option>
+                <option value="Humanities">인문대학</option>
+                <option value="Social_Science">사회과학대학</option>
+                <option value="Natural_Sciences">자연과학대학</option>
+                <option value="Business_Administration">경영대학</option>
+                <option value="Engineering">공과대학</option>
+                <option value="IT_Engineering">IT 공과대학</option>
+                <option value="Space_and_Aeronautics">우주항공대학</option>
+                <option value="Agriculture_and_Life_Science">농업생명과학대학</option>
+                <option value="Law">법과대학</option>
+                <option value="Education">사범대학</option>
+                <option value="Veterinary_Medicine">수의과대학</option>
+                <option value="Medicine">의과대학</option>
+                <option value="Nursing">간호대학</option>
+                <option value="Marine_Science">해양과학대학</option>
+                <option value="Pharmacy">약학대학</option>
+                <option value="Civil_and_Environmental_Engineering">건설환경공과대학</option>
+                <option value="Main_Administration">본부대학</option>
             </select>
 
             <label for="department">학과</label>
-            <select id="department">
+            <select id="department" name="departmentId">
                 <option value="">단과대를 선택하세요</option>
             </select>
 
-            <label for="username">아이디</label>
+            <label for="email">이메일</label>
             <div style="display: flex; align-items: center; width: 100%;">
-                <input type="text" id="username" placeholder="아이디" required style="flex: 1; margin-right: 10px;">
+                <input type="text" id="email" name="email" placeholder="이메일을 입력하세요." required style="flex: 1; margin-right: 10px;">
                 <button type="button" onclick="checkUsername()" style="width: 90px; height: 100%;">중복 확인</button>
             </div>
 
             <label for="password">비밀번호</label>
-            <input type="password" id="password" placeholder="비밀번호" required>
+            <input type="password" id="password" name="password" placeholder="비밀번호" required>
 
             <label for="confirmPassword">비밀번호 확인</label>
-            <input type="password" id="confirmPassword" placeholder="비밀번호 확인" required oninput="checkPasswordMatch()">
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="비밀번호 확인" required oninput="checkPasswordMatch()">
             
             <div id="statusMessage" class="status-message"></div>
             
-            <button type="button" id="registerButton" onclick="showAlert()">회원가입</button>
+            <button type="button" id="registerButton" name="registerButton" onclick="showAlert()">회원가입</button>
         </div>
+    </form>
     </div>
+
+    <script>
+// 헤더 호출
+function loadHeader() {
+    console.log('헤더 로드를 시도합니다...'); // 디버그 로그
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', '../layout/header2.html', true);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            console.log('헤더가 성공적으로 로드되었습니다.');
+            document.getElementById('join-header').innerHTML = xhr.responseText;
+        } else {
+            console.error('헤더 로드 오류:', xhr.status, xhr.statusText);
+        }
+    };
+    xhr.onerror = function() {
+        console.error('헤더 로드 요청 오류.');
+    };
+    xhr.send();
+}
+
+// 이용약관을 비동기로 불러오는 함수
+function loadTermsFromTxt(elementId, filePath) {
+    fetch(filePath)
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById(elementId).innerText = data;
+        })
+        .catch(error => {
+            console.error('Error loading terms:', error);
+            document.getElementById(elementId).innerText = "이용약관을 불러오는데 실패했습니다.";
+        });
+}
+
+// 페이지가 로드되면 이용약관을 불러옴
+window.onload = function() {
+    loadTermsFromTxt("termsContent1", "../Terms/이용약관1.txt");  
+    loadTermsFromTxt("termsContent2", "../Terms/이용약관2.txt");  
+};
+
+// 이용약관 체크박스
+function checkCheckboxes() {
+    const termsCheckboxes = document.querySelectorAll('.terms-container input[type="checkbox"]');
+    const registerButton = document.getElementById('registerButton');
+    const allChecked = Array.from(termsCheckboxes).every(checkbox => checkbox.checked);
+    registerButton.disabled = !allChecked;
+}
+
+// 이용 약관 로드 함수
+function loadTerms(elementId, url) {
+    fetch(url)
+        .then(response => {
+            if (response.ok) return response.text();
+            throw new Error(`Error loading terms: ${response.statusText}`);
+        })
+        .then(text => document.getElementById(elementId).innerHTML = text)
+        .catch(error => console.error(error));
+}
+
+
+
+
+// 단과대 선택 함수
+function updateDepartments() {
+    const college = document.getElementById('college').value;
+    const departmentSelect = document.getElementById('department');
+    // 학과 초기화
+    departmentSelect.innerHTML = '<option value="">단과대를 선택하세요</option>';
+
+    const departments={
+        Humanities:[
+            {id:1, name : "영어영문학부 영어영문학전공"},
+            {id:2, name:"영어영문학부 영어전공"},"국어국문학과",
+            {id:3, name:"독어독문학과"},
+            {id:4, name:"러시아학과"},
+            {id:5, name:"민속예술무용학과"},
+            {id:6, name:"불어불문학과"},
+            {id:7, name:"사학과"},
+            {id:8, name:"중어중문학과"},
+            {id:9, name:"철학과"},
+            {id:10, name:"한문학과"}
+        ],
+        Social_Science:[
+            {id:11, name:"경제학부"},
+            {id:12, name:"사회복지학부"},
+            {id:13, name:"미디어커뮤니케이션학과"},
+            {id:14, name:"사회학과"},
+            {id:15, name:"아동가족학과"},
+            {id:16, name:"정치외교학과"},
+            {id:17, name:"행정학과"},
+            {id:18, name:"심리학과"}
+        ],
+        Natural_Sciences:[
+            {id:19, name:"생명과학부"},
+            {id:20, name:"물리학과"},
+            {id:21, name:"수학과"},
+            {id:22, name:"식품영양양학과"},
+            {id:23, name:"의류학과"},
+            {id:24, name:"정보통계학과"},
+            {id:25, name:"제약공학과"},
+            {id:26, name:"지질과학과"},
+            {id:27, name:"항노화신소재과학과"},
+            {id:28, name:"화학과"}
+        ],
+        Business_Administration:[
+            {id:29, name:"경영학부"},
+            {id:30, name:"회계세무학부"},
+            {id:31, name:"경영정보학과"},
+            {id:32, name:"국제통상학과"},
+            {id:33, name:"산업경영학과"},
+            {id:34, name:"스마트유통물류학과"}
+        ],
+        Engineering:[
+            {id:35, name:"건축공학부"},
+            {id:36, name:"기계공학부"},
+            {id:37, name:"나노/신소재공학부 고분자공학전공"},
+            {id:38, name:"나노/신소재공학부 금속재료공학전공"},
+            {id:39, name:"나노/신소재공학부 세라믹공학전공"},
+            {id:40, name:"산업시스템공학부"},
+            {id:41, name:"건축학과"},
+            {id:42, name:"기계융합공학과"},
+            {id:43, name:"도시공학과"},
+            {id:44, name:"미래자동차공학과"},
+            {id:45, name:"에너지공학과"},
+            {id:46, name:"토목공학과"},
+            {id:47, name:"화학공학과"}
+        ],
+        IT_Engineering:[
+            {id:48, name:"메카트로닉스공학부"},
+            {id:49, name:"전자공학부"},
+            {id:50, name:"반도체공학과"},
+            {id:51, name:"소프트웨어공학과"},
+            {id:52, name:"전기공학과"},
+            {id:53, name:"제어로봇공학과"},
+            {id:54, name:"컴퓨터공학과"},
+            {id:55, name:"AI정보공학과"}
+        ],
+        Space_and_Aeronautics:[
+            {id:56, name:"항공우주공학부"}
+        ],
+        Agriculture_and_Life_Science:[
+            {id:56, name:"식품자원경제학과"},
+            {id:57, name:"동물생명융합학부"},
+            {id:58, name:"식품공학과"},
+            {id:59, name:"원예과학부"},
+            {id:60, name:"축산과학부"},
+            {id:61, name:"환경산림과학부"},
+            {id:62, name:"농학과"},
+            {id:63, name:"스마트농산업학과"},
+            {id:64, name:"식물의학과"}, 
+            {id:65, name:"환경생명화학과"},
+            {id:66, name:"환경재료과학과"},
+            {id:67, name:"생물산업기계공학과"},
+            {id:68, name:"지역시스템공학과"}
+        ],
+        Law:[
+            {id:69, name:"법학과"}
+        ],
+        Education:[
+            {id:70, name:"교육학과"},
+            {id:71, name:"국어교육과"},
+            {id:72, name:"역사교육과"},
+            {id:73, name:"영어교육과"},
+            {id:74, name:"유아교육과"},
+            {id:75, name:"윤리교육과"}, 
+            {id:76, name:"일반사회교육과"},
+            {id:77, name:"일어교육과"},
+            {id:78, name:"지리교육과"},
+            {id:79, name:"물리교육과"},
+            {id:80, name:"생물교육과"},
+            {id:81, name:"수학교육과"},
+            {id:82, name:"화학교육과"},
+            {id:83, name:"미술교육과"},
+            {id:84, name:"음악교육과"},
+            {id:85, name:"체육교육과"}
+        ],
+        Veterinary_Medicine:[
+            {id:86, name:"수의예과"},
+            {id:87, name:"수의학과"}
+        ],
+        Medicine:[
+            {id:88, name:"의예과"},
+            {id:89, name:"의학과"}
+        ],
+        Nursing:[
+            {id:90, name:"간호학과"}
+        ],
+        Marine_Science:[
+            {id:91, name:"해양수산경영학과"},
+            {id:92, name:"미래산업융합학과"},
+            {id:93, name:"수산생명의학과"},
+            {id:94, name:"해양경찰시스템학과"},
+            {id:95, name:"해양생명과학과"},
+            {id:96, name:"기계시스템공학과"},
+            {id:97, name:"스마트에너지기계공학과"}, 
+            {id:98, name:"조선해양공학과"},
+            {id:99, name:"해양식품공학과"},
+            {id:100, name:"해양토목공학과"}, 
+            {id:101, name:"해양환경공학과"}
+        ],
+        Pharmacy:[
+            {id:102, name:"약학과"}
+        ],
+        Civil_and_Environmental_Engineering:[
+            {id:103, name:"건설시스템공학과"},
+            {id:104, name:"인테리어재료공학과"},
+            {id:105, name:"조경학과"},
+            {id:106, name:"환경공학과"},
+            {id:107, name:"디자인비즈니스학과"}
+        ]
+            ,
+        Main_Administration:[
+            {id:108, name:"휴먼헬스케어학과"}
+        ]
+
+    }
+
+    // 선택한 단과대에 따른 학과 목록 업데이트
+    if (departments[college]) {
+        departments[college].forEach(function(department) {
+            const option = document.createElement('option');
+            option.value = department.id;
+            option.text = department.name;
+            departmentSelect.add(option);
+        });
+    }   
+}
+
+let isEmailAvailable = false; // 이메일 중복 확인 상태
+// 이메일 중복 확인 (예시)
+function checkUsername() {
+    const email = document.getElementsByName("email")[0].value;
+
+    if (!email) {
+        alert("이메일을 입력하세요.");
+        return;
+    }
+
+    // 서버에 이메일 중복 확인 요청 보내기
+    fetch(`/check-email?email=${encodeURIComponent(email)}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.exists) {
+                alert("이미 사용 중인 이메일입니다.");
+                isEmailAvailable = false; // 이메일 사용 중
+            } else {
+                alert("사용 가능한 이메일입니다.");
+                isEmailAvailable = true; // 이메일 사용 가능
+            }
+        })
+        .catch(error => {
+            console.error("Error checking email:", error);
+            alert("이메일 중복 확인 중 오류가 발생했습니다.");
+        });
+}
+
+// 비밀번호 일치 여부 확인
+function checkPasswordMatch() {
+    const password = document.getElementsByName("password")[0].value;
+    const confirmPassword = document.getElementsByName("confirmPassword")[0].value;
+    const statusMessage = document.getElementById("statusMessage");
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+[\]{};':"\\|,.<>/?]).{8,16}$/;
+
+    /*
+    if (!passwordRegex.test(password)) {
+        statusMessage.textContent = '비밀번호: 8~16자의 영문, 숫자, 특수문자를 사용해 주세요.';
+        statusMessage.className = 'status-message error';
+    }else */
+    if (password !== confirmPassword) {
+        statusMessage.innerText = "비밀번호가 일치하지 않습니다.";
+        statusMessage.style.color = "red";
+    } else {
+        statusMessage.innerText = "비밀번호가 일치합니다.";
+        statusMessage.style.color = "green";
+    }
+}
+
+// 회원가입 버튼 클릭 시 알림
+function showAlert() {
+    console.log("showAlert 호출됨");
+    const name = document.getElementById('name').value.trim();
+    const college = document.getElementById('college').value;
+    const department = document.getElementById('department').value;
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+
+    if (!name || !college || !department || !email || !password || !confirmPassword) {
+        alert("모든 항목을 입력하세요.");
+        return;
+    }
+
+    const termsCheckboxes = document.querySelectorAll('.terms-container input[type="checkbox"]');
+    const allChecked = Array.from(termsCheckboxes).every(checkbox => checkbox.checked);
+
+    if (!allChecked) {
+        alert("모든 약관에 동의해야 합니다.");
+        return;
+    }
+
+    if (!isEmailAvailable) {
+        alert("이메일 중복 확인을 완료해야 합니다."); // 이메일 중복 확인이 완료되지 않았음
+        return;
+    }
+
+    if (password !== confirmPassword) {
+        alert("비밀번호가 일치하지 않습니다.");
+        return;
+    }
+
+    alert("회원가입이 되었습니다!");
+    document.getElementById('joinForm').submit();
+}
+
+    </script>
 </body>
 </html>

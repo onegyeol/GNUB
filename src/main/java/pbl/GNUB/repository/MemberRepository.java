@@ -1,7 +1,11 @@
 package pbl.GNUB.repository;
 
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import pbl.GNUB.entity.Keep;
+import pbl.GNUB.entity.Like;
 import pbl.GNUB.entity.Member;
 
 public interface MemberRepository extends JpaRepository<Member, Long>{

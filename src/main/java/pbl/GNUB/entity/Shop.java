@@ -1,5 +1,6 @@
 package pbl.GNUB.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,5 +33,10 @@ public class Shop {
     private String phone; // 전화번호
     private Double lat; // 위도
     private Double lng; // 경도
-    
+    private int likeCount=0; // 좋아요 수 카운트
+
+     // likeCount setter
+     public void setLikeCount(int likeCount) {
+        this.likeCount = likeCount;
+    }
 }

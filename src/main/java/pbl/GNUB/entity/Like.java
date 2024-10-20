@@ -22,6 +22,10 @@ public class Like {
     @JoinColumn(name = "shop_id") // shopId 필드가 Shop 엔티티의 id 필드를 참조하도록 설정
     private Shop shop;
 
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;  // 누가 좋아요를 눌렀는지
+
     private String email; // 회원 email
     
 }

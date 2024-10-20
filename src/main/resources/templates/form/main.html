@@ -7,7 +7,7 @@
     <title>메인화면</title>
     <!-- 타임리프를 사용한 CSS 경로 -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <script src="/javascript/script.js" defer></script> <!-- script.js 파일을 불러옴 -->
+    
     
     <style>
         /* 링크 스타일 */
@@ -184,11 +184,21 @@
                             <span class="restaurant_tag">#분위기 좋은</span>
                         </div>
                     </div>
-                    <div class="image-btn-container">
-                        <div class="number-display" id="numberDisplay1">0</div>
-                        <button class="toggle-btn" onclick="toggleLike(1, 'numberDisplay1')">좋아요</button>
-                    </div>
                     
+                    <!-- 좋아요 버튼 -->
+                    <div class="image-btn-container">
+                        <div class="number-display" id="numberDisplay-1">0</div> <!-- shopId가 1인 경우 -->
+                        
+                        <form id="likeForm" action="/like" method="POST">
+                            <input type="hidden" name="shopId" value="1"> <!-- shopId 설정 -->
+                            <button type="submit" id="likeButton-1" class="toggle-btn">좋아요</button> <!-- 버튼에 shopId 포함 -->
+                        </form>
+                    </div>
+
+                    <!-- 알림을 표시할 영역 -->
+                    <div id="likeMessage" style="display: none; color: green;"></div>
+
+                
                 </div>
             </div>
 
@@ -206,11 +216,19 @@
                             <span class="restaurant_tag">#회전초밥</span>
                         </div>
                     </div>
+                    <!-- 좋아요 버튼 -->
                     <div class="image-btn-container">
-                        <div class="number-display" id="numberDisplay2">0</div>
-                        <button class="toggle-btn" onclick="toggleLike(2, 'numberDisplay2')">좋아요</button>
+                        <div class="number-display" id="numberDisplay-1">0</div> <!-- shopId가 1인 경우 -->
+                        
+                        <form id="likeForm" action="/like" method="POST">
+                            <input type="hidden" name="shopId" value="1"> <!-- shopId 설정 -->
+                            <button type="submit" id="likeButton-1" class="toggle-btn">좋아요</button> <!-- 버튼에 shopId 포함 -->
+                        </form>
                     </div>
-                    
+
+                    <!-- 알림을 표시할 영역 -->
+                    <div id="likeMessage" style="display: none; color: green;"></div>
+
                 </div>
             </div>
 
@@ -228,15 +246,28 @@
                             <span class="restaurant_tag">#웨이팅</span>
                         </div>
                     </div>
-                    <div class="image-btn-container">
-                        <div class="number-display" id="numberDisplay3">0</div>
-                        <button class="toggle-btn" onclick="toggleLike(3, 'numberDisplay3')">좋아요</button>
-                    </div>
                     
+                    <!-- 좋아요 버튼 -->
+                    <div class="image-btn-container">
+                        <div class="number-display" id="numberDisplay-1">0</div> <!-- shopId가 1인 경우 -->
+                        
+                        <form id="likeForm" action="/like" method="POST">
+                            <input type="hidden" name="shopId" value="1"> <!-- shopId 설정 -->
+                            <button type="submit" id="likeButton-1" class="toggle-btn">좋아요</button> <!-- 버튼에 shopId 포함 -->
+                        </form>
+                    </div>
+
+                    <!-- 알림을 표시할 영역 -->
+                    <div id="likeMessage" style="display: none; color: green;"></div>
+
+                    
+
                 </div>
             </div>
         </div>
+        
     </main>
+    <script src="/javascript/script.js" defer></script> <!--script.js 파일을 불러옴 -->
 
 </body>
 </html>

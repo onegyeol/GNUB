@@ -2,8 +2,8 @@ package pbl.GNUB.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import pbl.GNUB.entity.Like;
+import pbl.GNUB.entity.Member;
 
-import java.lang.reflect.Member;
 import java.util.List;
 
 public interface LikeRepository extends JpaRepository<Like, Long> {

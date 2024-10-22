@@ -64,7 +64,7 @@ public class BoardController {
             }
         }
 
-        return "form/board"; // 게시글 작성 완료 후 이동할 페이지
+        return "redirect:/board/main"; // 게시글 작성 완료 후 이동할 페이지
     }
 
     // 게시판 수정 삭제 화면 접근

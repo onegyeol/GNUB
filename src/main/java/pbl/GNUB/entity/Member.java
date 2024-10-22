@@ -1,5 +1,10 @@
 package pbl.GNUB.entity;
 
+import java.util.Collection;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -22,7 +27,7 @@ import pbl.GNUB.dto.MemberFormDto;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Member {
+public class Member implements UserDetails {
     @Id @GeneratedValue
     @Column(name = "MEMBER_ID")
     private Long id; // 회원 고유 식별자
@@ -47,4 +52,40 @@ public class Member {
         member.setDepartment(department); // Department 객체 설정
         return member;
     }
+    
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;  // 권한 관리를 하고 싶다면 여기에 로직을 추가
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;  // UserDetails에서 요구하는 메서드
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;  // 여기서는 이메일을 유저네임으로 사용
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+    
 }

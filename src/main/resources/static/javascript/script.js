@@ -42,3 +42,7 @@ function toggleLike(shopId) {
         messageBox.style.display = 'block';
     });
 }
+
+function goToFoodDetails() {
+    window.location.href = "/shopDetails";
+}

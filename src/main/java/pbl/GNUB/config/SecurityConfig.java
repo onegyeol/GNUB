@@ -14,7 +14,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-        
+            .csrf().and() // CSRF 보호 활성화
+            
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/member/new", "/member/login", "member/logout").permitAll() // Allow access to sign-up and login pages
                 .anyRequest().authenticated() // All other requests require authentication

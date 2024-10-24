@@ -29,7 +29,7 @@
         <div class="links">
             <!-- 로그인 했을 때 보이는 메뉴바-->
             <a th:href="@{/board/main}">Board</a>
-            <a th:href="@{/mypage}">Mypage</a>
+            <a th:href="@{/myPage}">Mypage</a>
             <a th:href="@{/member/logout}">Logout</a>
         </div>
     </div>
@@ -40,13 +40,13 @@
 
     <div class="content">
         <div>
-            <a th:href="@{/myPost}">
+            <a th:href="@{/myPage/myPost}">
                 <img src="/image/gnub_logo.png" alt="내가 작성한 글">
             </a>
             <p> 내가 작성한 글 </p>
         </div>
         <div>
-            <a th:href="@{/likeList}"></a>
+            <a th:href="@{/myPage/likeList}">
                 <img src="/image/gnub_logo.png" alt="내가 좋아요한 가게">
             </a>
             <p> 내가 좋아요한 가게 </p>

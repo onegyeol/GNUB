@@ -13,77 +13,78 @@
 <body>
     <div id="join-header"></div> <!-- 헤더를 삽입할 위치 -->
     <div>
-    <form id="joinForm" action="/member/new" method="post" th:action="@{/member/new}">
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-        <!-- 회원가입 폼 -->
-        <div class="join-form">
-            <h2>회원가입</h2>
-            <div class="terms-container">
-                <div class="terms-label">GNUB 이용약관</div>
-                <div class="terms-content" id="termsContent1">
-                    <!-- 이용약관 1 내용이 여기에 삽입됩니다. -->
+        <form id="joinForm" action="/member/new" method="post" th:action="@{/member/new}">
+            <!-- CSRF 토큰 추가 -->
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+            <!-- 회원가입 폼 -->
+            <div class="join-form">
+                <h2>회원가입</h2>
+                <div class="terms-container">
+                    <div class="terms-label">GNUB 이용약관</div>
+                    <div class="terms-content" id="termsContent1">
+                        <!-- 이용약관 1 내용이 여기에 삽입됩니다. -->
+                    </div>
+                    <label>
+                        <input type="checkbox" required> 약관에 동의합니다.
+                    </label>
                 </div>
-                <label>
-                    <input type="checkbox" required> 약관에 동의합니다.
-                </label>
-            </div>
-            
-            <div class="terms-container">
-                <div class="terms-label">GNUB 이용약관</div>
-                <div class="terms-content" id="termsContent2">
-                    <!-- 이용약관 2 내용이 여기에 삽입됩니다. -->
+                
+                <div class="terms-container">
+                    <div class="terms-label">GNUB 이용약관</div>
+                    <div class="terms-content" id="termsContent2">
+                        <!-- 이용약관 2 내용이 여기에 삽입됩니다. -->
+                    </div>
+                    <label>
+                        <input type="checkbox" required> 약관에 동의합니다.
+                    </label>
                 </div>
-                <label>
-                    <input type="checkbox" required> 약관에 동의합니다.
-                </label>
+
+                <label for="name">성명</label>
+                <input type="text" id="name" name="name" placeholder="성명" required>
+
+                <label for="college">단과대</label>
+                <select id="college" onchange="updateDepartments()">
+                    <option value="">선택하세요</option>
+                    <option value="Humanities">인문대학</option>
+                    <option value="Social_Science">사회과학대학</option>
+                    <option value="Natural_Sciences">자연과학대학</option>
+                    <option value="Business_Administration">경영대학</option>
+                    <option value="Engineering">공과대학</option>
+                    <option value="IT_Engineering">IT 공과대학</option>
+                    <option value="Space_and_Aeronautics">우주항공대학</option>
+                    <option value="Agriculture_and_Life_Science">농업생명과학대학</option>
+                    <option value="Law">법과대학</option>
+                    <option value="Education">사범대학</option>
+                    <option value="Veterinary_Medicine">수의과대학</option>
+                    <option value="Medicine">의과대학</option>
+                    <option value="Nursing">간호대학</option>
+                    <option value="Marine_Science">해양과학대학</option>
+                    <option value="Pharmacy">약학대학</option>
+                    <option value="Civil_and_Environmental_Engineering">건설환경공과대학</option>
+                    <option value="Main_Administration">본부대학</option>
+                </select>
+
+                <label for="department">학과</label>
+                <select id="department" name="departmentId">
+                    <option value="">단과대를 선택하세요</option>
+                </select>
+
+                <label for="email">이메일</label>
+                <div style="display: flex; align-items: center; width: 100%;">
+                    <input type="text" id="email" name="email" placeholder="이메일을 입력하세요." required style="flex: 1; margin-right: 10px;">
+                    <button type="button" onclick="checkUsername()" style="width: 90px; height: 100%;">중복 확인</button>
+                </div>
+
+                <label for="password">비밀번호</label>
+                <input type="password" id="password" name="password" placeholder="비밀번호" required>
+
+                <label for="confirmPassword">비밀번호 확인</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="비밀번호 확인" required oninput="checkPasswordMatch()">
+                
+                <div id="statusMessage" class="status-message"></div>
+                
+                <button type="button" id="registerButton" name="registerButton" onclick="showAlert()">회원가입</button>
             </div>
-
-            <label for="name">성명</label>
-            <input type="text" id="name" name="name" placeholder="성명" required>
-
-            <label for="college">단과대</label>
-            <select id="college" onchange="updateDepartments()">
-                <option value="">선택하세요</option>
-                <option value="Humanities">인문대학</option>
-                <option value="Social_Science">사회과학대학</option>
-                <option value="Natural_Sciences">자연과학대학</option>
-                <option value="Business_Administration">경영대학</option>
-                <option value="Engineering">공과대학</option>
-                <option value="IT_Engineering">IT 공과대학</option>
-                <option value="Space_and_Aeronautics">우주항공대학</option>
-                <option value="Agriculture_and_Life_Science">농업생명과학대학</option>
-                <option value="Law">법과대학</option>
-                <option value="Education">사범대학</option>
-                <option value="Veterinary_Medicine">수의과대학</option>
-                <option value="Medicine">의과대학</option>
-                <option value="Nursing">간호대학</option>
-                <option value="Marine_Science">해양과학대학</option>
-                <option value="Pharmacy">약학대학</option>
-                <option value="Civil_and_Environmental_Engineering">건설환경공과대학</option>
-                <option value="Main_Administration">본부대학</option>
-            </select>
-
-            <label for="department">학과</label>
-            <select id="department" name="departmentId">
-                <option value="">단과대를 선택하세요</option>
-            </select>
-
-            <label for="email">이메일</label>
-            <div style="display: flex; align-items: center; width: 100%;">
-                <input type="text" id="email" name="email" placeholder="이메일을 입력하세요." required style="flex: 1; margin-right: 10px;">
-                <button type="button" onclick="checkUsername()" style="width: 90px; height: 100%;">중복 확인</button>
-            </div>
-
-            <label for="password">비밀번호</label>
-            <input type="password" id="password" name="password" placeholder="비밀번호" required>
-
-            <label for="confirmPassword">비밀번호 확인</label>
-            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="비밀번호 확인" required oninput="checkPasswordMatch()">
-            
-            <div id="statusMessage" class="status-message"></div>
-            
-            <button type="button" id="registerButton" name="registerButton" onclick="showAlert()">회원가입</button>
-        </div>
     </form>
     </div>
 

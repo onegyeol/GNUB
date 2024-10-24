@@ -1,5 +1,6 @@
 package pbl.GNUB.controller;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,7 +9,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import lombok.RequiredArgsConstructor;
-import pbl.GNUB.dto.BoardDTO;
+import pbl.GNUB.dto.BoardDto;
+import pbl.GNUB.entity.Board;
 import pbl.GNUB.entity.Member;
 import pbl.GNUB.repository.MemberRepository;
 import pbl.GNUB.service.BoardService;
@@ -28,14 +30,17 @@ public class BoardController {
     private final BoardService boardService;
     private final MemberRepository memberRepository;
 
-    // 게시판 메인 화면 접근
     @GetMapping("/main")
     public String boardMain(Model model) {
-        // DB에서 전체 게시글 데이터를 가져와서 게시판 main화면에 보여준다.
-        List<BoardDTO> boardDTOList = boardService.findAll();
-        model.addAttribute("boardList", boardDTOList);
-        return "form/board";
-    }
+    // DB에서 전체 게시글 데이터를 가져와서 게시판 main화면에 보여준다.
+    List<Board> boardList = boardService.findAllBoard(); // Board 엔티티 리스트 가져오기
+    List<BoardDto> boardDTOList = boardList.stream()
+        .map(BoardDto::toBoardDTO) // BoardDto로 변환
+        .collect(Collectors.toList());
+    model.addAttribute("boardList", boardDTOList);
+    return "form/board";
+}
+
 
     // 게시판 작성 화면 접근
     @GetMapping("/write")
@@ -44,7 +49,7 @@ public class BoardController {
     }
 
     @PostMapping("/write")
-    public String Write(@ModelAttribute BoardDTO boardDTO) {
+    public String Write(@ModelAttribute BoardDto boardDTO) {
         // 인증된 사용자 정보 가져오기
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         
@@ -62,9 +67,11 @@ public class BoardController {
                 System.out.println("BoardDTO: " + boardDTO);  // DTO 내용 확인
                 System.out.println("Author: " + author);  // 작성자 정보 확인
             }
+        }else{
+            System.out.println("인증되지 않은 사용자입니다.");
         }
 
-        return "redirect:/board/main"; // 게시글 작성 완료 후 이동할 페이지
+        return "form/board"; // 게시글 작성 완료 후 이동할 페이지
     }
 
     // 게시판 수정 삭제 화면 접근

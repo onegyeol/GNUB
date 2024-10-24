@@ -34,7 +34,7 @@
             <!-- 로그인 했을 때 보이는 메뉴바 -->
             <div th:if="${session.loginEmail != null}">
                 <a th:href="@{/board/main}">Board</a>
-                <a th:href="@{/mypage}">Mypage</a>
+                <a th:href="@{/myPage}">Mypage</a>
                 <a th:href="@{/member/logout}">Logout</a>
             </div>
         </div>
@@ -55,15 +55,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="board: ${boardList}">
+                    <tr th:each="board : ${boardList}">
                         <td th:text="${board.id}"></td>
-                        <td th:text="${board.author.name}"></td>
-                        <td><a th:tref="@{|/board/${board.id}|}" th:text="${board.boardTitle}"></a></td>
-                        <td th:text="*{temporals.format(board.boardCreatedTime, 'yyyy-MM-dd:mm:ss')}"></td>
+                        <td th:text="${board.authorName}"></td> <!-- 수정된 부분 -->
+                        <td><a th:href="@{|/board/${board.id}|}" th:text="${board.title}"></a></td>
+                        <td th:text="${#dates.format(board.boardCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td> <!-- 수정된 부분 -->
                         <td th:text="${board.boardHits}"></td>
                     </tr>
-
                 </tbody>
+                
             </table>
     
             <div class="pagination">

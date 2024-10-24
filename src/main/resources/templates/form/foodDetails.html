@@ -36,7 +36,7 @@
             <!-- 로그인 했을 때 보이는 메뉴바 -->
             <div th:if="${session.loginEmail != null}">
                 <a th:href="@{/board/main}">Board</a>
-                <a th:href="@{/mypage}">Mypage</a>
+                <a th:href="@{/myPage}">Mypage</a>
                 <a th:href="@{/member/logout}">Logout</a>
             </div>
         </div>

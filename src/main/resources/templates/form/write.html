@@ -36,32 +36,38 @@
         </div>
 
         <div class="links">
-            <!--로그인 안했을 때 보이는 메뉴바-->
-            <a th:href="@{/member/login}">Login</a>
-            <a th:href="@{/member/new}">Signup</a>
-            <!-- 로그인 했을 때 보이는 메뉴바-->
-            <a th:href="@{/board/main}">Board</a>
-            <a th:href="@{/mypage}">Mypage</a>
-            <a th:href="@{/member/logout}">Logout</a>
+            <!-- 로그인 안했을 때 보이는 메뉴바 -->
+            <div th:if="${session.loginEmail == null}">
+                <a th:href="@{/member/login}">Login</a>
+                <a th:href="@{/member/new}">Signup</a>
+            </div>
+            <!-- 로그인 했을 때 보이는 메뉴바 -->
+            <div th:if="${session.loginEmail != null}">
+                <a th:href="@{/board/main}">Board</a>
+                <a th:href="@{/myPage}">Mypage</a>
+                <a th:href="@{/member/logout}">Logout</a>
+            </div>
         </div>
+		
     </div>
 
     <div class="body">
         <h1 class="post-h1">게시판 글쓰기</h1>
         <div class="write"> 
-            <form action="/board/write" method="post" id="post-form" class="post-form" th:action="@{/board/write}">
+            <form method="post" id="post-form" class="post-form" th:action="@{/board/write}">
                 <div class="form-group">
-                    <label for="title">제목</label>
-                    <input type="text" id="title" name="title" placeholder="제목을 작성해주세요" required>
-                </div>
+					<label for="title">제목</label>
+					<input type="text" id="title" name="title" placeholder="제목을 작성해주세요" required>
+				</div>
+				
+				<div class="form-group">
+					<label for="summernote">내용</label>
+					<textarea id="summernote" name="content" required></textarea>
+				</div>
+				
                 
                 <div class="form-group">
-                    <label for="summernote">내용</label>
-                        <textarea id="summernote" name="content" required></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <button type="button" id="write-button" class="write-button" onclick="sendit(event)">글 등록</button>
+                    <button type="submit" id="write-button" class="write-button">글 등록</button>
                 </div>
             </form>
         </div>
@@ -74,33 +80,34 @@
     </div>
 
     <script>
-		document.querySelector('.write-button').addEventListener('click', function(event) {
-        	sendit(event);  // 폼 검증 함수 호출
-        });
+		document.getElementById('post-form').addEventListener('submit', function(event) {
+			sendit(event);  // 폼 검증 함수 호출
+		});
 
-        function sendit(event) {
+		function sendit(event) {
 			console.log("sendit() 함수가 호출되었습니다."); // 확인용 로그
-            event.preventDefault();  // 기본 폼 제출 방지
-            const boardForm = document.getElementById('post-form');
-            const title = document.getElementById('title').value.trim(); 
-            const content = $('#summernote').summernote('code').trim(); 
+			event.preventDefault();  // 기본 폼 제출 방지
+			const boardForm = document.getElementById('post-form');
+			const title = document.getElementById('title').value.trim(); 
+			const content = $('#summernote').summernote('code').trim(); 
 
-            // 제목 검증
-            if (title === "") {
-                alert("제목을 입력하세요!");
-                document.getElementById('title').focus();
-                return;
-            }
+			// 제목 검증
+			if (title === "") {
+				alert("제목을 입력하세요!");
+				document.getElementById('title').focus();
+				return;
+			}
 
-            // 내용 검증
-            if (content === "") {
-                alert("내용을 입력하세요!");
-                return;
-            }
+			// 내용 검증
+			if (content === "") {
+				alert("내용을 입력하세요!");
+				return;
+			}
 
-            // 검증 완료 시 폼 제출
-            boardForm.submit();
+			// 검증 완료 시 폼 제출
+			boardForm.submit();
 		}
+
 
 
 		// summernote	

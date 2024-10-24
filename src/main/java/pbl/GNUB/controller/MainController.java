@@ -1,12 +1,20 @@
 package pbl.GNUB.controller;
 
+import java.util.List;
+
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import pbl.GNUB.entity.Shop;
+import pbl.GNUB.service.ShopService;
+
 
 @Controller
 public class MainController {
@@ -17,8 +25,19 @@ public class MainController {
     @Autowired
     private Job csvShopJob; // Job 이름에 맞게 수정하세요.
 
+    @Autowired
+    private ShopService shopService;
+
     @GetMapping("/main")
-    public String homePage() {
+    public String showMainPage(Model model) {
+        List<Shop> shops = shopService.getTop30Shops(); // 데이터 가져오기
+        model.addAttribute("shops", shops); // 모델에 데이터 추가
+        return "form/main"; // 반환할 뷰 이름
+    }
+    
+
+    @GetMapping("/springBatch")
+    public String startBatchJob() {
         try {
             // JobParameters를 생성합니다. 필요한 경우 추가 파라미터를 설정할 수 있습니다.
             JobParameters params = new JobParametersBuilder()

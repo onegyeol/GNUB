@@ -167,106 +167,37 @@
     </div>
 
     <!-- 식당 리스트 -->
-    <main class = "search_menu">
+    <main class="search_menu">
         <div class="restaurant_list">
-
-            <!-- 첫번째 식당 리스트 -->
-            <div class="restaurant">
+            <!-- 반복문으로 데이터 렌더링 -->
+            <div th:each="shop : ${shops}" class="restaurant">
                 <div class="restaurant_content">
-                    <button class="restaurant_img_container" onclick="buttonClicked('https://www.google.com/maps/place/%ED%99%88%EB%A6%AC%EC%8A%A4%ED%83%80%EC%BD%94/data=!3m1!4b1!4m6!3m5!1s0x356efbf3d3cf29c5:0x775efd1a2094a1c9!8m2!3d35.1522716!4d128.1059644!16s%2Fg%2F11svbl1x1h?entry=ttu&g_ep=EgoyMDI0MDkyNS4wIKXMDSoASAFQAw%3D%3D')">
-                        <img class="restaurant_img" src="/image/restaurant.jpg" alt="가게이미지">
+                    <button class="restaurant_img_container" onclick="goToFoodDetails()">
+                        <img class="restaurant_img" th:src="@{'/image/restaurant.jpg'}" alt="가게이미지">
                     </button>
+                    
                     <div class="restaurant_text">
-                        <span class="restaurant_name" onclick="buttonClicked('https://www.google.com/maps/place/%ED%99%88%EB%A6%AC%EC%8A%A4%ED%83%80%EC%BD%94/data=!3m1!4b1!4m6!3m5!1s0x356efbf3d3cf29c5:0x775efd1a2094a1c9!8m2!3d35.1522716!4d128.1059644!16s%2Fg%2F11svbl1x1h?entry=ttu&g_ep=EgoyMDI0MDkyNS4wIKXMDSoASAFQAw%3D%3D')">홈리스타코</span>
+                        <span class="restaurant_name" th:text="${shop.name}"></span>
                         <div class="restaurant_tags">
-                            <span class="restaurant_tag">#가좌동</span>
-                            <span class="restaurant_tag">#스펀지</span>
-                            <span class="restaurant_tag">#분위기 좋은</span>
+                            <span class="restaurant_tag" th:text="'#' + ${shop.region}"></span>
+                            <span class="restaurant_tag" th:text="'#' + ${shop.category}"></span>
                         </div>
                     </div>
                     
                     <!-- 좋아요 버튼 -->
                     <div class="image-btn-container">
-                        <div class="number-display" id="numberDisplay-1">0</div> <!-- shopId가 1인 경우 -->
-                        
-                        <form id="likeForm" action="/like" method="POST">
-                            <input type="hidden" name="shopId" value="1"> <!-- shopId 설정 -->
-                            <button type="submit" id="likeButton-1" class="toggle-btn">좋아요</button> <!-- 버튼에 shopId 포함 -->
+                        <div class="number-display" th:id="'numberDisplay-' + ${shop.id}" th:text="${shop.likeCount}">0</div>
+                        <form th:action="@{/like}" method="POST">
+                            <input type="hidden" name="shopId" th:value="${shop.id}">
+                            <button type="submit" th:id="'likeButton-' + ${shop.id}" class="toggle-btn">좋아요</button>
                         </form>
                     </div>
-
-                    <!-- 알림을 표시할 영역 -->
-                    <div id="likeMessage" style="display: none; color: green;"></div>
-
-                
-                </div>
-            </div>
-
-            <!-- 두번째 식당 리스트 -->
-            <div class="restaurant">
-                <div class="restaurant_content">
-                    <button class="restaurant_img_container" onclick="buttonClicked('https://www.google.com/maps/place/%EC%8A%A4%EC%8B%9C%ED%95%98%EB%A3%A8/data=!4m10!1m2!2m1!1z7Iqk7Iuc7ZWY66Oo!3m6!1s0x356efb766b42e31b:0x7d01ba9b0119750f!8m2!3d35.1526625!4d128.1068172!15sCgzsiqTsi5ztlZjro6haDyIN7Iqk7IucIO2VmOujqJIBEHN1c2hpX3Jlc3RhdXJhbnTgAQA!16s%2Fg%2F1td_31sf?entry=ttu&g_ep=EgoyMDI0MDkyNS4wIKXMDSoASAFQAw%3D%3D')">
-                        <img class="restaurant_img" src="/image/restaurant.jpg" alt="가게이미지">
-                    </button>
-                    <div class="restaurant_text">
-                        <span class="restaurant_name" onclick="buttonClicked('https://www.google.com/maps/place/%EC%8A%A4%EC%8B%9C%ED%95%98%EB%A3%A8/data=!4m10!1m2!2m1!1z7Iqk7Iuc7ZWY66Oo!3m6!1s0x356efb766b42e31b:0x7d01ba9b0119750f!8m2!3d35.1526625!4d128.1068172!15sCgzsiqTsi5ztlZjro6haDyIN7Iqk7IucIO2VmOujqJIBEHN1c2hpX3Jlc3RhdXJhbnTgAQA!16s%2Fg%2F1td_31sf?entry=ttu&g_ep=EgoyMDI0MDkyNS4wIKXMDSoASAFQAw%3D%3D')">스시하루</span>
-                        <div class="restaurant_tags">
-                            <span class="restaurant_tag">#가좌동</span>
-                            <span class="restaurant_tag">#일식집</span>
-                            <span class="restaurant_tag">#회전초밥</span>
-                        </div>
-                    </div>
-                    <!-- 좋아요 버튼 -->
-                    <div class="image-btn-container">
-                        <div class="number-display" id="numberDisplay-1">0</div> <!-- shopId가 1인 경우 -->
-                        
-                        <form id="likeForm" action="/like" method="POST">
-                            <input type="hidden" name="shopId" value="1"> <!-- shopId 설정 -->
-                            <button type="submit" id="likeButton-1" class="toggle-btn">좋아요</button> <!-- 버튼에 shopId 포함 -->
-                        </form>
-                    </div>
-
-                    <!-- 알림을 표시할 영역 -->
-                    <div id="likeMessage" style="display: none; color: green;"></div>
-
-                </div>
-            </div>
-
-            <!-- 세번째 식당 리스트 -->
-            <div class="restaurant">
-                <div class="restaurant_content">
-                    <button class="restaurant_img_container" onclick="buttonClicked('https://www.google.com/maps/place/%ED%95%98%EB%8F%99%EB%8F%88%EA%B0%80%EC%8A%A4/data=!3m1!4b1!4m6!3m5!1s0x356efb765cf2ffbf:0x94ba57216aca8684!8m2!3d35.1527858!4d128.107493!16s%2Fg%2F11f13064f8?entry=ttu&g_ep=EgoyMDI0MDkyNS4wIKXMDSoASAFQAw%3D%3D')">
-                        <img class="restaurant_img" src="/image/restaurant.jpg" alt="가게이미지">
-                    </button>
-                    <div class="restaurant_text">
-                        <span class="restaurant_name" onclick="buttonClicked('https://www.google.com/maps/place/%ED%95%98%EB%8F%99%EB%8F%88%EA%B0%80%EC%8A%A4/data=!3m1!4b1!4m6!3m5!1s0x356efb765cf2ffbf:0x94ba57216aca8684!8m2!3d35.1527858!4d128.107493!16s%2Fg%2F11f13064f8?entry=ttu&g_ep=EgoyMDI0MDkyNS4wIKXMDSoASAFQAw%3D%3D')">하동돈가스</span>
-                        <div class="restaurant_tags">
-                            <span class="restaurant_tag">#가좌동</span>
-                            <span class="restaurant_tag">#돈가스</span>
-                            <span class="restaurant_tag">#웨이팅</span>
-                        </div>
-                    </div>
-                    
-                    <!-- 좋아요 버튼 -->
-                    <div class="image-btn-container">
-                        <div class="number-display" id="numberDisplay-1">0</div> <!-- shopId가 1인 경우 -->
-                        
-                        <form id="likeForm" action="/like" method="POST">
-                            <input type="hidden" name="shopId" value="1"> <!-- shopId 설정 -->
-                            <button type="submit" id="likeButton-1" class="toggle-btn">좋아요</button> <!-- 버튼에 shopId 포함 -->
-                        </form>
-                    </div>
-
-                    <!-- 알림을 표시할 영역 -->
-                    <div id="likeMessage" style="display: none; color: green;"></div>
-
-                    
-
                 </div>
             </div>
         </div>
-        
     </main>
+    
+        
     <script src="/javascript/script.js" defer></script> <!--script.js 파일을 불러옴 -->
 
 </body>

@@ -11,7 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import pbl.GNUB.dto.BoardDTO;
+import pbl.GNUB.dto.BoardDto;
 
 @Entity
 @Getter
@@ -35,7 +35,7 @@ public class Board extends BaseEntity{
     @JoinColumn(name = "member_id")
     private Member author;  // 작성자 (회원)
 
-    public static Board toSaveEntity(BoardDTO boardDTO,  Member author){
+    public static Board toSaveEntity(BoardDto boardDTO,  Member author){
         Board board = new Board();
         board.setTitle(boardDTO.getTitle());
         board.setContent(boardDTO.getContent());

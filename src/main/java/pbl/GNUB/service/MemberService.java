@@ -90,4 +90,15 @@ public class MemberService {
             return null;
         }
     }
+
+    public MemberFormDto getMemberInfoByEmail(String email) {
+        // Optional을 사용하여 회원을 조회
+        Member member = memberRepository.findByEmail(email)
+                                        .orElseThrow(() -> new IllegalArgumentException("해당 이메일로 회원을 찾을 수 없습니다: " + email));
+    
+        // Member 엔티티를 MemberFormDto로 변환
+        return MemberFormDto.toMemberFormDto(member);
+    }
+    
+
 }

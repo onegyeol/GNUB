@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import pbl.GNUB.dto.MemberFormDto;
 import pbl.GNUB.entity.Shop;
 import pbl.GNUB.service.LikeService;
+import pbl.GNUB.service.MemberService;
 
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -18,21 +19,27 @@ import jakarta.servlet.http.HttpSession;
 
 
 @Controller
-@RequestMapping("/myPage")
 @RequiredArgsConstructor // final 필드에 대한 생성자를 자동으로 생성
 public class MypageController {
 
     @Autowired
     private LikeService likeService;
 
+    @Autowired
+    private final MemberService memberService;
 
-    @GetMapping
-    public String myPage() {
+    @GetMapping("/myPage")
+    public String myPage(Model model, HttpSession session) {
+        String loginEmail = (String)session.getAttribute("loginEmail");
+        if(loginEmail != null){
+            MemberFormDto memberFormDto = memberService.getMemberInfoByEmail(loginEmail);
+            model.addAttribute("member", memberFormDto);
+        }
         return "form/myPage";
     }
 
     
-    @GetMapping("/likeList")
+    @GetMapping("/myPage/likeList")
     public String getLikedShops(HttpSession session, Model model) {
         String email = (String) session.getAttribute("login"); // 세션에서 로그인된 회원의 이메일을 가져옴
         if (email != null) {
@@ -43,7 +50,7 @@ public class MypageController {
         return "form/likeList";
     }
 
-    @GetMapping("/myPost") // 내가 작성한 글 접근
+    @GetMapping("/myPage/myPost") // 내가 작성한 글 접근
     public String myPost() {
         return "form/myPost";
     }

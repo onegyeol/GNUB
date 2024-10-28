@@ -8,7 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pbl.GNUB.entity.Shop; // Shop 엔티티를 import
+import pbl.GNUB.entity.ShopTag; 
 
 @Builder
 @Getter @Setter
@@ -17,8 +17,8 @@ import pbl.GNUB.entity.Shop; // Shop 엔티티를 import
 @ApiModel(value = "음식점정보")
 public class ShopTagDto {
 
-    
-    private Shop shop; // Shop 엔티티 필드 추가(업소명을 shop에서 가져옴)
+    @ApiModelProperty(name = "음식점")
+    private String name; // 음식점
 
     @ApiModelProperty(name = "위생이 좋은")
     private String hygiene; // 위생이 좋은
@@ -55,7 +55,7 @@ public class ShopTagDto {
 
     public ShopTag toEntity() { // ShopTag 엔티티 반환
         return ShopTag.builder()
-            .name(this.shop.getName()) // Shop 객체의 name 사용
+            .name(this.name) //음식점
             .hygiene(this.hygiene != null && this.hygiene.equals("1")) // 1일 경우 true
             .revisit(this.revisit != null && this.revisit.equals("1")) // 1일 경우 true
             .recent(this.recent != null && this.recent.equals("1")) // 1일 경우 true

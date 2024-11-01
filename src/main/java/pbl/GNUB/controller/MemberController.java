@@ -71,10 +71,11 @@ public class MemberController {
             // login 성공
             session.setAttribute("loginEmail", loginResult.getEmail());
 
-            return "form/main";
+            return "redirect:/main";
         } else{
             //login 실패
-            return "form/login";
+            System.out.println("로그인 실패");
+            return "redirect:/member/login?error=true";
         }
         
     }

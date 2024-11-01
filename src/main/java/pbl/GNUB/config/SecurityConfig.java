@@ -14,8 +14,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf().and() // CSRF 보호 활성화
-            
+        
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/member/new", "/member/login", "member/logout").permitAll() // Allow access to sign-up and login pages
                 .anyRequest().authenticated() // All other requests require authentication
@@ -24,7 +23,7 @@ public class SecurityConfig {
             .formLogin(form -> form
                 .loginPage("/member/login") // Custom login page
                 .loginProcessingUrl("/member/login") // 폼 action 경로
-                .defaultSuccessUrl("form/main", true) // 로그인 성공 시 리다이렉트될 경로
+                .defaultSuccessUrl("/main", true) // 로그인 성공 시 리다이렉트될 경로
                 .failureUrl("/member/login?error=true") // 로그인 실패 시 리다이렉트 경로
                 .permitAll()
             )

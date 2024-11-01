@@ -15,13 +15,13 @@ import pbl.GNUB.dto.ShopTagDto; // ShopTagDto import
 @Configuration
 @RequiredArgsConstructor
 public class CsvShopTagReader {
-
     @Bean
-    public FlatFileItemReader<ShopTagDto> csvShopTagReader() { 
+    public FlatFileItemReader<ShopTagDto> csvTagReader() { 
         // 파일 경로 지정
         FlatFileItemReader<ShopTagDto> flatFileItemReader = new FlatFileItemReader<>();
         flatFileItemReader.setResource(new ClassPathResource("static/csv/shopTag.csv")); // 읽어들일 csv file
         flatFileItemReader.setEncoding("UTF-8");
+
         flatFileItemReader.setRecordSeparatorPolicy(new DefaultRecordSeparatorPolicy());
 
         // 읽으려는 데이터 linemapper를 통해 dto로 매핑

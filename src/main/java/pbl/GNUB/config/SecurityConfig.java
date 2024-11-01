@@ -7,16 +7,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-
 @EnableWebSecurity
 public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-        
+        http        
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/member/new", "/member/login", "member/logout").permitAll() // Allow access to sign-up and login pages
+                .requestMatchers("/member/new", "/member/login", "member/logout", "/main", "/css/**", "/js/**").permitAll() // Allow access to sign-up and login pages
                 .anyRequest().authenticated() // All other requests require authentication
             )
             

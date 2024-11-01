@@ -32,6 +32,10 @@ public class MemberService {
 
     // 회원가입
     public Long save(MemberFormDto memberFormDto) {
+        // 이메일 중복 체크
+        if (isEmailDuplicate(memberFormDto.getEmail())) {
+            throw new IllegalArgumentException("이미 존재하는 이메일입니다: " + memberFormDto.getEmail());
+        }
         // 1. dto -> entity 변환
         Member member = new Member();
         member.setName(memberFormDto.getName());

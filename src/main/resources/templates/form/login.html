@@ -25,16 +25,20 @@
             <a href="#">아이디 찾기</a>
             <a th:href="@{/member/new}">회원가입</a> <!-- 회원가입 버튼 수정 -->
         </div>
-            <!-- 로그인 실패 메시지 -->
-            <div th:if="${param.error}">
-                <p style="color: red;">아이디 또는 비밀번호가 잘못되었습니다.</p>
-            </div>
     </div>
-    <script>
+    <script th:inline="javascript">
+        // 페이지 로드 시 에러 파라미터 확인
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('error')) {
+                alert("입력하신 아이디나 비밀번호가 올바르지 않습니다.");
+            }
+        }
     // Enter 키를 눌렀을 때 로그인 함수 호출
     function handleKeyPress(event) {
         if (event.key === 'Enter') {
-            login();
+            event.preventDefault();
+            event.target.form.submit();
         }
     }
     </script>

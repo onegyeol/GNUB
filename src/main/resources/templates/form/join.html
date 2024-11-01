@@ -333,15 +333,15 @@ function emailCheck() {
         success: function(response) {
             if (response.exists) {  // response.exists로 확인
                 alert('이미 사용중인 이메일입니다.');
-                isEmailChecked = false;
+                isEmailAvailable = false;
             } else {
                 alert('사용 가능한 이메일입니다.');
-                isEmailChecked = true;
+                isEmailAvailable = true;
             }
         },
         error: function() {
             alert('중복 확인 중 오류가 발생했습니다.');
-            isEmailChecked = false;
+            isEmailAvailable = false;
         }
     });
 }

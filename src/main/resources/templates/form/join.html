@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원가입</title>
     <!-- 타임리프를 사용한 CSS 경로 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" th:href="@{/css/join.css}">
 </head>
 
@@ -72,7 +73,7 @@
                 <label for="email">이메일</label>
                 <div style="display: flex; align-items: center; width: 100%;">
                     <input type="text" id="email" name="email" placeholder="이메일을 입력하세요." required style="flex: 1; margin-right: 10px;">
-                    <button type="button" onclick="checkUsername()" style="width: 90px; height: 100%;">중복 확인</button>
+                    <button type="button" onclick="emailCheck()" style="width: 90px; height: 100%;">중복 확인</button>
                 </div>
 
                 <label for="password">비밀번호</label>
@@ -317,30 +318,32 @@ function updateDepartments() {
 
 let isEmailAvailable = false; // 이메일 중복 확인 상태
 // 이메일 중복 확인 (예시)
-function checkUsername() {
-    const email = document.getElementsByName("email")[0].value;
-
-    if (!email) {
-        alert("이메일을 입력하세요.");
+function emailCheck() {
+    const email = document.getElementById('email').value;
+    
+    if (email.trim() === '') {
+        alert('이메일을 입력해주세요.');
         return;
     }
 
-    // 서버에 이메일 중복 확인 요청 보내기
-    fetch(`/check-email?email=${encodeURIComponent(email)}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.exists) {
-                alert("이미 사용 중인 이메일입니다.");
-                isEmailAvailable = false; // 이메일 사용 중
+    $.ajax({
+        type: 'GET',  // GET 메서드 사용
+        url: '/member/check-email',  // 당신의 엔드포인트 주소
+        data: { email: email },
+        success: function(response) {
+            if (response.exists) {  // response.exists로 확인
+                alert('이미 사용중인 이메일입니다.');
+                isEmailChecked = false;
             } else {
-                alert("사용 가능한 이메일입니다.");
-                isEmailAvailable = true; // 이메일 사용 가능
+                alert('사용 가능한 이메일입니다.');
+                isEmailChecked = true;
             }
-        })
-        .catch(error => {
-            console.error("Error checking email:", error);
-            alert("이메일 중복 확인 중 오류가 발생했습니다.");
-        });
+        },
+        error: function() {
+            alert('중복 확인 중 오류가 발생했습니다.');
+            isEmailChecked = false;
+        }
+    });
 }
 
 // 비밀번호 일치 여부 확인

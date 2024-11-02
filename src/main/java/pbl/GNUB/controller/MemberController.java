@@ -43,7 +43,7 @@ public class MemberController {
         System.out.println("MemberController.save");
         System.out.println("회원가입 정보: " + memberFormDto);
         memberService.save(memberFormDto);
-        return "form/main";
+        return "redirect:/main";
     }
 
     // 이메일 중복 확인 엔드포인트
@@ -83,7 +83,7 @@ public class MemberController {
     @GetMapping("/logout")
     public String Logout(HttpSession session) {
         session.invalidate();
-        return "form/main"; // 메인 폼 뷰를 반환
+        return "redirect:/main"; // 메인 폼 뷰를 반환
     }
 
 }

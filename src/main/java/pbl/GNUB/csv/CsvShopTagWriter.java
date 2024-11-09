@@ -22,7 +22,7 @@ public class CsvShopTagWriter implements ItemWriter<ShopTagDto> {
     @Override
     @Transactional
     public void write(Chunk<? extends ShopTagDto> items) throws Exception {
-        List<ShopTag> shopTagList = new ArrayList<>();
+        List<ShopTag> shopTagList = new ArrayList();
 
         // items에서 ShopTagDto를 추출하여 ShopTag 엔티티로 변환
         for (ShopTagDto dto : items) {

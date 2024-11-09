@@ -172,7 +172,7 @@
             <!-- 반복문으로 데이터 렌더링 -->
             <div th:each="shop : ${shops}" class="restaurant">
                 <div class="restaurant_content">
-                    <button class="restaurant_img_container" onclick="goToFoodDetails()">
+                    <button class="restaurant_img_container" th:onclick="'goToFoodDetails(' + ${shop.id} + ')'">
                         <img class="restaurant_img" th:src="@{'/image/restaurant.jpg'}" alt="가게이미지">
                     </button>
                     

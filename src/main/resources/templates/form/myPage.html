@@ -33,7 +33,6 @@
         <img src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo" class="logo">
 
         <div class="links">
-            <!-- 로그인 했을 때 보이는 메뉴바 -->
             <div th:if="${session.loginEmail != null}">
                 <a th:href="@{/board/main}">Board</a>
                 <a th:href="@{/myPage}">Mypage</a>

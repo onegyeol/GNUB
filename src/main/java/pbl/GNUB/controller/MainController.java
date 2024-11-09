@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import pbl.GNUB.entity.Shop;
@@ -58,9 +59,16 @@ public class MainController {
         return "form/search";
     }
 
-    @GetMapping("/shopDetails") // 음식점상세 페이지
-    public String foodDetailsPage() {
-        return "form/foodDetails";
+    @GetMapping("/shopDetails/{id}") // 음식점상세 페이지
+    public String foodDetailsPage(@PathVariable("id") Long id, Model model) {
+        Shop shop = shopService.findShopById(id);
+        if(shop != null){
+            model.addAttribute("shop", shop);
+            return "form/foodDetails";
+        }else{
+            return "error";
+        }
+        
     }
     
     

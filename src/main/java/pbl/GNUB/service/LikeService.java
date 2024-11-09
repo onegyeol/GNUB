@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import pbl.GNUB.dto.LikeDto;
 import pbl.GNUB.entity.Like;
@@ -25,6 +26,7 @@ public class LikeService {
     @Autowired
     private MemberRepository memberRepository;
 
+    @Transactional
     public int likeShop(LikeDto likeDto) {
         if (likeRepository.existsByShopIdAndEmail(likeDto.getShopId(), likeDto.getEmail())) {
             return 0; // 이미 좋아요한 경우
@@ -51,6 +53,7 @@ public class LikeService {
         return 1; // 좋아요 성공
     }
 
+    @Transactional
     public int unlikeShop(LikeDto likeDto) {
         if (!likeRepository.existsByShopIdAndEmail(likeDto.getShopId(), likeDto.getEmail())) {
             return 0; // 좋아요한 경우가 아닐 때

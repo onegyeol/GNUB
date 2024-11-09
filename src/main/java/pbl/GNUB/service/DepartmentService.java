@@ -26,4 +26,8 @@ public class DepartmentService {
         return departmentRepository.findByCollege(college);
     }
     
+    public String getCollegeKoreanName(College college) {
+        return college.getKoreanName();
+    }
+    
 }

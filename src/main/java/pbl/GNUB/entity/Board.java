@@ -29,7 +29,7 @@ public class Board extends BaseEntity{
     private String content;
     
     @Column
-    private int boardHits;  // 조회수
+    private int boardHits=0;  // 조회수
 
     @ManyToOne(fetch = FetchType.LAZY)  // 작성자와 연관관계 설정
     @JoinColumn(name = "member_id")

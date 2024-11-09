@@ -9,4 +9,5 @@ public interface ShopRepository extends JpaRepository<Shop, Long>{
     // id가 1부터 30까지인 데이터를 조회
     List<Shop> findByIdBetween(Long startId, Long endId);
     //List<Shop> findTop30ByOrderByLikeCountDesc();  // 좋아요 수 기준으로 30개 가져오기
+    Shop getShopById(Long id); // 해당 i로 음식점 조회
 }

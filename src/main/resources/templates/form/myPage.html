@@ -14,23 +14,31 @@
         }
 
         .content p {
-            font-size : 17px;
+            font-size : 22px;
+        }
+        .header-container h1 {
+            font-size: 40px; /* MyPage 제목 크기 조정 */
+        }
+
+        .info p {
+            font-size: 18px; /* info 섹션 글자 크기 조정 */
         }
         
     </style>
 </head>
 <body>
     <div class="header">
-        <!-- Logo image -->
+        <!-- 로고 이미지 -->
         <a th:href="@{/main}"> <!-- 메인 페이지 링크 추가 -->
         <img src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo" class="logo">
 
-
         <div class="links">
-            <!-- 로그인 했을 때 보이는 메뉴바-->
-            <a th:href="@{/board/main}">Board</a>
-            <a th:href="@{/myPage}">Mypage</a>
-            <a th:href="@{/member/logout}">Logout</a>
+            <!-- 로그인 했을 때 보이는 메뉴바 -->
+            <div th:if="${session.loginEmail != null}">
+                <a th:href="@{/board/main}">Board</a>
+                <a th:href="@{/myPage}">Mypage</a>
+                <a th:href="@{/member/logout}">Logout</a>
+            </div>
         </div>
     </div>
 
@@ -54,9 +62,9 @@
     </div>
 
     <div class="info">
-        <p>단과대 / 학과: <span th:text="${member.department.college} + ' / ' + ${member.department.name}"></span></p>
-        <p>이메일: <span th:text="${member.email}"></span></p>
         <p>이름: <span th:text="${member.name}"></span></p>
+        <p>단과대 / 학과: <span th:text="${departmentCollege} + ' / ' + ${departmentName}"></span></p>
+        <p>이메일: <span th:text="${member.email}"></span></p>
     </div>
     
 </body>

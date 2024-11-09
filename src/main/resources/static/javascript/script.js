@@ -43,6 +43,7 @@ function toggleLike(shopId) {
     });
 }
 
-function goToFoodDetails() {
-    window.location.href = "/shopDetails";
+function goToFoodDetails(shopId) {
+    const url = `/shopDetails/${shopId}`;
+    window.location.href = url;
 }

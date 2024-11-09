@@ -17,4 +17,7 @@ public class ShopService {
         // id가 1부터 30까지인 데이터를 불러오기
         return shopRepository.findByIdBetween(1L, 30L);
     }
+    public Shop findShopById(Long id){
+        return shopRepository.findById(id).orElse(null);
+    }
 }

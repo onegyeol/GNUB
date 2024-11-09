@@ -108,7 +108,4 @@ public class MemberService {
         return departmentRepository.findById(departmentId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 학과입니다: " + departmentId));
     }
-    
-    
-
 }

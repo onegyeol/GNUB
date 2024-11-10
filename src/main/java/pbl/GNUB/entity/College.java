@@ -25,7 +25,7 @@ public enum College {
         this.koreanName = koreanName;
     }
 
-    public String getKoreanName() {
+    public String getKoreanName() { // 한글 이름으로 반환
         return koreanName;
     }
 }

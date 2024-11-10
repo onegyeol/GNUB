@@ -47,4 +47,14 @@ public class BoardService {
         return boardDTOList;
     }
 
+    // 특정 게시글 조회
+    public BoardDto getBoardById(Long id) {
+        // 게시글 엔티티 조회
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid board Id: " + id));
+
+        // Board 엔티티를 BoardDto로 변환하여 반환
+        return BoardDto.toBoardDTO(board);
+    }
+
 }

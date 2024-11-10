@@ -29,8 +29,7 @@ import pbl.GNUB.dto.MemberFormDto;
 @AllArgsConstructor
 @ToString
 public class Member implements UserDetails {
-    @Id 
-    @GeneratedValue(strategy = GenerationType.IDENTITY) 
+    @Id @GeneratedValue
     @Column(name = "MEMBER_ID")
     private Long id; // 회원 고유 식별자
 

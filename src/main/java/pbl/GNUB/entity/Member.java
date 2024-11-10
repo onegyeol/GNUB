@@ -1,6 +1,7 @@
 package pbl.GNUB.entity;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,16 +20,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import pbl.GNUB.dto.MemberFormDto;
 
 // 회원 정보 저장
 @Entity
 @Table(name = "MEMBER")
 @Getter @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor  // 기본 생성자 추가
 @ToString
 public class Member implements UserDetails {
+
     @Id @GeneratedValue
     @Column(name = "MEMBER_ID")
     private Long id; // 회원 고유 식별자
@@ -40,8 +42,8 @@ public class Member implements UserDetails {
 
     private String password; // 회원 비밀번호 (암호화됨)
 
-    @ManyToOne(fetch = FetchType.LAZY) //지연로딩
-    @JoinColumn(name = "DEPARTMENT_ID") 
+    @ManyToOne(fetch = FetchType.LAZY) // 지연 로딩
+    @JoinColumn(name = "DEPARTMENT_ID")
     private Department department; // 학과
 
     // MemberFormDto를 기반으로 Member 객체를 생성하는 메서드
@@ -53,10 +55,11 @@ public class Member implements UserDetails {
         member.setDepartment(department); // Department 객체 설정
         return member;
     }
-    
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;  // 권한 관리를 하고 싶다면 여기에 로직을 추가
+        // 기본적으로 ROLE_USER 권한을 부여
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override
@@ -88,5 +91,4 @@ public class Member implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-    
 }

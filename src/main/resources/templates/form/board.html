@@ -57,9 +57,10 @@
                 <tbody>
                     <tr th:each="board : ${boardList}">
                         <td th:text="${board.id}"></td>
-                        <td th:text="${board.authorName}"></td> <!-- 수정된 부분 -->
+                        <td th:text="${board.authorName}"></td> <!-- 작성자 이름 표시 -->
                         <td><a th:href="@{|/board/${board.id}|}" th:text="${board.title}"></a></td>
-                        <td th:text="${#dates.format(board.boardCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td> <!-- 수정된 부분 -->
+                        <!-- 날짜 포맷팅: null 값 처리 -->
+                        <td th:text="${board.boardCreatedTime != null ? board.boardCreatedTime : 'N/A'}"></td>
                         <td th:text="${board.boardHits}"></td>
                     </tr>
                 </tbody>

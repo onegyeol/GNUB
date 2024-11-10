@@ -16,7 +16,7 @@ import pbl.GNUB.dto.BoardDto;
 @Entity
 @Getter
 @Setter
-@Table(name = "board_table")
+@Table(name = "board")
 public class Board extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

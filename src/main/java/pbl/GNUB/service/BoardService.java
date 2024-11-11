@@ -61,4 +61,21 @@ public class BoardService {
         board.setBoardHits(board.getBoardHits() + 1);
         boardRepository.save(board);  // 업데이트된 조회수를 DB에 저장
     }
+
+    // 수정 메서드
+    @Transactional
+    public void updateBoard(Long id, BoardDto boardDTO) {
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid board Id: " + id));
+        
+        board.setTitle(boardDTO.getTitle());
+        board.setContent(boardDTO.getContent());
+        boardRepository.save(board);  // 수정된 내용 저장
+    }
+
+    // 삭제 메서드
+    @Transactional
+    public void deleteBoard(Long id) {
+        boardRepository.deleteById(id);  // 게시글 삭제
+    }
 }

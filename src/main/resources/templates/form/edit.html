@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 수정</title>
+    <!-- 타임리프를 사용한 CSS 경로 -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <!-- include libraries(jQuery, bootstrap) -->
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script> 
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 
+    <!-- include summernote css/js -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote-bs4.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote-bs4.js"></script>
+
+</head>
+
+<body>
+    <div class="header">
+        <!-- Logo image -->
+        <a th:href="@{/main}">
+            <img src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo" class="logo">
+        </a>
+
+        <!-- Updated Search Bar -->
+        <div class="search-bar">
+            <input type="text" placeholder="검색">
+            <button class="search-btn">
+                <img src="https://cdn-icons-png.flaticon.com/512/49/49116.png" alt="Search Icon" width="20" height="20">
+            </button>
+        </div>
+
+        <div class="links">
+            <!-- 로그인 안 했을 때 보이는 메뉴바 -->
+            <div th:if="${session.loginEmail == null}">
+                <a th:href="@{/member/login}">Login</a>
+                <a th:href="@{/member/new}">Signup</a>
+            </div>
+            <!-- 로그인 했을 때 보이는 메뉴바 -->
+            <div th:if="${session.loginEmail != null}">
+                <a th:href="@{/board/main}">Board</a>
+                <a th:href="@{/myPage}">Mypage</a>
+                <a th:href="@{/member/logout}">Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="body">
+        <h1 class="post-h1">게시글 수정</h1>
+        <div class="write"> 
+            <form method="post" id="post-form" class="post-form" th:action="@{/board/edit/{id}(id=${board.id})}">
+                <div class="form-group">
+                    <label for="title">제목</label>
+                    <input type="text" id="title" name="title" th:value="${board.title}" placeholder="제목을 작성해주세요" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="summernote">내용</label>
+                    <textarea id="summernote" name="content" required th:text="${board.content}"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <button type="submit" id="edit-button" class="write-button">수정 완료</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="footer"></div>
+
+    <script>
+        document.getElementById('post-form').addEventListener('submit', function(event) {
+            sendit(event);  // 폼 검증 함수 호출
+        });
+
+        function sendit(event) {
+            event.preventDefault();
+            const boardForm = document.getElementById('post-form');
+            const title = document.getElementById('title').value.trim(); 
+            const content = $('#summernote').summernote('code').trim(); 
+
+            // 제목 검증
+            if (title === "") {
+                alert("제목을 입력하세요!");
+                document.getElementById('title').focus();
+                return;
+            }
+
+            // 내용 검증
+            if (content === "") {
+                alert("내용을 입력하세요!");
+                return;
+            }
+
+            // 검증 완료 시 폼 제출
+            boardForm.submit();
+        }
+
+        // summernote 초기화
+        $('#summernote').summernote({
+            height: 370,
+            lang: "ko-KR",
+            focus: true,
+            toolbar: [
+                ['fontname', ['fontname']],
+                ['fontsize', ['fontsize']],
+                ['style', ['bold', 'italic', 'underline','strikethrough', 'clear']],
+                ['table', ['table']],
+                ['para', ['ul', 'paragraph']],
+                ['height', ['height']],
+                ['view', ['link', 'picture']]
+            ],
+            fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New','맑은 고딕','궁서','굴림체','굴림','돋음체','바탕체'],
+            fontSizes: ['8','9','10','11','12','14','16','18','20','22','24','28','30','36','50','72']
+        });
+    </script>
+</body>
+</html>

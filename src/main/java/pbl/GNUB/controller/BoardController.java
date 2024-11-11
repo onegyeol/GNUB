@@ -90,9 +90,25 @@ public class BoardController {
     }
 
 
-    // 게시판 수정 삭제 화면 접근
-    @GetMapping("/edit")
-    public String BoardEdit() {
-        return "form/post";
+    // 게시글 수정 화면 접근
+    @GetMapping("/edit/{id}")
+    public String BoardEdit(@PathVariable("id") Long id, Model model) {
+        BoardDto boardDto = boardService.getBoardById(id);  // 기존 게시글 내용 가져오기
+        model.addAttribute("board", boardDto);
+        return "form/edit";  // 게시글 수정 화면으로 이동
+    }
+
+    // 게시글 수정 요청 처리
+    @PostMapping("/edit/{id}")
+    public String updateBoard(@PathVariable("id") Long id, @ModelAttribute BoardDto boardDTO) {
+        boardService.updateBoard(id, boardDTO);  // 수정된 내용 저장
+        return "redirect:/board/" + id;  // 수정 후 상세 페이지로 이동
+    }
+
+    // 게시글 삭제 요청 처리
+    @PostMapping("/delete/{id}")
+    public String deleteBoard(@PathVariable("id") Long id) {
+        boardService.deleteBoard(id);  // 게시글 삭제
+        return "redirect:/board/main";  // 삭제 후 메인 페이지로 이동
     }
 }

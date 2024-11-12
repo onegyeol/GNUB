@@ -1,6 +1,9 @@
 package pbl.GNUB.dto;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import org.jsoup.Jsoup;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,26 +17,37 @@ import pbl.GNUB.entity.Board;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-
-public class BoardDTO {
-    private Long authorId;
+public class BoardDto {
+    private Long authorId;  // 작성자 ID
+    private String authorName; // 작성자 이름 추가
     private Long id;
     private String title;
     private String content;
     private int boardHits;  // 조회수
-    private LocalDateTime boardCreatedTime;  // 작성한 시간
-    private LocalDateTime boardUpdatedTime;  // 수정한 시간
+    private String boardCreatedTime;  // 날짜를 String으로 변경
+    private String boardUpdatedTime;  // 날짜를 String으로 변경
 
-    public static BoardDTO toBoardDTO(Board board){
-        BoardDTO boardDTO = new BoardDTO();
-        boardDTO.setAuthorId(board.getAuthor().getId());
+    public static BoardDto toBoardDTO(Board board) {
+        BoardDto boardDTO = new BoardDto();
+        boardDTO.setAuthorId(board.getAuthor() != null ? board.getAuthor().getId() : null);
+        boardDTO.setAuthorName(board.getAuthor() != null ? board.getAuthor().getName() : "작성자 미상");
         boardDTO.setId(board.getId());
         boardDTO.setTitle(board.getTitle());
-        boardDTO.setContent(board.getContent());
+        
+        // HTML 태그를 제거하고 텍스트만 저장
+        String cleanContent = Jsoup.parse(board.getContent()).text();
+        boardDTO.setContent(cleanContent);
+
         boardDTO.setBoardHits(board.getBoardHits());
-        boardDTO.setBoardCreatedTime(board.getCreatedTime());
-        boardDTO.setBoardUpdatedTime(board.getUpdatedTime());
+        
+        if (board.getCreatedTime() != null) {
+            boardDTO.setBoardCreatedTime(board.getCreatedTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        }
+        if (board.getUpdatedTime() != null) {
+            boardDTO.setBoardUpdatedTime(board.getUpdatedTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        }
+
         return boardDTO;
     }
-
+    
 }

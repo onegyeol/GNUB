@@ -12,8 +12,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.Setter;
+
 
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Entity
@@ -23,19 +26,41 @@ import lombok.ToString;
 public class ShopTag {
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // id
+    private Long id;
 
-    private String name; // 업소명
-    private boolean hygiene; // 위생이 좋은
-    private boolean revisit; // 재방문률이 높은
-    private boolean recent; // 최근에 자주 가는
-    private boolean delicious; // 맛있는
-    private boolean goodValue; // 가성비 좋은
-    private boolean mood; // 깔끔하고 분위기 좋은
-    private double fresh; // 신선한
-    private double kindness; // 친절한
-    private double alone; // 혼밥
-    private double chilamDong; // 칠암동
-    private double gajwaDong; // 가좌동
+    @Column(name = "name", unique = true)
+    private String name;
 
-    }
+    @Column(name = "hygiene")
+    private int hygiene;
+
+    @Column(name = "revisit")
+    private int revisit;
+
+    @Column(name = "recent")
+    private int recent;
+
+    @Column(name = "delicious")
+    private int delicious;
+
+    @Column(name = "good_value")
+    private int goodValue;
+
+    @Column(name = "mood")
+    private int mood;
+
+    @Column(name = "fresh")
+    private int fresh;
+
+    @Column(name = "kindness")
+    private int kindness;
+
+    @Column(name = "alone")
+    private int alone;
+
+    @Column(name = "chilam_dong")
+    private int chilamDong;
+
+    @Column(name = "gajwa_dong")
+    private int gajwaDong;
+}

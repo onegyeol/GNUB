@@ -67,8 +67,6 @@ body {
 .content img {
     width: 60px;
     height: 60px;
-    border-radius: 50%;
-    border: 2px solid lightgray;
 }
 
 .content p {
@@ -79,7 +77,9 @@ body {
 .map {
     flex: 1;
     text-align: center;
-    border-right: 1px solid #88CDD0;
+    z-index: 10000000000;
+    position: relative;
+    border-radius: 0; /* 직사각형이므로 border-radius는 0 했는데 왜 안될까*/
 }
 
 .restaurant-details {

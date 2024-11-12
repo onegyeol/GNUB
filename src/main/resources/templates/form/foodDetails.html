@@ -47,16 +47,16 @@
             <p>식당 위치 지도로 띄움</p>
         </div>
         <div class="restaurant-details">
-            <h2>식당 이름</h2>
+            <h2 class="restaurant_name">음식점 이름:<span th:text="${shop.name}"></span></h2>
             <div class="info">
-                <p>주소: </p>
-                <p>전화번호: </p>
+                <p><storng>주소:</storng> <span th:text="${shop.address}"></span></p>
+                <p><storng>전화번호:</storng> <span th:text="${shop.phone}"></span></p>
             </div>
             <div class="actions">
                 <div>
                     <img src="https://cdn-icons-png.flaticon.com/512/535/535183.png" alt="Heart Icon" 
                             onclick="toggleLike(1, 'likeCount')"> <!-- 이미지 클릭 시 toggleLike 실행 -->
-                    <p id="likeCount">0</p> <!-- 좋아요 수를 표시할 요소 -->
+                    <p id="likeCount"><span th:text="${shop.likeCount}"></span></p> <!-- 좋아요 수를 표시할 요소 -->
                 </div>
             </div>
         </div>

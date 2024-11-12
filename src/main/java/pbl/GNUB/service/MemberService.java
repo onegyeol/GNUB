@@ -103,6 +103,10 @@ public class MemberService {
         // Member 엔티티를 MemberFormDto로 변환
         return MemberFormDto.toMemberFormDto(member);
     }
-    
 
+    // 학과 id로 조회
+    public Department getDepartmentById(Long departmentId) {
+        return departmentRepository.findById(departmentId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 학과입니다: " + departmentId));
+    }
 }

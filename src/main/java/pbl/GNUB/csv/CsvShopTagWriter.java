@@ -1,8 +1,5 @@
 package pbl.GNUB.csv;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import pbl.GNUB.dto.ShopTagDto;
 import pbl.GNUB.entity.ShopTag;
 import pbl.GNUB.repository.ShopTagRepository;
+
 
 @Configuration
 @RequiredArgsConstructor
@@ -26,11 +24,21 @@ public class CsvShopTagWriter implements ItemWriter<ShopTagDto> {
 
         // items에서 ShopTagDto를 추출하여 ShopTag 엔티티로 변환
         for (ShopTagDto dto : items) {
-            ShopTag shopTag = dto.toEntity(); // DTO를 엔티티로 변환
-            shopTagList.add(shopTag);
+            ShopTag existingTag = shopTagRepository.findByName(dto.getName());
+            if (existingTag == null) {
+                ShopTag shopTag = dto.toEntity();
+                shopTagRepository.save(shopTag);
+            } else {
+                // 기존 데이터 업데이트 로직
+                updateExistingTag(existingTag, dto);
+            }
         }
-
-        // ShopTag 엔티티를 데이터베이스에 저장
-        shopTagRepository.saveAll(shopTagList);
     }
+
+private void updateExistingTag(ShopTag existingTag, ShopTagDto dto) {
+    existingTag.setHygiene(dto.getHygiene());
+    existingTag.setRevisit(dto.getRevisit());
+    // ... 다른 필드들도 업데이트
+    shopTagRepository.save(existingTag);
+}
 }

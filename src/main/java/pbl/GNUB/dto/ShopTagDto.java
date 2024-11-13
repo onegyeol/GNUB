@@ -18,56 +18,56 @@ import pbl.GNUB.entity.ShopTag;
 public class ShopTagDto {
 
     @ApiModelProperty(name = "음식점")
-    private String name; // 음식점
+    private String name;
 
     @ApiModelProperty(name = "위생이 좋은")
-    private String hygiene; // 위생이 좋은
+    private int hygiene;
 
     @ApiModelProperty(name = "재방문률이 높은")
-    private String revisit; // 재방문률이 높은
+    private int revisit;
 
     @ApiModelProperty(name = "최근에 자주 가는")
-    private String recent; // 최근에 자주 가는
+    private int recent;
 
     @ApiModelProperty(name = "맛있는")
-    private String delicious; // 맛있는
+    private int delicious;
 
     @ApiModelProperty(name = "가성비 좋은")
-    private String goodValue; // 가성비 좋은
+    private int goodValue;
 
     @ApiModelProperty(name = "깔끔하고 분위기 좋은")
-    private String mood; // 깔끔하고 분위기 좋은
+    private int mood;
 
     @ApiModelProperty(name = "신선한")
-    private Double fresh; // 신선하넝
+    private int fresh;
 
     @ApiModelProperty(name = "친절한")
-    private Double kindness; // 친절한
+    private int kindness;
 
     @ApiModelProperty(name = "혼밥")
-    private Double alone; // 혼밥
+    private int alone;
     
     @ApiModelProperty(name = "칠암동")
-    private Double chilam_dong; // 칠암
+    private int chilamDong;
 
     @ApiModelProperty(name = "가좌동")
-    private Double gajwa_dong; // 가좌
+    private int gajwaDong;
 
-    public ShopTag toEntity() { // ShopTag 엔티티 반환
+    public ShopTag toEntity() {
         return ShopTag.builder()
-            .name(this.name) //음식점
-            .hygiene(this.hygiene != null && this.hygiene.equals("1")) // 1일 경우 true
-            .revisit(this.revisit != null && this.revisit.equals("1")) // 1일 경우 true
-            .recent(this.recent != null && this.recent.equals("1")) // 1일 경우 true
-            .delicious(this.delicious != null && this.delicious.equals("1")) // 1일 경우 true
-            .goodValue(this.goodValue != null && this.goodValue.equals("1")) // 1일 경우 true
-            .mood(this.mood != null && this.mood.equals("1")) // 1일 경우 true
-            .fresh(this.fresh != null && this.fresh.equals("1") ? 1.0 : 0.0) // 예시로 변환
-            .kindness(this.kindness != null && this.kindness.equals("1") ? 1.0 : 0.0)
-            .alone(this.alone != null && this.alone.equals("1") ? 1.0 : 0.0)
-            .chilamDong(this.chilam_dong != null && this.chilam_dong.equals("1") ? 1.0 : 0.0)
-            .gajwaDong(this.gajwa_dong != null && this.gajwa_dong.equals("1") ? 1.0 : 0.0)
-            .build(); // .build() 메서드 추가
+            .name(this.name)
+            .hygiene(this.hygiene)
+            .revisit(this.revisit)
+            .recent(this.recent)
+            .delicious(this.delicious)
+            .goodValue(this.goodValue)
+            .mood(this.mood)
+            .fresh(this.fresh)
+            .kindness(this.kindness)
+            .alone(this.alone)
+            .chilamDong(this.chilamDong)
+            .gajwaDong(this.gajwaDong)
+            .build();
     }
 
 }

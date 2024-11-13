@@ -26,4 +26,9 @@ public class DepartmentService {
         return departmentRepository.findByCollege(college);
     }
     
+    // 영어 -> 한글 변환
+    public String getCollegeKoreanName(College college) {
+        return college.getKoreanName();
+    }
+    
 }

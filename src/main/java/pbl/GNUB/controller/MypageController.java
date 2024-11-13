@@ -9,11 +9,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import lombok.RequiredArgsConstructor;
 import pbl.GNUB.dto.MemberFormDto;
+import pbl.GNUB.entity.Department;
+import pbl.GNUB.entity.Member;
 import pbl.GNUB.entity.Shop;
+import pbl.GNUB.repository.MemberRepository;
 import pbl.GNUB.service.LikeService;
 import pbl.GNUB.service.MemberService;
 
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -28,15 +32,32 @@ public class MypageController {
     @Autowired
     private final MemberService memberService;
 
+    @Autowired
+    private final MemberRepository memberRepository;
+
     @GetMapping("/myPage")
-    public String myPage(Model model, HttpSession session) {
-        String loginEmail = (String)session.getAttribute("loginEmail");
-        if(loginEmail != null){
-            MemberFormDto memberFormDto = memberService.getMemberInfoByEmail(loginEmail);
-            model.addAttribute("member", memberFormDto);
+    public String showMyPage(HttpSession session, Model model) {
+        String loginEmail = (String) session.getAttribute("loginEmail"); // 세션에서 이메일을 가져옴
+        if (loginEmail != null) {
+            // 로그인된 이메일로 회원 정보를 가져옴
+            MemberFormDto memberFormDto = memberService.getMemberInfoByEmail(loginEmail); // 이메일로 Member 정보 가져오기
+            Long departmentId = memberFormDto.getDepartmentId(); // MemberFormDto에서 departmentId 추출
+
+            // departmentId를 통해 Department 정보를 가져옴
+            Department department = memberService.getDepartmentById(departmentId);
+            
+            // 모델에 Department 정보 추가
+            model.addAttribute("departmentName", department.getName());
+            model.addAttribute("departmentCollege", department.getCollege().getKoreanName());
+
+            // 모델에 회원 정보 추가
+            model.addAttribute("member", memberFormDto); // 회원 정보 추가
         }
-        return "form/myPage";
+
+        return "form/myPage"; // myPage 뷰로 이동
     }
+
+
 
     
     @GetMapping("/myPage/likeList")

@@ -51,4 +51,8 @@ public class BoardDto {
         return boardDTO;
     }
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 549c645172232bc7a3a605e52ff9550cf4410a88

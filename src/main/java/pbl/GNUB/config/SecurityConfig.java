@@ -1,6 +1,7 @@
 package pbl.GNUB.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -14,10 +15,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http        
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/member/new", "/member/login", "member/logout", "/main", "/css/**", "/js/**").permitAll() // Allow access to sign-up and login pages
+                .requestMatchers("/member/new", "/member/login", "/member/logout", "/main", "/css/**", "/js/**").permitAll() // Allow access to sign-up and login pages
                 .anyRequest().authenticated() // All other requests require authentication
             )
-            
             .formLogin(form -> form
                 .loginPage("/member/login") // Custom login page
                 .loginProcessingUrl("/member/login") // 폼 action 경로

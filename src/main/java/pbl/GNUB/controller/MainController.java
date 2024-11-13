@@ -1,6 +1,7 @@
 package pbl.GNUB.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
@@ -13,48 +14,53 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+
+import lombok.extern.slf4j.Slf4j;
 import pbl.GNUB.entity.Shop;
+import pbl.GNUB.entity.ShopTag;
 import pbl.GNUB.service.ShopService;
 
-
+@Slf4j
 @Controller
 public class MainController {
 
-    @Autowired
-    private JobLauncher jobLauncher;
+    private final JobLauncher jobLauncher;
+    private final Job csvShopJob;
+    private final ShopService shopService;
+    private final TagController tagController;
 
     @Autowired
-    private Job csvShopJob; // Job 이름에 맞게 수정하세요.
-
-    @Autowired
-    private ShopService shopService;
+    public MainController(JobLauncher jobLauncher, Job csvShopJob, ShopService shopService, TagController tagController) {
+        this.jobLauncher = jobLauncher;
+        this.csvShopJob = csvShopJob;
+        this.shopService = shopService;
+        this.tagController = tagController;
+    }
 
     @GetMapping("/main")
     public String showMainPage(Model model) {
-        List<Shop> shops = shopService.getTop30Shops(); // 데이터 가져오기
-        model.addAttribute("shops", shops); // 모델에 데이터 추가
-        return "form/main"; // 반환할 뷰 이름
-    }
-    
+    List<Shop> shops = shopService.getTop30Shops();
+    Map<String, ShopTag> shopTags = tagController.getShopTagsMap();
+    log.info("shopTags: {}", shopTags);
+    model.addAttribute("shops", shops);
+    model.addAttribute("shopTags", shopTags);
+    return "form/main";
+}
 
     @GetMapping("/springBatch")
     public String startBatchJob() {
         try {
-            // JobParameters를 생성합니다. 필요한 경우 추가 파라미터를 설정할 수 있습니다.
             JobParameters params = new JobParametersBuilder()
                     .addLong("time", System.currentTimeMillis())
                     .toJobParameters();
-            
-            // Job을 실행합니다.
             jobLauncher.run(csvShopJob, params);
         } catch (Exception e) {
             e.printStackTrace();
-            // 에러 처리
         }
-        return "form/main"; // 반환할 뷰 이름
+        return "form/main";
     }
     
-    @GetMapping("/search") // 검색결과 페이지
+    @GetMapping("/search")
     public String searchPage() {
         return "form/search";
     }
@@ -70,6 +76,5 @@ public class MainController {
         }
         
     }
-    
-    
+
 }

@@ -14,28 +14,28 @@ import pbl.GNUB.entity.ShopTag;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "음식점정보")
+@ApiModel(value = "음식점태그정보")
 public class ShopTagDto {
 
-    @ApiModelProperty(name = "음식점")
+    @ApiModelProperty(name = "업소명")
     private String name;
 
-    @ApiModelProperty(name = "위생이 좋은")
+    @ApiModelProperty(name = "위생등급제 가게")
     private int hygiene;
 
     @ApiModelProperty(name = "재방문률이 높은")
     private int revisit;
 
-    @ApiModelProperty(name = "최근에 자주 가는")
+    @ApiModelProperty(name = "최근에 자주가는")
     private int recent;
 
     @ApiModelProperty(name = "맛있는")
     private int delicious;
 
-    @ApiModelProperty(name = "가성비 좋은")
+    @ApiModelProperty(name = "가성비")
     private int goodValue;
 
-    @ApiModelProperty(name = "깔끔하고 분위기 좋은")
+    @ApiModelProperty(name = "깔끔하고 분위기가 좋은")
     private int mood;
 
     @ApiModelProperty(name = "신선한")

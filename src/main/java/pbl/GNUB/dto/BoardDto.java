@@ -27,16 +27,11 @@ public class BoardDTO {
     private String boardCreatedTime;  // 날짜를 String으로 변경
     private String boardUpdatedTime;  // 날짜를 String으로 변경
 
-<<<<<<< HEAD
-    public static BoardDTO toBoardDTO(Board board){
-        BoardDTO boardDTO = new BoardDTO();
-        boardDTO.setAuthorId(board.getAuthor().getId());
-=======
     public static BoardDto toBoardDTO(Board board) {
         BoardDto boardDTO = new BoardDto();
         boardDTO.setAuthorId(board.getAuthor() != null ? board.getAuthor().getId() : null);
         boardDTO.setAuthorName(board.getAuthor() != null ? board.getAuthor().getName() : "작성자 미상");
->>>>>>> b5064ec5a360d818031b5675f159d13403ea89dc
+
         boardDTO.setId(board.getId());
         boardDTO.setTitle(board.getTitle());
         
@@ -55,9 +50,5 @@ public class BoardDTO {
 
         return boardDTO;
     }
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> b5064ec5a360d818031b5675f159d13403ea89dc
 }

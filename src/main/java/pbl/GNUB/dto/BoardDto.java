@@ -18,7 +18,7 @@ import pbl.GNUB.entity.Board;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class BoardDTO {
+public class BoardDto {
     private Long authorId;
     private Long id;
     private String title;

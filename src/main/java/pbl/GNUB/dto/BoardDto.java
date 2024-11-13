@@ -17,9 +17,9 @@ import pbl.GNUB.entity.Board;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class BoardDto {
-    private Long authorId;
+    private Long authorId;  // 작성자 ID
+    private String authorName; // 작성자 이름 추가
     private Long id;
     private String title;
     private String content;
@@ -31,7 +31,6 @@ public class BoardDto {
         BoardDto boardDTO = new BoardDto();
         boardDTO.setAuthorId(board.getAuthor() != null ? board.getAuthor().getId() : null);
         boardDTO.setAuthorName(board.getAuthor() != null ? board.getAuthor().getName() : "작성자 미상");
-
         boardDTO.setId(board.getId());
         boardDTO.setTitle(board.getTitle());
         
@@ -50,9 +49,5 @@ public class BoardDto {
 
         return boardDTO;
     }
-
-<<<<<<< HEAD
+    
 }
-=======
-}
->>>>>>> 549c645172232bc7a3a605e52ff9550cf4410a88

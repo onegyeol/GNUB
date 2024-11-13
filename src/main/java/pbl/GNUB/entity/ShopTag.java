@@ -63,4 +63,15 @@ public class ShopTag {
 
     @Column(name = "gajwa_dong")
     private int gajwaDong;
+
+    private Integer value; // `value` 필드 추가
+
+    // Getters and Setters
+    public Integer getValue() {
+        return value;
+    }
+
+    public void setValue(Integer value) {
+        this.value = value;
+    }
 }

@@ -39,11 +39,9 @@ public class MainController {
 
     @GetMapping("/main")
     public String showMainPage(Model model) {
+    // 메인 화면에 음식점 정보 30개 띄위기 위함
     List<Shop> shops = shopService.getTop30Shops();
-    Map<String, ShopTag> shopTags = tagController.getShopTagsMap();
-    log.info("shopTags: {}", shopTags);
     model.addAttribute("shops", shops);
-    model.addAttribute("shopTags", shopTags);
     return "form/main";
 }
 

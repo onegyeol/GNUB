@@ -120,8 +120,9 @@
     <div class="header">
         <!-- 로고 이미지 -->
         <a th:href="@{/main}"> <!-- 메인 페이지 링크 추가 -->
-        <img src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo" class="logo">
-
+             <img src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo" class="logo">
+        </a>
+        
         <div class="links">
             <!-- 로그인 안했을 때 보이는 메뉴바 -->
             <div th:if="${session.loginEmail == null}">

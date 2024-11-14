@@ -170,7 +170,7 @@
             <div th:each="shop : ${shops}" class="restaurant">
                 <div class="restaurant_content">
                     <button class="restaurant_img_container" th:onclick="'goToFoodDetails(' + ${shop.id} + ')'">
-                        <img class="restaurant_img" th:src="@{'/image/restaurant.jpg'}" alt="가게이미지">
+                        <img class="restaurant_img" th:src="${shop.imgUrl}" alt="가게이미지">
                     </button>
                     
                     <div class="restaurant_text">

@@ -45,6 +45,10 @@ public class ShopDto {
     @ApiModelProperty(name = "경도")
     private Double lng; // 경도
 
+    @ApiModelProperty(name = "img_url")
+    @Column(columnDefinition = "TEXT")
+    private String imgUrl;
+
     public Shop toEntity(){ //Shop 엔티티 반환
         return Shop.builder()
             .region(this.region)
@@ -56,6 +60,7 @@ public class ShopDto {
             .phone(this.phone)
             .lat(this.lat)
             .lng(this.lng)
+            .imgUrl(this.imgUrl)
             .build();
     }
 

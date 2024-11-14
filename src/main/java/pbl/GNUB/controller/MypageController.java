@@ -1,18 +1,25 @@
 package pbl.GNUB.controller;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import lombok.RequiredArgsConstructor;
+import pbl.GNUB.dto.BoardDto;
 import pbl.GNUB.dto.MemberFormDto;
+import pbl.GNUB.entity.Board;
 import pbl.GNUB.entity.Department;
 import pbl.GNUB.entity.Member;
 import pbl.GNUB.entity.Shop;
 import pbl.GNUB.repository.MemberRepository;
+import pbl.GNUB.service.BoardService;
 import pbl.GNUB.service.LikeService;
 import pbl.GNUB.service.MemberService;
 
@@ -31,6 +38,9 @@ public class MypageController {
 
     @Autowired
     private final MemberService memberService;
+
+    @Autowired
+    private final BoardService boardService;
 
     @Autowired
     private final MemberRepository memberRepository;
@@ -56,9 +66,6 @@ public class MypageController {
 
         return "form/myPage"; // myPage 뷰로 이동
     }
-
-
-
     
     @GetMapping("/myPage/likeList")
     public String getLikedShops(HttpSession session, Model model) {
@@ -71,10 +78,21 @@ public class MypageController {
         return "form/likeList";
     }
 
-    @GetMapping("/myPage/myPost") // 내가 작성한 글 접근
-    public String myPost() {
-        return "form/myPost";
-    }
+   // 내가 작성한 게시글 목록 조회
+   @GetMapping("/myPage/myPost")
+   public String getMyPosts(HttpSession session, Model model) {
+        String loginEmail = (String) session.getAttribute("loginEmail");
+
+        List<Board> boardList = boardService.getBoardsByMemberEmail(loginEmail);
+        List<BoardDto> boardDTOList = boardList.stream()
+            .map(BoardDto::toBoardDTO) // BoardDto로 변환
+            .collect(Collectors.toList());
+
+        // 사용자가 작성한 게시글 조회
+        model.addAttribute("myPosts", boardDTOList);
+        return "form/myPost"; 
+}
+
 
     
     

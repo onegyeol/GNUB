@@ -33,6 +33,10 @@ public class Shop {
     private String phone; // 전화번호
     private Double lat; // 위도
     private Double lng; // 경도
+
+    @Column(length = 1024)  // 이미지 URL 길이를 1024자로 제한
+    private String imgUrl; // 이미지 Url
+    
     private int likeCount=0; // 좋아요 수 카운트
 
      // likeCount setter

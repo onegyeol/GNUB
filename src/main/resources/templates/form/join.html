@@ -353,11 +353,12 @@ function checkPasswordMatch() {
     const statusMessage = document.getElementById("statusMessage");
     const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+[\]{};':"\\|,.<>/?]).{8,16}$/;
 
-    /*
+    
     if (!passwordRegex.test(password)) {
         statusMessage.textContent = '비밀번호: 8~16자의 영문, 숫자, 특수문자를 사용해 주세요.';
         statusMessage.className = 'status-message error';
-    }else */
+    }else 
+    
     if (password !== confirmPassword) {
         statusMessage.innerText = "비밀번호가 일치하지 않습니다.";
         statusMessage.style.color = "red";

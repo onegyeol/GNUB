@@ -68,15 +68,21 @@ public class MypageController {
     }
     
     @GetMapping("/myPage/likeList")
-    public String getLikedShops(HttpSession session, Model model) {
-        String email = (String) session.getAttribute("login"); // 세션에서 로그인된 회원의 이메일을 가져옴
-        if (email != null) {
-            // 이미 구현된 getLikedShopsByMember 메서드 사용
-            List<Shop> likedShops = likeService.getLikedShopsByMember(email); 
-            model.addAttribute("likedShops", likedShops); // 모델에 likedShops 추가
-        }
-        return "form/likeList";
+public String showLikedShops(Model model, HttpSession session) {
+    String memberEmail = (String) session.getAttribute("loginEmail"); // 세션에서 이메일 가져오기
+    List<Shop> likedShops = likeService.getLikedShopsByMemberEmail(memberEmail);
+    
+    // 로그로 데이터 확인
+    if (likedShops.isEmpty()) {
+        System.out.println("No liked shops found.");
+    } else {
+        likedShops.forEach(shop -> System.out.println("Liked Shop: " + shop.getName()));
     }
+    
+    model.addAttribute("likedShops", likedShops);
+    return "form/likeList";
+}
+
 
    // 내가 작성한 게시글 목록 조회
    @GetMapping("/myPage/myPost")

@@ -1,6 +1,7 @@
 package pbl.GNUB.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -95,6 +96,14 @@ public class LikeService {
         return likes.stream()
                     .map(Like::getShop) // Like 객체에서 Shop 추출
                     .toList();
+    }
+
+    // 해당 멤버 이메일로 좋아요한 가게 조회
+    public List<Shop> getLikedShopsByMemberEmail(String memberEmail) {
+        List<Like> likes = likeRepository.findByMemberEmail(memberEmail);
+        return likes.stream()
+                    .map(Like::getShop)
+                    .collect(Collectors.toList());
     }
 
 }

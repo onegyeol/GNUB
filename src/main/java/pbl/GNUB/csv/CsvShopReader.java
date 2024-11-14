@@ -30,7 +30,7 @@ public class CsvShopReader {
 
         // csv 파일에서 구분자 지정하고 구분한 데이터 setNames를 통해 각 이름 설정
         defaultLineMapper.setLineTokenizer(new DelimitedLineTokenizer(){{
-            setNames("region", "city", "category", "mainMenu", "name", "address", "phone", "lat", "lng");
+            setNames("region", "city", "category", "mainMenu", "name", "address", "phone", "lat", "lng", "imgUrl");
             setDelimiter(",");
         }});
 

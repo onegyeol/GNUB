@@ -14,6 +14,9 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.Setter;
 
+import jakarta.persistence.*;
+import lombok.*;
+
 
 @Getter
 @Setter
@@ -31,38 +34,20 @@ public class ShopTag {
     @Column(name = "name", unique = true)
     private String name;
 
-    @Column(name = "hygiene")
     private int hygiene;
-
-    @Column(name = "revisit")
     private int revisit;
-
-    @Column(name = "recent")
     private int recent;
-
-    @Column(name = "delicious")
     private int delicious;
-
-    @Column(name = "good_value")
     private int goodValue;
-
-    @Column(name = "mood")
     private int mood;
-
-    @Column(name = "fresh")
     private int fresh;
-
-    @Column(name = "kindness")
     private int kindness;
-
-    @Column(name = "alone")
     private int alone;
-
-    @Column(name = "chilam_dong")
     private int chilamDong;
-
-    @Column(name = "gajwa_dong")
     private int gajwaDong;
+
+    @Column(columnDefinition = "TEXT")
+    private String tags;
 
     private Integer value; // `value` 필드 추가
 

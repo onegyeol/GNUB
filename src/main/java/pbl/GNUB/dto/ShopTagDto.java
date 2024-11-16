@@ -53,6 +53,9 @@ public class ShopTagDto {
     @ApiModelProperty(name = "가좌동")
     private int gajwaDong;
 
+    @ApiModelProperty(name = "태그")
+    private String tags;
+
     public ShopTag toEntity() {
         return ShopTag.builder()
             .name(this.name)
@@ -67,6 +70,7 @@ public class ShopTagDto {
             .alone(this.alone)
             .chilamDong(this.chilamDong)
             .gajwaDong(this.gajwaDong)
+            .tags(this.tags)
             .build();
     }
 

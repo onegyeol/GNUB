@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
 import lombok.extern.slf4j.Slf4j;
 import pbl.GNUB.entity.Shop;
 import pbl.GNUB.entity.ShopTag;
@@ -39,11 +38,15 @@ public class MainController {
 
     @GetMapping("/main")
     public String showMainPage(Model model) {
-    // 메인 화면에 음식점 정보 30개 띄위기 위함
-    List<Shop> shops = shopService.getTop30Shops();
-    model.addAttribute("shops", shops);
-    return "form/main";
-}
+        // ㅔㅁ인 화면에 음식점 정보 30개 띄우기 위함
+        List<Shop> shops = shopService.getTop30Shops();
+        //태그 컨트롤러로 매핑하는거 추가함
+        Map<String, List<String>> shopTagsMap = tagController.getShopTagsMap();
+        
+        model.addAttribute("shops", shops);
+        model.addAttribute("shopTagsMap", shopTagsMap); //이것도 추가함
+        return "form/main";
+    }
 
     @GetMapping("/springBatch")
     public String startBatchJob() {
@@ -63,7 +66,7 @@ public class MainController {
         return "form/search";
     }
 
-    @GetMapping("/shopDetails/{id}") // 음식점상세 페이지
+    @GetMapping("/shopDetails/{id}")// 음식점상세 페이지
     public String foodDetailsPage(@PathVariable("id") Long id, Model model) {
         Shop shop = shopService.findShopById(id);
         if(shop != null){
@@ -72,7 +75,5 @@ public class MainController {
         }else{
             return "error";
         }
-        
     }
-
 }

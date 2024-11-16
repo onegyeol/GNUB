@@ -112,7 +112,29 @@
             color: inherit; /* 부모의 색상 상속 */
             font-size: inherit; /* 부모의 글자 크기 상속 */
             cursor: pointer; /* 커서 포인터로 변경 */
-        }      
+        }
+        .restaurant_tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;  /* 태그 사이의 간격 */
+            width: 90%; /* restaurant_tags의 너비를 줄임 */
+            margin-left: auto; /* 좌측 마진을 자동으로 설정 */
+            margin-right: auto; /* 우측 마진을 자동으로 설정 */
+            justify-content: center; /* 내부 콘텐츠를 중앙 정렬 */
+            padding-left: 10px; /* 좌측 패딩 추가 */
+            padding-right: 10px; /* 우측 패딩 추가 */
+        }
+
+        .restaurant_tag {
+            color: black;  /* 링크 색상 */
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .restaurant_tag:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -176,8 +198,12 @@
                     <div class="restaurant_text">
                         <span class="restaurant_name" th:text="${shop.name}"></span>
                         <div class="restaurant_tags">
-                            <span class="restaurant_tag" th:text="'#' + ${shop.region}"></span>
-                            <span class="restaurant_tag" th:text="'#' + ${shop.category}"></span>
+                            <th:block th:if="${shopTagsMap.containsKey(shop.name)}">
+                                <a th:each="tag : ${shopTagsMap.get(shop.name)}" 
+                                    class="restaurant_tag" 
+                                    th:href="@{/search(tag=${tag})}"
+                                    th:text="'#' + ${tag}"></a>
+                            </th:block>
                         </div>
                     </div>
                     

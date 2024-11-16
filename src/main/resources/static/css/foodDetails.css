@@ -56,11 +56,11 @@ body {
 .content {
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
     padding: 20px;
 }
 
 .content div {
-    margin: 0 20px;
     text-align: center;
 }
 
@@ -74,21 +74,34 @@ body {
     font-size: 18px;
 }
 
+.vertical-line {
+    width: 2px;
+    background-color: #ddd;
+    height: 400px; /* 부모 높이와 동일하게 설정 */
+    margin : 20px 20px;
+}
+
 .map {
     flex: 1;
-    text-align: center;
-    z-index: 10000000000;
-    position: relative;
-    border-radius: 0; /* 직사각형이므로 border-radius는 0 했는데 왜 안될까*/
+    height: 400px;
 }
 
 .restaurant-details {
     flex: 1;
-    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* 왼쪽 정렬 */
 }
 
-.restaurant-details h2 {
+.restaurant-details h1 {
+    font-size: 40px;
+}
+
+.restaurant-name {
     font-size: 26px;
+    margin-top: 25px;
+    margin-bottom: 50px;
+    margin-left: 25px;
 }
 
 .info {
@@ -98,10 +111,13 @@ body {
 
 .info p {
     margin: 5px 0;
+    font-size: 18px;
+    text-align: left; /* 왼쪽 정렬 */
+    font-weight: bold;
+    margin-left: 25px;
 }
 
 .actions {
-    display: flex;
     margin-top: 20px;
 }
 
@@ -123,9 +139,24 @@ body {
 }
 
 .h1 {
-    font-size: 24px; /* Adjust the font size if needed */
-    text-align: center; /* Center the text */
-    margin: 0; /* Remove default margin */
+    font-size: 24px; 
+    text-align: center; 
+    margin: 0; 
     margin-top : 50px;
     margin-bottom: 100px;
+}
+
+.like-section {
+    display: flex;
+    flex-direction: column; /* 수직 방향으로 정렬 */
+    align-items: flex-start;    /* 중앙 정렬 */
+    font-size: 20px;
+}
+
+.like-icon {
+    width: 30px !important;
+    height: 30px !important;
+    cursor: pointer;
+    margin-top: 10px; /* 좋아요 수와 하트 아이콘 사이의 간격 */
+    margin-left: 16px;
 }

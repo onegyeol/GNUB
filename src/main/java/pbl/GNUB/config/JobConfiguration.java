@@ -1,6 +1,7 @@
 package pbl.GNUB.config;
 
 import org.springframework.batch.core.Job;
+import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
@@ -9,8 +10,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.batch.core.Step;
-
 import pbl.GNUB.csv.CsvShopReader;
 import pbl.GNUB.csv.CsvShopTagReader;
 import pbl.GNUB.csv.CsvShopTagWriter;
@@ -48,7 +47,7 @@ public class JobConfiguration {
     @Bean
     public Step csvShopTagReaderStep(JobRepository jobRepository, PlatformTransactionManager platformTransactionManager) {
         return new StepBuilder("csvShopTagReaderStep", jobRepository)
-            .<ShopTagDto, ShopTagDto>chunk(100, platformTransactionManager)
+            .<ShopTagDto, ShopTagDto>chunk(1000, platformTransactionManager)
             .reader(csvShopTagReader.csvTagReader())
             .writer(csvShopTagWriter)
             .allowStartIfComplete(true)

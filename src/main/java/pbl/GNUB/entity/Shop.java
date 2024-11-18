@@ -1,10 +1,15 @@
 package pbl.GNUB.entity;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -38,6 +43,14 @@ public class Shop {
     private String imgUrl; // 이미지 Url
     
     private int likeCount=0; // 좋아요 수 카운트
+
+    @ManyToMany
+    @JoinTable(
+        name = "SHOP_SHOPTAG",
+        joinColumns = @JoinColumn(name = "shop_id"),
+        inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private List<ShopTag> shopTags;
 
      // likeCount setter
      public void setLikeCount(int likeCount) {

@@ -62,9 +62,16 @@ public class MainController {
     }
     
     @GetMapping("/search")
-    public String searchPage() {
-        return "form/search";
+    public String searchPage(@RequestParam(value = "query", required = false) String query, Model model) {
+        System.out.println("검색어: " + query);  // 디버깅용 로그 추가
+        
+        // 검색어가 있을 경우
+        List<Shop> shops = shopService.searchShops(query);
+        model.addAttribute("shops", shops);
+    
+        return "form/search";  // 결과를 보여줄 뷰 반환
     }
+    
 
     @GetMapping("/shopDetails/{id}")// 음식점상세 페이지
     public String foodDetailsPage(@PathVariable("id") Long id, Model model) {

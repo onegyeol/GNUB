@@ -166,13 +166,13 @@
             <div id="search_area" class="search_area">
                 <div class="serach_group">
                     <div id="serach" class="search_group_inner">
-                        <form id="sform" name="search" role="search" action="" method="get">
+                        <form id="sform" name="search" role="search" action="/search" method="get">
                             <fieldset>
                                 <legend class="blind">검색</legend>
                                 <div class="search_input_box">
-                                    <input id="query" name="query" type="search" placeholder="검색" maxlength="255" autocomplete="off" class="search_input">
+                                    <input id="query" name="query" type="search" placeholder="검색" maxlength="255" autocomplete="off" class="search_input" th:value="${searchTerm}">
                                 </div>
-                                <button type="submit" class="btn_search" >
+                                <button type="submit" class="btn_search">
                                     <span class="ico_btn_search_img">
                                         <img src="/image/searching-icon.png" alt="검색버튼">
                                     </span>
@@ -184,6 +184,8 @@
             </div>
         </div>
     </div>
+
+    
 
     <!-- 식당 리스트 -->
     <main class="search_menu">

@@ -5,33 +5,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>마이페이지</title>
-    <!-- 타임리프를 사용한 CSS 경로 -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <style>
+        /* 헤더 스타일 */
+        .header-container h1 {
+            font-size: 40px; /* MyPage 제목 크기 조정 */
+            text-align: center; /* 제목 가운데 정렬 */
+        }
+
+        /* content 섹션 스타일 */
         .content {
             display: flex;
             justify-content: center;
+            gap: 20px; /* 요소 간격 */
+            margin-top: 20px; /* 상단 여백 */
+        }
+
+        .content div {
+            text-align: center; /* 이미지와 텍스트 가운데 정렬 */
         }
 
         .content p {
-            font-size : 22px;
+            font-size: 20px;
         }
-        .header-container h1 {
-            font-size: 40px; /* MyPage 제목 크기 조정 */
+
+        /* info 섹션 스타일 */
+        .info {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* 가운데 정렬 */
+            margin-top: 40px; /* 상단 여백 */
         }
 
         .info p {
-            font-size: 18px; /* info 섹션 글자 크기 조정 */
+            font-size: 18px;
+            margin: 5px 0; /* 위아래 간격 */
         }
-        
     </style>
 </head>
 <body>
     <div class="header">
         <!-- 로고 이미지 -->
-        <a th:href="@{/main}"> <!-- 메인 페이지 링크 추가 -->
-        <img src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo" class="logo">
-
+        <a th:href="@{/main}">
+            <img src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo" class="logo">
+        </a>
         <div class="links">
             <div th:if="${session.loginEmail != null}">
                 <a th:href="@{/board/main}">Board</a>
@@ -65,5 +82,5 @@
         <p>단과대 / 학과: <span th:text="${departmentCollege} + ' / ' + ${departmentName}"></span></p>
         <p>이메일: <span th:text="${member.email}"></span></p>
     </div>
-    
 </body>
+</html>

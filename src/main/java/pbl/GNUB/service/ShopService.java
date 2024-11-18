@@ -20,4 +20,13 @@ public class ShopService {
     public Shop findShopById(Long id){
         return shopRepository.findById(id).orElse(null);
     }
+
+    public List<Shop> searchShops(String query) {
+        if (query == null || query.trim().isEmpty()) {
+            return shopRepository.findAll();  // 검색어가 없으면 전체 목록 반환
+        }
+        
+        // 음식점명, 주메뉴, 태그 이름으로 검색
+        return shopRepository.searchShops(query);  // 동일한 값으로 세 가지 필드 검색
+    }
 }

@@ -17,12 +17,14 @@
         </a>
         
 
-        <!-- Updated Search Bar -->
+        <!-- 검색창 -->
         <div class="search-bar">
-            <input type="text" placeholder="검색">
-            <button class="search-btn">
-                <img src="https://cdn-icons-png.flaticon.com/512/49/49116.png" alt="Search Icon" width="20" height="20">
-            </button>
+            <form id="sform" name="search" role="search" action="/search" method="get">
+                <input type="text" id="query" name="query" placeholder="검색" maxlength="100" autocomplete="off">
+                <button class="search-btn">
+                    <img src="https://cdn-icons-png.flaticon.com/512/49/49116.png" alt="Search Icon" width="20" height="20">
+                </button>
+            </form>
         </div>
 
         <div class="links">
@@ -64,108 +66,37 @@
         </section>
         
         <!-- 식당 리스트 -->
-        <main class = "search_menu">
+        <main class="search_menu">
             <div class="restaurant_list">
-                <div class="restaurant">
+                <!-- 반복문으로 데이터 렌더링 -->
+                <div th:each="shop : ${shops}" class="restaurant">
                     <div class="restaurant_content">
-                        <div class="restaurant_img_container">
-                            <img class="restaurant_img" src="/image/restaurant.jpg" alt="가게이미지">
-                        </div>
+                        <button class="restaurant_img_container" th:onclick="'goToFoodDetails(' + ${shop.id} + ')'">
+                            <img class="restaurant_img" th:src="${shop.imgUrl}" alt="가게이미지">
+                        </button>
+                        
                         <div class="restaurant_text">
-                            <span class="restaurant_name">가게1</span>
+                            <span class="restaurant_name" th:text="${shop.name}"></span>
                             <div class="restaurant_tags">
-                                <span class="restaurant_tag">#가좌동</span>
-                                <span class="restaurant_tag">#스펀지</span>
-                                <span class="restaurant_tag">#분위기 좋은</span>
+                                <span class="restaurant_tag" th:text="'#' + ${shop.region}"></span>
+                                <span class="restaurant_tag" th:text="'#' + ${shop.category}"></span>
                             </div>
                         </div>
                         
-                    </div>
-                </div>
-
-                <div class="restaurant">
-                    <div class="restaurant_content">
-                        <div class="restaurant_img_container">
-                            <img class="restaurant_img" src="" alt="가게이미지">
-                        </div>
-                        <div class="restaurant_text">
-                            <span class="restaurant_name">가게2</span>
+                        <!-- 좋아요 버튼 -->
+                        <div class="image-btn-container">
+                            <div class="number-display" th:id="'numberDisplay-' + ${shop.id}" th:text="${shop.likeCount}">0</div>
+                            <form th:action="@{/like}" method="POST">
+                                <input type="hidden" name="shopId" th:value="${shop.id}">
+                                <button type="submit" th:id="'likeButton-' + ${shop.id}" class="toggle-btn">좋아요</button>
+                            </form>
                         </div>
                     </div>
                 </div>
-
-                <div class="restaurant">
-                    <div class="restaurant_content">
-                        <div class="restaurant_img_container">
-                            <img class="restaurant_img" src="" alt="가게이미지">x`
-                        </div>
-                        <div class="restaurant_text">
-                            <span class="restaurant_name">가게3</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="restaurant">
-                    <div class="restaurant_content">
-                        <div class="restaurant_img_container">
-                            <img class="restaurant_img" src="" alt="가게이미지">
-                        </div>
-                        <div class="restaurant_text">
-                            <span class="restaurant_name">가게4</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="restaurant">
-                    <div class="restaurant_content">
-                        <div class="restaurant_img_container">
-                            <img class="restaurant_img" src="/image/restaurant2.jpg" alt="가게이미지">
-                        </div>
-                        <div class="restaurant_text">
-                            <span class="restaurant_name">가게5</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="restaurant">
-                    <div class="restaurant_content">
-                        <div class="restaurant_img_container">
-                            <img class="restaurant_img" src="" alt="가게이미지">
-                        </div>
-                        <div class="restaurant_text">
-                            <span class="restaurant_name">가게6</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="restaurant">
-                    <div class="restaurant_content">
-                        <div class="restaurant_img_container">
-                            <img class="restaurant_img" src="" alt="가게이미지">
-                        </div>
-                        <div class="restaurant_text">
-                            <span class="restaurant_name">가게7</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="restaurant">
-                    <div class="restaurant_content">
-                        <div class="restaurant_img_container">
-                            <img class="restaurant_img" src="" alt="가게이미지">
-                        </div>
-                        <div class="restaurant_text">
-                            <span class="restaurant_name">가게8</span>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </main>
-
-        <footer>
-            <p>최김임</p>
-        </footer>
+        <script src="/javascript/script.js" defer></script> <!--script.js 파일을 불러옴 -->
+    
     </div> 
 </body>
 </html>

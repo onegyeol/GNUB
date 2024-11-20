@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -26,7 +27,8 @@ import lombok.ToString;
 @ToString
 @Table(name = "SHOP")
 public class Shop {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // id
 
     private String region; // 시도 
@@ -42,7 +44,7 @@ public class Shop {
     @Column(length = 1024)  // 이미지 URL 길이를 1024자로 제한
     private String imgUrl; // 이미지 Url
     
-    private int likeCount=0; // 좋아요 수 카운트
+    private int likeCount = 0; // 좋아요 수 카운트
 
     @ManyToMany
     @JoinTable(
@@ -50,10 +52,10 @@ public class Shop {
         joinColumns = @JoinColumn(name = "shop_id"),
         inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
-    private List<ShopTag> shopTags;
+    private List<ShopTag> shopTags; // ShopTag와의 다대다 관계
 
-     // likeCount setter
-     public void setLikeCount(int likeCount) {
+    // likeCount setter
+    public void setLikeCount(int likeCount) {
         this.likeCount = likeCount;
     }
 }

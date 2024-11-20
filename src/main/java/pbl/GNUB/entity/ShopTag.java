@@ -2,13 +2,6 @@ package pbl.GNUB.entity;
 
 import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,7 +12,6 @@ import lombok.Setter;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 
 @Getter
 @Setter
@@ -55,14 +47,5 @@ public class ShopTag {
     private Integer value; // `value` 필드 추가
 
     @ManyToMany(mappedBy = "shopTags")
-    private List<Shop> shops; 
-
-    // Getters and Setters
-    public Integer getValue() {
-        return value;
-    }
-
-    public void setValue(Integer value) {
-        this.value = value;
-    }
+    private List<Shop> shops;
 }

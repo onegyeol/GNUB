@@ -9,17 +9,17 @@ import org.springframework.data.repository.query.Param;
 import pbl.GNUB.entity.ShopTag;
 
 public interface ShopTagRepository extends JpaRepository<ShopTag, Long> {
-    ShopTag findByName(String name);
-    List<ShopTag> findByValue(Integer value);
+        ShopTag findByName(String name);
+        List<ShopTag> findByValue(Integer value);
 
-    @Query("SELECT s FROM ShopTag s WHERE s.name = :name " +
+        @Query("SELECT s FROM ShopTag s WHERE s.name = :name " +
             "AND s.hygiene = :hygiene AND s.revisit = :revisit " +
             "AND s.recent = :recent AND s.delicious = :delicious " +
             "AND s.goodValue = :goodValue AND s.mood = :mood " +
             "AND s.fresh = :fresh AND s.kindness = :kindness " +
             "AND s.alone = :alone AND s.chilamDong = :chilamDong " +
             "AND s.gajwaDong = :gajwaDong")
-    ShopTag findByAllFields(@Param("name") String name,
+        ShopTag findByAllFields(@Param("name") String name,
                             @Param("hygiene") int hygiene,
                             @Param("revisit") int revisit,
                             @Param("recent") int recent,
@@ -31,7 +31,19 @@ public interface ShopTagRepository extends JpaRepository<ShopTag, Long> {
                             @Param("alone") int alone,
                             @Param("chilamDong") int chilamDong,
                             @Param("gajwaDong") int gajwaDong);
-                        }
+                            
+        List<ShopTag> findByHygiene(int value);
+        List<ShopTag> findByRevisit(int value);
+        List<ShopTag> findByRecent(int value);
+        List<ShopTag> findByDelicious(int value);
+        List<ShopTag> findByGoodValue(int value);
+        List<ShopTag> findByMood(int value);
+        List<ShopTag> findByFresh(int value);
+        List<ShopTag> findByKindness(int value);
+        List<ShopTag> findByAlone(int value);
+        List<ShopTag> findByChilamDong(int value);
+        List<ShopTag> findByGajwaDong(int value);
+}
     
 
-
+                    

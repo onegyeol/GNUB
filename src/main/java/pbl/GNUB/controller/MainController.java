@@ -1,23 +1,33 @@
 package pbl.GNUB.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import lombok.extern.slf4j.Slf4j;
+import pbl.GNUB.dto.ShopDto;
+import pbl.GNUB.dto.ShopTagDto;
 import pbl.GNUB.entity.Shop;
 import pbl.GNUB.entity.ShopTag;
+import pbl.GNUB.entity.TagMapping;
 import pbl.GNUB.service.ShopService;
+import pbl.GNUB.service.ShopTagMappingService;
+import pbl.GNUB.service.ShopTagService;
+import pbl.GNUB.service.TagMappingService;
 
 @Slf4j
 @Controller
@@ -27,21 +37,30 @@ public class MainController {
     private final Job csvShopJob;
     private final ShopService shopService;
     private final TagController tagController;
+    private final ShopTagService shopTagService;
+    private final ShopTagMappingService mappingService;
+    private final TagMappingService tagMappingService;
+
 
     @Autowired
-    public MainController(JobLauncher jobLauncher, Job csvShopJob, ShopService shopService, TagController tagController) {
+    public MainController(JobLauncher jobLauncher, Job csvShopJob, ShopService shopService, TagController tagController, 
+                        ShopTagService shopTagService, ShopTagMappingService mappingService, TagMappingService tagMappingService) {
         this.jobLauncher = jobLauncher;
         this.csvShopJob = csvShopJob;
         this.shopService = shopService;
         this.tagController = tagController;
+        this.shopTagService = shopTagService;
+        this.mappingService = mappingService;
+        this.tagMappingService = tagMappingService;
     }
 
     @GetMapping("/main")
     public String showMainPage(Model model) {
-        // ㅔㅁ인 화면에 음식점 정보 30개 띄우기 위함
+        // 메인 화면에 음식점 정보 30개 띄우기 위함
         List<Shop> shops = shopService.getTop30Shops();
         //태그 컨트롤러로 매핑하는거 추가함
         Map<String, List<String>> shopTagsMap = tagController.getShopTagsMap();
+        //mappingService.mapShopAndShopTagsById(); // shop과 shopTag id 매핑
         
         model.addAttribute("shops", shops);
         model.addAttribute("shopTagsMap", shopTagsMap); //이것도 추가함
@@ -63,15 +82,56 @@ public class MainController {
     
     @GetMapping("/search")
     public String searchPage(@RequestParam(value = "query", required = false) String query, Model model) {
-        System.out.println("검색어: " + query);  // 디버깅용 로그 추가
+        //태그 컨트롤러로 매핑하는거 추가함
+        Map<String, List<String>> shopTagsMap = tagController.getShopTagsMap();
         
         // 검색어가 있을 경우
         List<Shop> shops = shopService.searchShops(query);
         model.addAttribute("shops", shops);
-    
+        model.addAttribute("query", query);
+        model.addAttribute("shopTagsMap", shopTagsMap); //이것도 추가함
+        
         return "form/search";  // 결과를 보여줄 뷰 반환
     }
-    
+
+    @GetMapping("/search/{tag}")
+    public String getShopsByTag(
+            @PathVariable("tag") String tag,
+            @RequestParam(value = "query", required = false, defaultValue = "") String query,
+            Model model) {
+
+        // 태그 값을 영어로 변환
+        String englishTag = tagMappingService.toEnglish(tag);
+
+        // 필터링된 음식점 리스트 가져오기
+        List<Shop> shops = shopService.getShopsByTagField(englishTag, query);
+
+        //태그 컨트롤러로 매핑하는거 추가함
+        Map<String, List<String>> tags = tagController.getShopTagsMap();
+
+        // 태그 매핑 생성
+        Map<Long, List<String>> shopTagsMap = shops.stream()
+                .collect(Collectors.toMap(
+                        Shop::getId,
+                        shop -> shop.getShopTags().stream()
+                                    .map(ShopTag::getName)
+                                    .collect(Collectors.toList())
+                ));
+
+        // 모델에 데이터 추가
+        model.addAttribute("shops", shops);
+        model.addAttribute("query", query);
+        model.addAttribute("shopTagsMap", shopTagsMap);
+        model.addAttribute("selectedTag", tag); // 선택된 태그를 넘겨줌
+
+        System.out.println("Shops: " + shops.size());
+        System.out.println("Shop Tags Map: " + shopTagsMap);
+        System.out.println("Query: " + query);
+        System.out.println("Selected Tag: " + tag);
+
+
+        return "form/search"; // 검색 결과 페이지 반환
+    }
 
     @GetMapping("/shopDetails/{id}")// 음식점상세 페이지
     public String foodDetailsPage(@PathVariable("id") Long id, Model model) {

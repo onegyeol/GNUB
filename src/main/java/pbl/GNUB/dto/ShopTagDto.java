@@ -74,4 +74,22 @@ public class ShopTagDto {
             .build();
     }
 
+    
+
+    public ShopTagDto(ShopTag shopTag) {
+        this.name = shopTag.getName();
+        this.hygiene = shopTag.getHygiene();
+        this.revisit = shopTag.getRevisit();
+        this.recent = shopTag.getRecent();
+        this.delicious = shopTag.getDelicious();
+        this.goodValue = shopTag.getGoodValue();
+        this.mood = shopTag.getMood();
+        this.fresh = shopTag.getFresh();
+        this.kindness = shopTag.getKindness();
+        this.alone = shopTag.getAlone();
+        this.chilamDong = shopTag.getChilamDong();
+        this.gajwaDong = shopTag.getGajwaDong();
+        this.tags = shopTag.getTags();
+    }
+    
 }

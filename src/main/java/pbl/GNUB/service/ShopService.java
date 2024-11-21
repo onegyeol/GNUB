@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pbl.GNUB.entity.Shop;
+import pbl.GNUB.entity.TagMapping;
 import pbl.GNUB.repository.ShopRepository;
 
 @Service
@@ -29,4 +30,14 @@ public class ShopService {
         // 음식점명, 주메뉴, 태그 이름으로 검색
         return shopRepository.searchShops(query);  // 동일한 값으로 세 가지 필드 검색
     }
+
+    public List<Shop> getShopsByTagField(String tag, String query) {
+        return shopRepository.findShopsByDynamicTag(tag, query);
+    }
+    
+    
+
+    
+    
+
 }

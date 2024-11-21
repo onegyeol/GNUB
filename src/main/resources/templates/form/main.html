@@ -187,28 +187,31 @@
 
     
 
-    <!-- 식당 리스트 -->
     <main class="search_menu">
         <div class="restaurant_list">
             <!-- 반복문으로 데이터 렌더링 -->
             <div th:each="shop : ${shops}" class="restaurant">
                 <div class="restaurant_content">
+                    <!-- 이미지 컨테이너 -->
                     <button class="restaurant_img_container" th:onclick="'goToFoodDetails(' + ${shop.id} + ')'">
                         <img class="restaurant_img" th:src="${shop.imgUrl}" alt="가게이미지">
                     </button>
-                    
+    
+                    <!-- 레스토랑 텍스트 -->
                     <div class="restaurant_text">
                         <span class="restaurant_name" th:text="${shop.name}"></span>
+                        <!-- 태그 목록 -->
                         <div class="restaurant_tags">
                             <th:block th:if="${shopTagsMap.containsKey(shop.name)}">
-                                <a th:each="tag : ${shopTagsMap.get(shop.name)}" 
-                                    class="restaurant_tag" 
-                                    th:href="@{/search(tag=${tag})}"
-                                    th:text="'#' + ${tag}"></a>
+                                <a th:each="tag : ${shopTagsMap.get(shop.name)}"
+                                   class="restaurant_tag"
+                                   th:href="@{/search/{tag}(tag=${tag})}"
+                                   th:text="'#' + ${tag}"></a>
                             </th:block>
                         </div>
+                        
                     </div>
-                    
+    
                     <!-- 좋아요 버튼 -->
                     <div class="image-btn-container">
                         <div class="number-display" th:id="'numberDisplay-' + ${shop.id}" th:text="${shop.likeCount}">0</div>

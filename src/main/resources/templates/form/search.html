@@ -1,39 +1,38 @@
 <!DOCTYPE html>
-<html xmlns="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html xmlns="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>검색 결과</title>
-    <!-- 타임리프를 사용한 CSS 경로 -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .search-result-text {
+            text-align: center;
+            font-size: 30px;
+            margin: 20px 0;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
 </head>
-
 <body>
     <div class="header">
-        <!-- Logo image -->
         <a th:href="@{/main}">
             <img src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo" class="logo">
         </a>
-        
-
-        <!-- 검색창 -->
         <div class="search-bar">
             <form id="sform" name="search" role="search" action="/search" method="get">
-                <input type="text" id="query" name="query" placeholder="검색" maxlength="100" autocomplete="off">
+                <input type="text" id="search-query" name="query" placeholder="검색" maxlength="100" autocomplete="off">
                 <button class="search-btn">
                     <img src="https://cdn-icons-png.flaticon.com/512/49/49116.png" alt="Search Icon" width="20" height="20">
                 </button>
             </form>
         </div>
-
         <div class="links">
-            <!-- 로그인 안했을 때 보이는 메뉴바 -->
             <div th:if="${session.loginEmail == null}">
                 <a th:href="@{/member/login}">Login</a>
                 <a th:href="@{/member/new}">Signup</a>
             </div>
-            <!-- 로그인 했을 때 보이는 메뉴바 -->
             <div th:if="${session.loginEmail != null}">
                 <a th:href="@{/board/main}">Board</a>
                 <a th:href="@{/myPage}">Mypage</a>
@@ -41,62 +40,68 @@
             </div>
         </div>
     </div>
-    
+    <p class="search-result-text" 
+        th:text="${query != null && !query.isEmpty() ? '&#34;' + query + '&#34; 검색결과' : '&#34;#' + selectedTag + '&#34; 검색결과'}">
+    </p>
+
+
     <div class="wrap">
-        <!-- 드롭다운 메뉴 -->
+
         <section class="sort-options">
             <select class="dropdown" id="sort-by-address">
-                <option value="adress">주소 명</option>
+                <option value="adress">주소명</option>
                 <option value="address_1">가좌동</option>
                 <option value="address_2">칠암동</option>
             </select>
-            
             <select class="dropdown" id="sort-by-tag">
-                <option value="tag_name">태그 명</option>
-                <option value="tag_1">태그 1</option>
-                <option value="tag_2">태그 2</option>
+                <option value="tag_name">태그명</option>
+                <option value="hygiene">위생등급제 가게</option>
+                <option value="revisit">재방문률이 높은</option>
+                <option value="recent">최근에 자주 가는</option>
+                <option value="delicious">맛있는</option>
+                <option value="goodValue">가성비</option>
+                <option value="mood">깔끔하고 분위기가 좋은</option>
+                <option value="fresh">신선한</option>
+                <option value="kindness">친절한</option>
+                <option value="alone">혼밥</option>
+                <option value="chilamDong">칠암동</option>
+                <option value="gajwaDong">가좌동</option>
             </select>
-
-            <select class="dropdown" id="sort-by-random">
-                <option value="random">아무거나</option>
-                <option value="random_1">1</option>
-                <option value="random_2">2</option>
-            </select>
-            
         </section>
-        
-        <!-- 식당 리스트 -->
+
+        <!-- 음식점 리스트 -->
         <main class="search_menu">
             <div class="restaurant_list">
-                <!-- 반복문으로 데이터 렌더링 -->
                 <div th:each="shop : ${shops}" class="restaurant">
                     <div class="restaurant_content">
                         <button class="restaurant_img_container" th:onclick="'goToFoodDetails(' + ${shop.id} + ')'">
                             <img class="restaurant_img" th:src="${shop.imgUrl}" alt="가게이미지">
                         </button>
-                        
                         <div class="restaurant_text">
                             <span class="restaurant_name" th:text="${shop.name}"></span>
+                            <!-- 태그 목록 -->
                             <div class="restaurant_tags">
-                                <span class="restaurant_tag" th:text="'#' + ${shop.region}"></span>
-                                <span class="restaurant_tag" th:text="'#' + ${shop.category}"></span>
+                                <th:block th:if="${shopTagsMap.containsKey(shop.name)}">
+                                    <a th:each="tag : ${shopTagsMap.get(shop.name)}"
+                                    class="restaurant_tag"
+                                    th:href="@{/search/{tag}(tag=${tag})}"
+                                    th:text="'#' + ${tag}"></a>
+                                </th:block>
                             </div>
+
                         </div>
-                        
-                        <!-- 좋아요 버튼 -->
                         <div class="image-btn-container">
-                            <div class="number-display" th:id="'numberDisplay-' + ${shop.id}" th:text="${shop.likeCount}">0</div>
+                            <div class="number-display" th:text="${shop.likeCount}"></div>
                             <form th:action="@{/like}" method="POST">
                                 <input type="hidden" name="shopId" th:value="${shop.id}">
-                                <button type="submit" th:id="'likeButton-' + ${shop.id}" class="toggle-btn">좋아요</button>
+                                <button type="submit" class="toggle-btn">좋아요</button>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
-        <script src="/javascript/script.js" defer></script> <!--script.js 파일을 불러옴 -->
-    
-    </div> 
+        <script src="/javascript/search.js" defer></script>
+    </div>
 </body>
 </html>

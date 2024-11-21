@@ -54,18 +54,20 @@
         <div class="restaurant-details">
             <h1 class="restaurant-name"><span th:text="${shop.name}"></span></h1>
             <div class="info">
-                <p class="label"><strong>주소</strong></p>
+                <p class="label" style="font-size:22px;"><strong>#주메뉴</strong></p>
+                <p class="value" th:text="${shop.mainMenu}"></p>
+
+                <br>
+
+                <p class="label" style="font-size:22px;"><strong>#주소</strong></p>
                 <p class="value" th:text="${shop.address}"></p>
                 
                 <br>
-                <br>
 
-                <p class="label"><strong>전화번호</strong></p>
+                <p class="label" style="font-size:22px;"><strong>#전화번호</strong></p>
                 <p class="value" th:text="${shop.phone}"></p>
-    
-                <br>
-                <br>
 
+                <br>
                 <div class="like-section">
                     <p id="likeCount" th:text="${shop.likeCount}"></p>
                     <img class="like-icon" src="https://cdn-icons-png.flaticon.com/512/535/535183.png" alt="Heart Icon" onclick="toggleLike(1, 'likeCount')">

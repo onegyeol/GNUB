@@ -1,33 +1,20 @@
 package pbl.GNUB.controller;
-import java.security.Principal;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import pbl.GNUB.dto.BoardDto;
-import pbl.GNUB.entity.Board;
 import pbl.GNUB.entity.Member;
 import pbl.GNUB.repository.MemberRepository;
 import pbl.GNUB.service.BoardService;
-
-import org.springframework.web.bind.annotation.RequestParam;
-
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
-
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 
 
 @Controller
@@ -38,17 +25,17 @@ public class BoardController {
     private final MemberRepository memberRepository;
 
     @GetMapping("/main")
-    public String BoardMain(Model model) {
-        // DB에서 전체 게시글 데이터를 가져와서 게시판 main화면에 보여준다.
-        List<Board> boardList = boardService.findAllBoard(); // Board 엔티티 리스트 가져오기
-        List<BoardDto> boardDTOList = boardList.stream()
-            .map(BoardDto::toBoardDTO) // BoardDto로 변환
-            .collect(Collectors.toList());
-        model.addAttribute("boardList", boardDTOList);
+    public String BoardMain(Model model, @RequestParam(value = "page", defaultValue = "1") int page) {
+        int pageSize = 10;
+        Page<BoardDto> boardPage = boardService.findPaginated(page, pageSize);
+        
+        model.addAttribute("boardList", boardPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", boardPage.getTotalPages());
+        model.addAttribute("totalItems", boardPage.getTotalElements());
+        
         return "form/board";
     }
-
-
     // 게시판 작성 화면 접근
     @GetMapping("/write")
     public String BoardWrite() {

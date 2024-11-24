@@ -13,6 +13,27 @@
             font-weight: bold;
             color: #333;
         }
+        .restaurant_tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;  /* 태그 사이의 간격 */
+            width: 90%; /* restaurant_tags의 너비를 줄임 */
+            margin-left: auto; /* 좌측 마진을 자동으로 설정 */
+            margin-right: auto; /* 우측 마진을 자동으로 설정 */
+            justify-content: center; /* 내부 콘텐츠를 중앙 정렬 */
+            padding-left: 10px; /* 좌측 패딩 추가 */
+            padding-right: 10px; /* 우측 패딩 추가 */
+        }
+        .restaurant_tag {
+            color: black;  /* 링크 색상 */
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .restaurant_tag:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -46,27 +67,28 @@
 
 
     <div class="wrap">
-
+        <!--
         <section class="sort-options">
             <select class="dropdown" id="sort-by-address">
                 <option value="adress">주소명</option>
                 <option value="address_1">가좌동</option>
                 <option value="address_2">칠암동</option>
             </select>
-            <select class="dropdown" id="sort-by-tag">
-                <option value="tag_name">태그명</option>
-                <option value="hygiene">위생등급제 가게</option>
-                <option value="revisit">재방문률이 높은</option>
-                <option value="recent">최근에 자주 가는</option>
-                <option value="delicious">맛있는</option>
-                <option value="goodValue">가성비</option>
-                <option value="mood">깔끔하고 분위기가 좋은</option>
-                <option value="fresh">신선한</option>
-                <option value="kindness">친절한</option>
-                <option value="alone">혼밥</option>
-                <option value="chilamDong">칠암동</option>
-                <option value="gajwaDong">가좌동</option>
-            </select>
+            <select class="dropdown" id="sort-by-tag" onchange="filterByTag(this.value)">
+                <option value="">태그명</option>
+                <option value="위생등급제 가게">위생등급제 가게</option>
+                <option value="재방문률이 높은">재방문률이 높은</option>
+                <option value="최근에 자주 가는">최근에 자주 가는</option>
+                <option value="맛있는">맛있는</option>
+                <option value="가성비">가성비</option>
+                <option value="깔끔하고 분위기가 좋은">깔끔하고 분위기가 좋은</option>
+                <option value="신선한">신선한</option>
+                <option value="친절한">친절한</option>
+                <option value="혼밥">혼밥</option>
+                <option value="칠암동">칠암동</option>
+                <option value="가좌동">가좌동</option>
+            </select> -->
+            
         </section>
 
         <!-- 음식점 리스트 -->
@@ -81,13 +103,16 @@
                             <span class="restaurant_name" th:text="${shop.name}"></span>
                             <!-- 태그 목록 -->
                             <div class="restaurant_tags">
-                                <th:block th:if="${shopTagsMap.containsKey(shop.name)}">
-                                    <a th:each="tag : ${shopTagsMap.get(shop.name)}"
-                                    class="restaurant_tag"
-                                    th:href="@{/search/{tag}(tag=${tag})}"
-                                    th:text="'#' + ${tag}"></a>
+                                <th:block th:if="${tags != null}">
+                                    <th:block th:if="${tags.containsKey(shop.name)}">
+                                        <a th:each="tag : ${tags.get(shop.name)}"
+                                           class="restaurant_tag"
+                                           th:href="@{/search/{tag}(tag=${tag})}"
+                                           th:text="'#' + ${tag}"></a>
+                                    </th:block>
                                 </th:block>
                             </div>
+                            
 
                         </div>
                         <div class="image-btn-container">
@@ -102,6 +127,7 @@
             </div>
         </main>
         <script src="/javascript/search.js" defer></script>
+        <script src="/javascript/script.js" defer></script>
     </div>
 </body>
 </html>

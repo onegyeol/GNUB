@@ -1,3 +1,4 @@
+
 package pbl.GNUB.entity;
 
 import jakarta.persistence.Column;
@@ -34,6 +35,11 @@ public class Board extends BaseEntity{
     @ManyToOne(fetch = FetchType.LAZY)  // 작성자와 연관관계 설정
     @JoinColumn(name = "member_id")
     private Member author;  // 작성자 (회원)
+
+        // Author 객체를 반환하는 메서드 추가
+    public Member getAuthor() {
+        return author;
+    }
 
     public static Board toSaveEntity(BoardDto boardDTO,  Member author){
         Board board = new Board();

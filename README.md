@@ -8,3 +8,6 @@
 ## 개발 기간
 2024.09.13 ~ 
 
+## API 명세서
+![image](https://github.com/user-attachments/assets/8d2c837c-99ba-46dd-98dc-0b40314b53e7)
+

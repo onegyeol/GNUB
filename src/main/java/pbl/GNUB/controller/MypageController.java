@@ -1,32 +1,23 @@
 package pbl.GNUB.controller;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import pbl.GNUB.dto.BoardDto;
 import pbl.GNUB.dto.MemberFormDto;
-import pbl.GNUB.entity.Board;
 import pbl.GNUB.entity.Department;
-import pbl.GNUB.entity.Member;
 import pbl.GNUB.entity.Shop;
 import pbl.GNUB.repository.MemberRepository;
 import pbl.GNUB.service.BoardService;
 import pbl.GNUB.service.LikeService;
 import pbl.GNUB.service.MemberService;
-
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
-
-import jakarta.servlet.http.HttpSession;
 
 
 @Controller
@@ -85,21 +76,23 @@ public String showLikedShops(Model model, HttpSession session) {
 
 
    // 내가 작성한 게시글 목록 조회
-   @GetMapping("/myPage/myPost")
-   public String getMyPosts(HttpSession session, Model model) {
+    @GetMapping("/myPage/myPost")
+    public String getMyPosts(HttpSession session, Model model, 
+                                @RequestParam(value = "page", defaultValue = "1") int page) {
         String loginEmail = (String) session.getAttribute("loginEmail");
-
-        List<Board> boardList = boardService.getBoardsByMemberEmail(loginEmail);
-        List<BoardDto> boardDTOList = boardList.stream()
-            .map(BoardDto::toBoardDTO) // BoardDto로 변환
-            .collect(Collectors.toList());
-
-        // 사용자가 작성한 게시글 조회
-        model.addAttribute("myPosts", boardDTOList);
-        return "form/myPost"; 
-}
-
-
+        int pageSize = 10;
     
+        if (loginEmail != null) {
+            Page<BoardDto> boardPage = boardService.findPaginatedMyPosts(page, pageSize, loginEmail);
     
+            model.addAttribute("myPosts", boardPage.getContent());
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", boardPage.getTotalPages());
+            model.addAttribute("totalItems", boardPage.getTotalElements());
+    
+            return "form/myPost";
+        } else {
+            return "redirect:/login";
+        }
+    }
 }

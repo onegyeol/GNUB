@@ -52,12 +52,12 @@ public class MainController {
         this.shopTagService = shopTagService;
         this.mappingService = mappingService;
         this.tagMappingService = tagMappingService;
-    }
+    } 
 
     @GetMapping("/main")
     public String showMainPage(Model model) {
-        // 메인 화면에 음식점 정보 30개 띄우기 위함
-        List<Shop> shops = shopService.getTop30Shops();
+        List<Shop> shops = shopService.getTop28ShopsByLikes(); // 좋아요 기준 상위 28개 조회
+
         //태그 컨트롤러로 매핑하는거 추가함
         Map<String, List<String>> shopTagsMap = tagController.getShopTagsMap();
         //mappingService.mapShopAndShopTagsById(); // shop과 shopTag id 매핑
@@ -83,13 +83,14 @@ public class MainController {
     @GetMapping("/search")
     public String searchPage(@RequestParam(value = "query", required = false) String query, Model model) {
         //태그 컨트롤러로 매핑하는거 추가함
-        Map<String, List<String>> shopTagsMap = tagController.getShopTagsMap();
+        Map<String, List<String>> tags = tagController.getShopTagsMap();
         
         // 검색어가 있을 경우
         List<Shop> shops = shopService.searchShops(query);
+        
         model.addAttribute("shops", shops);
         model.addAttribute("query", query);
-        model.addAttribute("shopTagsMap", shopTagsMap); //이것도 추가함
+        model.addAttribute("tags", tags); //이것도 추가함
         
         return "form/search";  // 결과를 보여줄 뷰 반환
     }
@@ -100,16 +101,13 @@ public class MainController {
             @RequestParam(value = "query", required = false, defaultValue = "") String query,
             Model model) {
 
-        // 태그 값을 영어로 변환
+        // 태그를 영어로 변환
         String englishTag = tagMappingService.toEnglish(tag);
 
-        // 필터링된 음식점 리스트 가져오기
+        // 태그와 검색어를 조합하여 필터링
         List<Shop> shops = shopService.getShopsByTagField(englishTag, query);
 
-        //태그 컨트롤러로 매핑하는거 추가함
         Map<String, List<String>> tags = tagController.getShopTagsMap();
-
-        // 태그 매핑 생성
         Map<Long, List<String>> shopTagsMap = shops.stream()
                 .collect(Collectors.toMap(
                         Shop::getId,
@@ -118,20 +116,15 @@ public class MainController {
                                     .collect(Collectors.toList())
                 ));
 
-        // 모델에 데이터 추가
         model.addAttribute("shops", shops);
         model.addAttribute("query", query);
         model.addAttribute("shopTagsMap", shopTagsMap);
-        model.addAttribute("selectedTag", tag); // 선택된 태그를 넘겨줌
+        model.addAttribute("selectedTag", tag);
+        model.addAttribute("tags", tags);
 
-        System.out.println("Shops: " + shops.size());
-        System.out.println("Shop Tags Map: " + shopTagsMap);
-        System.out.println("Query: " + query);
-        System.out.println("Selected Tag: " + tag);
-
-
-        return "form/search"; // 검색 결과 페이지 반환
+        return "form/search";
     }
+
 
     @GetMapping("/shopDetails/{id}")// 음식점상세 페이지
     public String foodDetailsPage(@PathVariable("id") Long id, Model model) {

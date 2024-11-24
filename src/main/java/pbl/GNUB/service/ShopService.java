@@ -13,11 +13,12 @@ import pbl.GNUB.repository.ShopRepository;
 public class ShopService {
     @Autowired
     private ShopRepository shopRepository;
-
-    public List<Shop> getTop30Shops() {
-        // id가 1부터 30까지인 데이터를 불러오기
-        return shopRepository.findByIdBetween(1L, 30L);
+    
+    // 좋아요 순으로 상위 28개 음식점 가져오기
+    public List<Shop> getTop28ShopsByLikes() {
+        return shopRepository.findTop28ByOrderByLikeCountDesc();
     }
+
     public Shop findShopById(Long id){
         return shopRepository.findById(id).orElse(null);
     }

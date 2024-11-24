@@ -8,6 +8,35 @@
     <!-- 타임리프를 사용한 CSS 경로 -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
     
+    <style>
+    .table-container {
+        position: relative;
+        min-height: 600px;
+    }
+    .pagination-container {
+        position: absolute;
+        bottom: 20px;
+        left: 0;
+        right: 0;
+    }
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .board-table {
+        width: 100%;
+        margin-bottom: 60px;
+    }
+    .pagination a.disabled {
+        pointer-events: none;
+        color: #ccc;
+    }
+    .pagination a.active {
+    color: blue;
+    font-weight: bold;
+    }
+</style>
 
 </head>
 <body>
@@ -16,7 +45,7 @@
         <a th:href="@{/main}">
             <img src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo" class="logo">
         </a>
-         
+        
         <!-- 검색창 -->
         <div class="search-bar">
             <form id="sform" name="search" role="search" action="/search" method="get">
@@ -69,13 +98,28 @@
                 
             </table>
     
-            <div class="pagination">
-                <a href="#">&laquo; 이전</a>
-                <a href="#">1</a>
-                <a href="#">2</a>
-                <a href="#">3</a>
-                <a href="#">다음 &raquo;</a>
-                <a th:href="@{/board/write}" class="href-write">글쓰기</a>
+            <div class="pagination-container">
+                <div class="pagination">
+                    <a th:href="@{/board/main(page=${currentPage - 1})}" 
+                        th:class="${currentPage <= 1} ? 'disabled' : ''"
+                        th:onclick="return ${currentPage > 1}">
+                        &laquo; 이전
+                    </a>
+                    
+                    <span th:each="pageNumber : ${#numbers.sequence(1, totalPages)}">
+                        <a th:href="@{/board/main(page=${pageNumber})}" 
+                            th:text="${pageNumber}"
+                            th:class="${pageNumber == currentPage ? 'active' : ''}"></a>
+                    </span>
+                    
+                    <a th:href="@{/board/main(page=${currentPage + 1})}"
+                        th:class="${currentPage >= totalPages} ? 'disabled' : ''"
+                        th:onclick="return ${currentPage < totalPages}">
+                        다음 &raquo;
+                    </a>
+                    
+                    <a th:href="@{/board/write}" class="href-write">글쓰기</a>
+                </div>
             </div>
         </div>
     </div>

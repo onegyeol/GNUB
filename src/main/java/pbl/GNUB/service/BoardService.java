@@ -2,12 +2,14 @@ package pbl.GNUB.service;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import lombok.RequiredArgsConstructor;
 import pbl.GNUB.dto.BoardDto;
 import pbl.GNUB.entity.Board;
@@ -32,6 +34,17 @@ public class BoardService {
         return boardRepository.findAll();
     }
 
+    public Page<BoardDto> findPaginated(int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page - 1, pageSize);
+        Page<Board> boardPage = boardRepository.findAll(pageable);
+        return boardPage.map(BoardDto::toBoardDTO);
+    }
+
+    public Page<BoardDto> findPaginatedMyPosts(int page, int pageSize, String email) {
+        Pageable pageable = PageRequest.of(page - 1, pageSize);
+        Page<Board> boardPage = boardRepository.findByAuthorEmailPaged(email, pageable);
+        return boardPage.map(BoardDto::toBoardDTO);
+    }
     public List<BoardDto> findAllBoardDto() {
         List<Board> boardList = boardRepository.findAll();
         List<BoardDto> boardDTOList = new ArrayList<>();

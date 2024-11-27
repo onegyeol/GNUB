@@ -1,10 +1,12 @@
 package pbl.GNUB.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pbl.GNUB.dto.ShopDto;
 import pbl.GNUB.entity.Shop;
 import pbl.GNUB.entity.TagMapping;
 import pbl.GNUB.repository.ShopRepository;
@@ -35,10 +37,5 @@ public class ShopService {
     public List<Shop> getShopsByTagField(String tag, String query) {
         return shopRepository.findShopsByDynamicTag(tag, query);
     }
-    
-    
-
-    
-    
 
 }

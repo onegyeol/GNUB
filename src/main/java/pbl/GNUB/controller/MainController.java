@@ -37,21 +37,13 @@ public class MainController {
     private final Job csvShopJob;
     private final ShopService shopService;
     private final TagController tagController;
-    private final ShopTagService shopTagService;
-    private final ShopTagMappingService mappingService;
-    private final TagMappingService tagMappingService;
-
 
     @Autowired
-    public MainController(JobLauncher jobLauncher, Job csvShopJob, ShopService shopService, TagController tagController, 
-                        ShopTagService shopTagService, ShopTagMappingService mappingService, TagMappingService tagMappingService) {
+    public MainController(JobLauncher jobLauncher, Job csvShopJob, ShopService shopService, TagController tagController) {
         this.jobLauncher = jobLauncher;
         this.csvShopJob = csvShopJob;
         this.shopService = shopService;
         this.tagController = tagController;
-        this.shopTagService = shopTagService;
-        this.mappingService = mappingService;
-        this.tagMappingService = tagMappingService;
     } 
 
     @GetMapping("/main")
@@ -80,52 +72,7 @@ public class MainController {
         return "form/main";
     }
     
-    @GetMapping("/search")
-    public String searchPage(@RequestParam(value = "query", required = false) String query, Model model) {
-        //태그 컨트롤러로 매핑하는거 추가함
-        Map<String, List<String>> tags = tagController.getShopTagsMap();
-        
-        // 검색어가 있을 경우
-        List<Shop> shops = shopService.searchShops(query);
-        
-        model.addAttribute("shops", shops);
-        model.addAttribute("query", query);
-        model.addAttribute("tags", tags); //이것도 추가함
-        
-        return "form/search";  // 결과를 보여줄 뷰 반환
-    }
-
-    @GetMapping("/search/{tag}")
-    public String getShopsByTag(
-            @PathVariable("tag") String tag,
-            @RequestParam(value = "query", required = false, defaultValue = "") String query,
-            Model model) {
-
-        // 태그를 영어로 변환
-        String englishTag = tagMappingService.toEnglish(tag);
-
-        // 태그와 검색어를 조합하여 필터링
-        List<Shop> shops = shopService.getShopsByTagField(englishTag, query);
-
-        Map<String, List<String>> tags = tagController.getShopTagsMap();
-        Map<Long, List<String>> shopTagsMap = shops.stream()
-                .collect(Collectors.toMap(
-                        Shop::getId,
-                        shop -> shop.getShopTags().stream()
-                                    .map(ShopTag::getName)
-                                    .collect(Collectors.toList())
-                ));
-
-        model.addAttribute("shops", shops);
-        model.addAttribute("query", query);
-        model.addAttribute("shopTagsMap", shopTagsMap);
-        model.addAttribute("selectedTag", tag);
-        model.addAttribute("tags", tags);
-
-        return "form/search";
-    }
-
-
+    
     @GetMapping("/shopDetails/{id}")// 음식점상세 페이지
     public String foodDetailsPage(@PathVariable("id") Long id, Model model) {
         Shop shop = shopService.findShopById(id);

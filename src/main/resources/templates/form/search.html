@@ -67,12 +67,12 @@
 
 
     <div class="wrap">
-        <!--
+        
         <section class="sort-options">
-            <select class="dropdown" id="sort-by-address">
-                <option value="adress">주소명</option>
-                <option value="address_1">가좌동</option>
-                <option value="address_2">칠암동</option>
+            <select class="dropdown" id="sort-by-tag" onchange="filterByTag(this.value)">
+                <option value="">위치</option>
+                <option value="칠암동">칠암동</option>
+                <option value="가좌동">가좌동</option>
             </select>
             <select class="dropdown" id="sort-by-tag" onchange="filterByTag(this.value)">
                 <option value="">태그명</option>
@@ -85,9 +85,7 @@
                 <option value="신선한">신선한</option>
                 <option value="친절한">친절한</option>
                 <option value="혼밥">혼밥</option>
-                <option value="칠암동">칠암동</option>
-                <option value="가좌동">가좌동</option>
-            </select> -->
+            </select>
             
         </section>
 

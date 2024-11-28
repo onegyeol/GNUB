@@ -28,6 +28,17 @@ public class LikeService {
     private MemberRepository memberRepository;
 
     @Transactional
+    public boolean toggleLike(LikeDto likeDto) {
+        if (likeRepository.existsByShopIdAndEmail(likeDto.getShopId(), likeDto.getEmail())) {
+            unlikeShop(likeDto);
+            return false;
+        } else {
+            likeShop(likeDto);
+            return true;
+        }
+    }
+
+    @Transactional
     public int likeShop(LikeDto likeDto) {
         if (likeRepository.existsByShopIdAndEmail(likeDto.getShopId(), likeDto.getEmail())) {
             return 0; // 이미 좋아요한 경우

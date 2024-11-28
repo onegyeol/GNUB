@@ -38,5 +38,9 @@ public interface ShopRepository extends JpaRepository<Shop, Long>{
             "LOWER(s.mainMenu) LIKE LOWER(CONCAT('%', :query, '%'))))")
       List<Shop> findShopsByDynamicTag(@Param("tag") String tag, @Param("query") String query);
 
+      List<Shop> findByNameContaining(String name);
+      List<Shop> findByMainMenuContaining(String mainMenu);
 
+      @Query("SELECT s FROM Shop s JOIN s.shopTags st WHERE st.name = :tag")
+      List<Shop> findByShopTags(@Param("tag") String tag);
 }

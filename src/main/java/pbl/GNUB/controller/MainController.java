@@ -83,4 +83,10 @@ public class MainController {
             return "error";
         }
     }
+
+    // gpt 화면
+    @GetMapping("/ask")
+    public String GptPage(){
+        return "form/recommend"; // 로그인 폼 뷰를 반환
+    }
 }

@@ -70,7 +70,12 @@
                 <br>
                 <div class="like-section">
                     <p id="likeCount" th:text="${shop.likeCount}"></p>
-                    <img class="like-icon" src="https://cdn-icons-png.flaticon.com/512/535/535183.png" alt="Heart Icon" onclick="toggleLike(1, 'likeCount')">
+                    <form th:action="@{/toggleLike}" method="POST">
+                        <input type="hidden" name="shopId" th:value="${shop.id}">
+                        <button type="submit" class="like-btn">
+                            <img class="like-icon" src="https://cdn-icons-png.flaticon.com/512/535/535183.png" alt="Heart Icon">
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

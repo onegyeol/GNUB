@@ -1,45 +1,102 @@
-body {
+.header {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    justify-content: space-between; /* 좌우 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    padding: 10px 20px; /* 상하좌우 여백 */
+    background-color: #9FD1D5; /* 헤더 배경색 */
+    width: 100%; /* 화면 전체 너비 */
+    box-sizing: border-box; /* 패딩 포함 계산 */
+}
+
+body {
+    font-family: Arial, sans-serif;
     margin: 0;
-}
-.message {
-    border-top: 1px solid #ccc;
-    padding: 10px;
-    margin-top: 5px;
-    background-color: #e6e6e6;
-}
-#chat-container {
-    width: 400px;
-    height: 600px;
+    padding: 0;
     display: flex;
     flex-direction: column;
-    border: 1px solid #ccc;
+    align-items: center;
 }
+
+#chat-container {
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    background-color: #F0F8F9;
+}
+
+#chat-header {
+    background-color: #9FD1D5;
+    width: 100%;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#chat-header h1 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+#chat-header a {
+    margin-left: 10px;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+#chat-header a:hover {
+    text-decoration: underline;
+}
+
 #chat-messages {
+    padding: 20px;
     flex: 1;
     overflow-y: auto;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    max-height: 500px;
 }
+
+.chat-message {
+    margin-bottom: 10px;
+}
+
+.chat-message.question {
+    text-align: right;
+    color: #555;
+}
+
+.chat-message.answer {
+    text-align: left;
+    color: #111;
+}
+
 #user-input {
     display: flex;
     padding: 10px;
-
+    background-color: #9FD1D5;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
 }
+
 #user-input input {
     flex: 1;
     padding: 10px;
-    outline: none;
-}
-#user-input button {
     border: none;
-    background-color: #1e88e5;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+#user-input button {
+    margin-left: 10px;
+    padding: 10px 20px;
+    background-color: #5DAFAD;
     color: white;
-    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
     cursor: pointer;
+}
+
+#user-input button:hover {
+    background-color: #4F9898;
 }

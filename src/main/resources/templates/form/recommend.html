@@ -4,15 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GUNB BOT에게 질문하기</title>
-    <link rel="stylesheet" th:href="@{/css/recommend.css}">
+    <!--<link rel="stylesheet" th:href="@{/css/recommend.css}">-->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
 </head>
 <body>
+    <div class="header">
+        <!-- 로고 이미지 -->
+        <a th:href="@{/main}"> <!-- 메인 페이지 링크 추가 -->
+            <img src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo" class="logo">
+        </a>
+        
+        <div class="links">
+            <!-- 로그인 안했을 때 보이는 메뉴바 -->
+            <div th:if="${session.loginEmail == null}">
+                <a th:href="@{/member/login}">Login</a>
+                <a th:href="@{/member/new}">Signup</a>
+            </div>
+            <!-- 로그인 했을 때 보이는 메뉴바 -->
+            <div th:if="${session.loginEmail != null}">
+                <a th:href="@{/board/main}">Board</a>
+                <a th:href="@{/myPage}">Mypage</a>
+                <a th:href="@{/member/logout}">Logout</a>
+            </div>
+        </div>
+    </div>
+
     <div id="chat-container">
-        <div id="chat-messages"></div>
+
+        <div id="chat-messages">
+        </div>
         <div id="user-input">
-            <input id="userInput" type="text" placeholder="메시지를 입력하세요..." />
+            <input id="userInput" type="text" placeholder="질문을 입력하세요..." />
             <button id="searchButton">전송</button>
-        </div>        
+        </div>    
     </div>
     <script src="/javascript/recommend.js" defer></script>
 </body>

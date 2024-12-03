@@ -34,7 +34,10 @@ public class Shop {
     private String region; // 시도 
     private String city; // 시군구
     private String category; // 업태
+    
+    @Column(length = 255)
     private String mainMenu; // 주메뉴
+    
     private String name; // 업소명
     private String address; // 소재지도
     private String phone; // 전화번호
@@ -57,5 +60,10 @@ public class Shop {
     // likeCount setter
     public void setLikeCount(int likeCount) {
         this.likeCount = likeCount;
+    }
+
+    // setter 메서드 추가
+    public void setMainMenu(String mainMenu) {
+        this.mainMenu = mainMenu;
     }
 }

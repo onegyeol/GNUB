@@ -28,8 +28,15 @@ public class CsvShopWriter implements ItemWriter<ShopDto> {
         for (ShopDto dto : items) {
             System.out.println("imgUrl: " + dto.getImgUrl()); // 로그로 imgUrl 확인
             Shop shop = dto.toEntity();
+                        
+
+            if (shop.getMainMenu() != null && shop.getMainMenu().length() > 255) {
+                shop.setMainMenu(shop.getMainMenu().substring(0, 255));
+            }
+            
             shopList.add(shop);
         }
+    
 
         // Shop 엔티티를 데이터베이스에 저장
         shopRepository.saveAll(shopList);

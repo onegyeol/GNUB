@@ -37,13 +37,15 @@ public class MainController {
     private final Job csvShopJob;
     private final ShopService shopService;
     private final TagController tagController;
+    private final ShopTagMappingService mappingService;
 
     @Autowired
-    public MainController(JobLauncher jobLauncher, Job csvShopJob, ShopService shopService, TagController tagController) {
+    public MainController(JobLauncher jobLauncher, Job csvShopJob, ShopService shopService, TagController tagController, ShopTagMappingService mappingService) {
         this.jobLauncher = jobLauncher;
         this.csvShopJob = csvShopJob;
         this.shopService = shopService;
         this.tagController = tagController;
+        this.mappingService = mappingService;
     } 
 
     @GetMapping("/main")
@@ -52,7 +54,7 @@ public class MainController {
 
         //태그 컨트롤러로 매핑하는거 추가함
         Map<String, List<String>> shopTagsMap = tagController.getShopTagsMap();
-        //mappingService.mapShopAndShopTagsById(); // shop과 shopTag id 매핑
+        mappingService.mapShopAndShopTagsById(); // shop과 shopTag id 매핑
         
         model.addAttribute("shops", shops);
         model.addAttribute("shopTagsMap", shopTagsMap); //이것도 추가함

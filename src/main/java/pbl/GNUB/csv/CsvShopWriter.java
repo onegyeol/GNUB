@@ -26,7 +26,7 @@ public class CsvShopWriter implements ItemWriter<ShopDto> {
 
         // items에서 ShopDto를 추출하여 Shop 엔티티로 변환
         for (ShopDto dto : items) {
-            System.out.println("imgUrl: " + dto.getImgUrl()); // 로그로 imgUrl 확인
+            //System.out.println("imgUrl: " + dto.getImgUrl()); // 로그로 imgUrl 확인
             Shop shop = dto.toEntity();
                         
 

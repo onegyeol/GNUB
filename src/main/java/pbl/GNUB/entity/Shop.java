@@ -35,7 +35,7 @@ public class Shop {
     private String city; // 시군구
     private String category; // 업태
     
-    @Column(length = 255)
+    @Column(name = "main_menu", length = 255)
     private String mainMenu; // 주메뉴
     
     private String name; // 업소명

@@ -7,9 +7,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
-
-import pbl.GNUB.entity.Shop;
-import pbl.GNUB.repository.ShopRepository;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -21,21 +18,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class GptService {
 
-    
-
-    private final ShopRepository shopRepository;
-    private final RestTemplate restTemplate;
-    private final String gptApiUrl = "https://api.openai.com/v1/chat/completions"; // GPT API URL
-
-    @Value("${openai.api.key}")
-    private String gptApiKey;
-
-    public GptService(ShopRepository shopRepository, RestTemplate restTemplate) {
-        this.shopRepository = shopRepository;
-        this.restTemplate = restTemplate;
-    }
-
-    // GPT API 호출 메서드
     public String getGptResponse(String userQuery) {
         try {
             // 데이터베이스에서 관련 데이터 검색
@@ -119,6 +101,5 @@ public class GptService {
                 tags.add(tag);
             }
         }
-        return tags;
     }
 }

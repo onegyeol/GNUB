@@ -55,7 +55,19 @@
             <h1 class="restaurant-name"><span th:text="${shop.name}"></span></h1>
             <div class="info">
                 <p class="label" style="font-size:22px;"><strong>#주메뉴</strong></p>
-                <p class="value" th:text="${shop.mainMenu}"></p>
+                <p class="value" id="mainMenu" th:text="${shop.mainMenu}"></p>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        const mainMenuElem = document.getElementById("mainMenu");
+                        if (mainMenuElem) { // 요소가 존재하는지 확인
+                            const menus = mainMenuElem.textContent.split(",");
+                            if (menus.length > 3) {
+                                mainMenuElem.textContent = menus.slice(0, 3).join(", ") + "...";
+                            }
+                        }
+                    });
+                </script>
+
 
                 <br>
 

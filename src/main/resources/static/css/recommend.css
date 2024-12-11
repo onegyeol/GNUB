@@ -111,6 +111,8 @@ body {
     display: flex;
     flex-direction: column;
     background-color: #F0F8F9;
+    height: calc(100vh - 60px); /* 헤더 제외 전체 화면 */
+    overflow: hidden; /* 스크롤 숨김 */
 }
 
 #chat-header {
@@ -141,31 +143,53 @@ body {
 }
 
 #chat-messages {
-    padding: 20px;
     flex: 1;
-    overflow-y: auto;
+    padding: 10px;
+    overflow-y: auto; /* 세로 스크롤 가능 */
+    display: flex;
+    flex-direction: column; /* 메시지 위아래 배치 */
+    gap: 10px; /* 메시지 간 간격 */
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    margin-bottom: 60px;
 }
 
 .chat-message {
-    margin-bottom: 10px;
+    max-width: 70%;
+    padding: 10px;
+    border-radius: 8px;
+    word-wrap: break-word; /* 긴 단어 줄바꿈 */
+    line-height: 1.4;
+    font-size:16px;
 }
 
 .chat-message.question {
-    text-align: right;
-    color: #555;
+    align-self: flex-end; /* 오른쪽 정렬 */
+    background-color: #D8EAFE; /* 사용자 메시지 색상 */
+    color: #000;
+    font-size:16px;
 }
-
 .chat-message.answer {
-    text-align: left;
+    align-self: flex-start; /* 왼쪽 정렬 */
+    background-color: #E6F7E6; /* GPT 메시지 색상 */
     color: #111;
+    font-size:16px;
 }
 
 #user-input {
+    position: fixed;
+    bottom: 10px;
+    max-width: 800px;
+    width: calc(100% - 20px); /* 양쪽 여백을 고려한 너비 */
     display: flex;
     padding: 10px;
     background-color: #9FD1D5;
     box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    
 }
+
 
 #user-input input {
     flex: 1;

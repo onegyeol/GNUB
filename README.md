@@ -9,7 +9,7 @@
 2024.09.13 ~ 
 
 ## 시스템 아키텍쳐
-<img width="1098" alt="스크린샷 2024-12-12 오전 1 22 34" src="https://github.com/user-attachments/assets/b7f70429-b092-410b-9a44-584d2575733e" />
+<img width="1102" alt="스크린샷 2024-12-12 오전 2 16 04" src="https://github.com/user-attachments/assets/49ab0341-a479-4032-80ff-68e56b6a8c7b" />
 
 ## DB 모델링
 <img width="837" alt="스크린샷 2024-11-24 오후 3 06 02" src="https://github.com/user-attachments/assets/b75d3c67-c9ab-4f44-8364-c9a5aef38225">

@@ -56,7 +56,7 @@ def extract_keywords_with_retries(user_input, retries=5):
             app.logger.debug(f"Extracting keywords from input: {user_input}")
             response = openai.ChatCompletion.create(
                 model="gpt-3.5-turbo",
-                messages=[
+                messages=[ 
                     {"role": "system", "content": 
                      "주어진 문장에서 중요한 음식 단어만 추출하세요. 결과를 콤마(,)로 구분해 반환하세요."},
                     {"role": "user", "content": user_input},
@@ -84,20 +84,27 @@ def extract_time_of_day(user_input):
 
 # 데이터베이스 검색 함수
 def search_shops_by_keywords(keywords: List[str]) -> List[Shop]:
-    shop_tag_alias = aliased(ShopTag)
-    query = g.db.query(Shop).outerjoin(shop_tag_alias, Shop.id == shop_tag_alias.id)
+    try:
+        shop_tag_alias = aliased(ShopTag)
+        query = g.db.query(Shop).outerjoin(shop_tag_alias, Shop.id == shop_tag_alias.id)
 
-    filters = []
-    for keyword in keywords:
-        filters.extend([Shop.name.like(f"%{keyword}%"),
-                        Shop.main_menu.like(f"%{keyword}%"),
-                        Shop.address.like(f"%{keyword}%"),
-                        shop_tag_alias.name.like(f"%{keyword}%"),
-                        shop_tag_alias.tags.like(f"%{keyword}%")])
+        filters = [
+            or_(
+                Shop.name.like(f"%{keyword}%"),
+                Shop.main_menu.like(f"%{keyword}%"),
+                Shop.address.like(f"%{keyword}%"),
+                shop_tag_alias.name.like(f"%{keyword}%"),
+                shop_tag_alias.tags.like(f"%{keyword}%")
+            ) for keyword in keywords
+        ]
 
-    if filters:
-        query = query.filter(or_(*filters))
-    return query.all()
+        if filters:
+            query = query.filter(or_(*filters))
+        return query.all()
+    except Exception as e:
+        app.logger.error(f"데이터베이스 검색 중 오류 발생: {e}")
+        return []
+
 
 def search_shops_with_retries(keywords: List[str], retries: int = 5) -> List[Shop]:
     results_set = set()
@@ -108,28 +115,34 @@ def search_shops_with_retries(keywords: List[str], retries: int = 5) -> List[Sho
 
 # GPT 호출 함수
 def ask_gpt_with_context(input_prompt, keywords=None, time_of_day=None):
-    context = "응답은 최대 세 문장으로 작성하세요."
+    context = "응답은 명확한 문장으로 작성하고, 추천 결과는 간결하게 작성해주세요."
     if time_of_day:
         context += f" {time_of_day}에 적합한 음식 추천 부탁드립니다."
     if keywords:
         context += f" 다음 키워드를 고려하세요: {', '.join(keywords)}."
 
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": context},
-            {"role": "user", "content": input_prompt},
-        ],
-        temperature=0.5,
-        max_tokens=200
-    )
-    return response["choices"][0]["message"]["content"]
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[ 
+                {"role": "system", "content": context},
+                {"role": "user", "content": input_prompt},
+            ],
+            temperature=0.7,
+            max_tokens=200
+        )
+        app.logger.debug(f"GPT 응답: {response}")
+        return response["choices"][0]["message"]["content"]
+    except Exception as e:
+        app.logger.error(f"GPT 호출 중 오류 발생: {e}")
+        return "GPT 응답을 가져오는 중 문제가 발생했습니다."
+    
 
 # 사용자 입력과 음식점 매칭 확인
 def verify_shop_match(user_input: str, shops: List[Shop]) -> bool:
     user_keywords = extract_keywords_with_retries(user_input, retries=1)
     for shop in shops:
-        shop_text = shop.name + " " + shop.main_menu
+        shop_text = shop.name + " " + shop.main_menu + " " + shop.address
         for keyword in user_keywords:
             if fuzz.partial_ratio(keyword, shop_text) > 80:
                 return True
@@ -140,6 +153,7 @@ def handle_query(user_input):
     try:
         time_of_day = extract_time_of_day(user_input)
 
+        # 아침일 때의 추천
         if time_of_day == "아침":
             return {
                 "gptResponse": [
@@ -150,33 +164,63 @@ def handle_query(user_input):
                 ]
             }
 
-        keywords = extract_keywords_with_retries(user_input, retries=5)
-        shops = search_shops_with_retries(keywords, retries=5)
+        # 기본 음식점 추천 (2~3개)
+        if "추천" in user_input or "어디" in user_input:
+            keywords = extract_keywords_with_retries(user_input, retries=3)
+            shops = search_shops_with_retries(keywords, retries=3)
 
-        if shops:
-            shop_info = "\n".join([f"{shop.name} - 주소: {shop.address}" for shop in shops])
-            gpt_input = f"추천할 음식과 음식점:\n{shop_info}"
-        else:
-            gpt_input = "추천할 만한 음식을 알려주세요."
+            # 추천 음식점 목록(2~3개만 제공)
+            if shops:
+                recommended_shops = shops[:3]
+                recommended_info = "\n".join([f"-{shop.name}" for shop in recommended_shops])
+                return {
+                    "gptResponse": [{"message": f"추천드립니다:\n{recommended_info}"}]
+                }
+            else:
+                return {"gptResponse": [{"message": "추천할 음식점이 없습니다. 다시 시도해주세요."}]}
 
-        gpt_responses = [ask_gpt_with_context(gpt_input, keywords, time_of_day)]
+        # 위치 요청 시 음식점의 위치만 제공
+        if "위치" in user_input or "주소" in user_input:
+            keywords = extract_keywords_with_retries(user_input, retries=3)
+            shops = search_shops_with_retries(keywords, retries=3)
 
-        # 응답이 비어 있으면 기본 메시지 추가
-        if not gpt_responses or not gpt_responses[0]:
-            return {"gptResponse": [{"message": "추천할 음식을 알려주세요."}]}
+            # 사용자가 요청한 음식점만 필터링
+            filtered_shops = [shop for shop in shops if any(keyword in shop.name for keyword in keywords)]
 
-        if not shops:
-            return {"gptResponse": gpt_responses}
+            if filtered_shops:
+                shop_details = "\n".join(
+                    f"-{shop.name}: {shop.address}" for shop in filtered_shops
+                )
+                return {
+                    "gptResponse": [{"message": f"요청하신 음식점 위치입니다:\n{shop_details}"}]
+                }
+            else:
+                return {"gptResponse": [{"message": "요청하신 음식점 정보가 없습니다. 다시 시도해주세요."}]}
+            
+        # 메인 메뉴요청 시 음식점의 위치만 제공
+        if "메뉴" in user_input:
+            keywords = extract_keywords_with_retries(user_input, retries=3)
+            shops = search_shops_with_retries(keywords, retries=3)
 
-        if verify_shop_match(user_input, shops):
-            response_cache[user_input] = gpt_responses
-            return {"gptResponse": response_cache[user_input]}
+            # 사용자가 요청한 음식점만 필터링
+            filtered_shops = [shop for shop in shops if any(keyword in shop.name for keyword in keywords)]
 
-        return {"gptResponse": [{"message": "추천한 음식점이 입력과 일치하지 않습니다. 다시 시도해주세요."}]}
+            if filtered_shops:
+                shop_details = "\n".join(
+                    f"-{shop.name}: {shop.main_menu}" for shop in filtered_shops
+                )
+                return {
+                    "gptResponse": [{"message": f"요청하신 음식점 메뉴입니다:\n{shop_details}"}]
+                }
+            else:
+                return {"gptResponse": [{"message": "요청하신 음식점 정보가 없습니다. 다시 시도해주세요."}]} 
+
+
+        return {"gptResponse": [{"message": "무엇을 도와드릴까요?"}]}
 
     except Exception as e:
-        app.logger.error(f"Error while processing query: {e}")
-        return {"gptResponse": [{"message": "죄송합니다. 시스템 오류가 발생했습니다."}]}
+        app.logger.error(f"handle_query 실행 중 오류 발생: {e}")
+        return {"gptResponse": [{"message": "시스템 오류가 발생했습니다. 나중에 다시 시도해주세요."}]}
 
 
 
@@ -191,30 +235,26 @@ def ask_ai():
     if not user_input or not session_id:
         return jsonify({"error": "Invalid query or session_id"}), 400
 
-    # 세션별 캐시 관리
+    # 세션별 캐시 초기화
     if session_id not in response_cache:
-        response_cache[session_id] = {}  # 새로운 세션 캐시 생성
+        response_cache[session_id] = {}
 
     session_cache = response_cache[session_id]
 
-    # 캐시 확인
+    # 캐싱된 응답 반환
     if user_input in session_cache:
-        app.logger.debug(f"세션 {session_id} 캐시에서 응답 반환: {session_cache[user_input]}")
+        app.logger.debug(f"세션 {session_id} 캐시 응답 반환: {session_cache[user_input]}")
         return jsonify(session_cache[user_input]), 200
 
-    # 비동기 작업 실행
-    future = executor.submit(handle_query, user_input)
-    result = future.result()  # handle_query 결과는 이미 JSON 호환 형식
-
-    # AI 응답 누락 시 기본 메시지 설정
-    if not result or "gptResponse" not in result or not result["gptResponse"]:
-        result = {"gptResponse": [{"message": "추천할 수 없습니다. 다시 시도해주세요."}]}
-
-    # 결과를 세션 캐시에 저장
-    session_cache[user_input] = result
-    app.logger.debug(f"세션 {session_id}에 응답 저장: {result}")
-
-    return jsonify(result)  # JSON 응답 반환
+    # 비동기 작업 처리
+    try:
+        future = executor.submit(handle_query, user_input)
+        result = future.result()
+        session_cache[user_input] = result
+        return jsonify(result)
+    except Exception as e:
+        app.logger.error(f"ask_ai 처리 중 오류 발생: {e}")
+        return jsonify({"gptResponse": [{"message": "시스템 오류가 발생했습니다."}]}), 500
 
 
 @app.route('/log', methods=['POST'])

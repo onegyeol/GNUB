@@ -15,19 +15,16 @@ async function fetchDatabaseResponse(query) {
     }
 }
 
-// session_id를 클라이언트에서 생성
+// session_id 생성
 let sessionId = generateSessionId();
+function generateSessionId() {
+    return Math.random().toString(36).substr(2, 9); // 간단한 랜덤 문자열 생성
+}
 
 // 새로고침 시 새로운 session_id 생성
 window.onload = () => {
     sessionId = generateSessionId();
 };
-
-// session_id 생성 함수
-function generateSessionId() {
-    return Math.random().toString(36).substr(2, 9); // 간단한 랜덤 문자열 생성
-}
-
 
 // OpenAI API 호출 함수
 async function fetchAIResponse(query) {
@@ -38,7 +35,7 @@ async function fetchAIResponse(query) {
                 'Content-Type': 'application/json',
                 'Cache-Control': 'no-cache'
             },
-            body: JSON.stringify({ query: query, session_id: sessionId }),
+            body: JSON.stringify({ query, session_id: sessionId }),
         });
 
         if (!response.ok) {
@@ -58,12 +55,10 @@ async function fetchAIResponse(query) {
     }
 }
 
-
-
-// sendDataToBackend 함수 정의
+// 데이터 백엔드 전송 함수
 async function sendDataToBackend(userMessage, aiResponse) {
     try {
-        const response = await fetch('http://localhost:5000/log', { // 예: 로그 엔드포인트
+        const response = await fetch('http://localhost:5000/log', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ userMessage, aiResponse }),
@@ -74,104 +69,58 @@ async function sendDataToBackend(userMessage, aiResponse) {
     }
 }
 
-
-// 메시지 전송 처리 함수
-async function handleMessageSend() {
-    const userMessage = userInput.value.trim();
-    if (userMessage.length === 0) {
-        alert('입력된 내용이 없습니다. 다시 시도해주세요.');
-        return;
-    }
-
-    userInput.value = ''; // 입력 필드 초기화
-    showLoading(); // 로딩 메시지 표시
-
-    try {
-        const aiResponse = await fetchAIResponse(userMessage); // AI 응답 받기
-        hideLoading(); // 로딩 메시지 숨기기
-
-        // 메시지 그룹 생성
-        createMessageGroup(userMessage, aiResponse); 
-
-        // 데이터 백엔드로 전송
-        await sendDataToBackend(userMessage, aiResponse); 
-    } catch (error) {
-        hideLoading(); // 로딩 메시지 숨기기
-        alert('오류 발생: ' + error.message);
-    }
-}
-
-
-
-
 // DOM 요소 가져오기
 const chatMessages = document.querySelector('#chat-messages');
 const userInput = document.querySelector('#userInput');
 const sendButton = document.querySelector('#searchButton');
 
-// 메시지 그룹을 생성하는 함수
-function createMessageGroup(userMessage, aiMessage) {
-    const messageGroup = document.createElement('div');
-    messageGroup.className = 'message-group';
+// 메시지 표시 함수
+function addMessageToChat(type, content) {
+    // 메시지 생성
+    const messageElement = document.createElement("div");
+    messageElement.className = `chat-message ${type}`;
 
-    // 사용자 메시지 추가
-    const userMessageElement = document.createElement('div');
-    userMessageElement.className = 'message user';
-    userMessageElement.textContent = `나: ${userMessage}`;
-    messageGroup.appendChild(userMessageElement);
+    // Link 처리
+    if (typeof content === "object" && content.message) {
+        // Text Message
+        const messageText = document.createElement("p");
+        messageText.innerText = content.message;
+        messageElement.appendChild(messageText);
 
-    // AI 응답 추가
-    const aiMessageElement = document.createElement('div');
-    aiMessageElement.className = 'message ai';
-
-    // AI 응답 데이터 처리
-    if (Array.isArray(aiMessage) && aiMessage.length > 0) {
-        const firstResponse = aiMessage[0];
-
-        if (typeof firstResponse === 'string') {
-            // 응답이 단순 문자열일 경우
-            aiMessageElement.textContent = `GNUB: ${firstResponse}`;
-        } else if (typeof firstResponse === 'object' && firstResponse.message) {
-            // 응답이 객체일 경우
-            aiMessageElement.textContent = `GNUB: ${firstResponse.message}`;
-
-            // 링크가 있을 경우 추가
-            if (firstResponse.link) {
-                const aiLinkElement = document.createElement('a');
-                aiLinkElement.href = firstResponse.link;
-                aiLinkElement.textContent = '메뉴 바로보기'; // 링크 텍스트
-                aiLinkElement.target = '_blank'; // 새 탭에서 링크 열기
-                aiMessageElement.appendChild(document.createElement('br')); // 줄바꿈 추가
-                aiMessageElement.appendChild(aiLinkElement); // 링크 추가
-            }
-        } else {
-            aiMessageElement.textContent = `GNUB: 알 수 없는 응답 형식입니다.`;
+        // Optional Link
+        if (content.link) {
+            const messageLink = document.createElement("a");
+            messageLink.href = content.link;
+            messageLink.target = "_blank"; // 새 창에서 열기
+            messageLink.innerText = "학식 메뉴 바로보기";
+            messageLink.style.display = "block"; // 링크는 별도의 줄로 출력
+            messageElement.appendChild(messageLink);
         }
     } else {
-        aiMessageElement.textContent = `GNUB: AI 응답이 없습니다.`;
+        // Text Content
+        const messageText = document.createElement("p");
+        messageText.innerText = content;
+        messageElement.appendChild(messageText);
     }
 
-    messageGroup.appendChild(aiMessageElement);
-    chatMessages.appendChild(messageGroup);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
+    chatMessages.appendChild(messageElement);
+    chatMessages.scrollTop = chatMessages.scrollHeight; // 스크롤 아래로 이동
 }
-
 
 
 // 로딩 메시지 표시 함수
 function showLoading() {
-    const loadingElement = document.createElement('div');
-    loadingElement.className = 'message ai';
-    loadingElement.id = 'loading';
-    loadingElement.textContent = '답변을 작성 중입니다...';
-    chatMessages.appendChild(loadingElement);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
+    addMessageToChat('answer', '답변을 작성 중입니다...');
 }
 
 // 로딩 메시지 숨김 함수
 function hideLoading() {
-    const loadingElement = document.getElementById('loading');
-    if (loadingElement) chatMessages.removeChild(loadingElement);
+    const loadingMessages = document.querySelectorAll('.chat-message.answer');
+    loadingMessages.forEach((msg) => {
+        if (msg.textContent === '답변을 작성 중입니다...') {
+            chatMessages.removeChild(msg);
+        }
+    });
 }
 
 // 메시지 전송 처리 함수
@@ -183,14 +132,20 @@ async function handleMessageSend() {
     }
 
     userInput.value = ''; // 입력 필드 초기화
+    addMessageToChat('question', `사용자 : ${userMessage}`); // 사용자 메시지 추가
     showLoading(); // 로딩 메시지 표시
 
     try {
         const aiResponse = await fetchAIResponse(userMessage); // AI 응답 받기
         hideLoading(); // 로딩 메시지 숨기기
 
-        createMessageGroup(userMessage, aiResponse); // 메시지 그룹 생성
-        await sendDataToBackend(userMessage, aiResponse); // 데이터 백엔드로 전송
+        const responseText = Array.isArray(aiResponse) && aiResponse.length > 0 
+            ? aiResponse[0] 
+            : { message: "AI 응답이 없습니다." }; // 객체 형태로 전달
+        addMessageToChat('answer', responseText);
+ // GPT 응답 추가
+
+        await sendDataToBackend(userMessage, responseText); // 데이터 백엔드로 전송
     } catch (error) {
         hideLoading(); // 로딩 메시지 숨기기
         alert('오류 발생: ' + error.message);
@@ -204,7 +159,3 @@ sendButton.addEventListener('click', handleMessageSend);
 userInput.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') sendButton.click();
 });
-
-window.onload = () => {
-    sessionStorage.clear(); // 세션 데이터 초기화
-};

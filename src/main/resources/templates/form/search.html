@@ -113,11 +113,13 @@
                             
 
                         </div>
+                        
+                        <!-- 좋아요 버튼 -->
                         <div class="image-btn-container">
-                            <div class="number-display" th:text="${shop.likeCount}"></div>
-                            <form th:action="@{/like}" method="POST">
+                            <div class="number-display" th:id="'numberDisplay-' + ${shop.id}" th:text="${shop.likeCount}">0</div>
+                            <form th:action="@{/toggleLike}" method="POST">
                                 <input type="hidden" name="shopId" th:value="${shop.id}">
-                                <button type="submit" class="toggle-btn">좋아요</button>
+                                <button type="submit" th:id="'likeButton-' + ${shop.id}" class="toggle-btn">좋아요</button>
                             </form>
                         </div>
                     </div>

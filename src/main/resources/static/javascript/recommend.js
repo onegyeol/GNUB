@@ -81,21 +81,9 @@ function addMessageToChat(type, content) {
     messageElement.className = `chat-message ${type}`;
 
     // Link 처리
-    if (typeof content === "object" && content.message) {
-        // Text Message
-        const messageText = document.createElement("p");
-        messageText.innerText = content.message;
-        messageElement.appendChild(messageText);
-
-        // Optional Link
-        if (content.link) {
-            const messageLink = document.createElement("a");
-            messageLink.href = content.link;
-            messageLink.target = "_blank"; // 새 창에서 열기
-            messageLink.innerText = "학식 메뉴 바로보기";
-            messageLink.style.display = "block"; // 링크는 별도의 줄로 출력
-            messageElement.appendChild(messageLink);
-        }
+    if (content instanceof HTMLElement) {
+        // HTML element (링크)
+        messageElement.appendChild(content);
     } else {
         // Text Content
         const messageText = document.createElement("p");
@@ -133,6 +121,7 @@ async function handleMessageSend() {
 
     userInput.value = ''; // 입력 필드 초기화
     addMessageToChat('question', `사용자 : ${userMessage}`); // 사용자 메시지 추가
+
     showLoading(); // 로딩 메시지 표시
 
     try {
@@ -142,8 +131,24 @@ async function handleMessageSend() {
         const responseText = Array.isArray(aiResponse) && aiResponse.length > 0 
             ? aiResponse[0] 
             : { message: "AI 응답이 없습니다." }; // 객체 형태로 전달
-        addMessageToChat('answer', responseText);
- // GPT 응답 추가
+
+        // 응답이 객체일 경우 처리 (message와 link)
+        if (typeof responseText === 'object' && responseText.message) {
+            // 'GNUB: ' + 응답 메시지
+            addMessageToChat('answer', `GNUB: ${responseText.message}`);
+
+            // 링크가 있을 경우 처리
+            if (responseText.link) {
+                const linkContent = document.createElement("a");
+                linkContent.href = responseText.link;
+                linkContent.target = "_blank"; // 새 창에서 열기
+                linkContent.innerText = "학식 메뉴 바로보기"; // 링크 텍스트
+                addMessageToChat('answer', linkContent); // 링크만 추가
+            }
+        } else {
+            // 객체가 아닌 경우 그냥 메시지 출력
+            addMessageToChat('answer', `GNUB: ${responseText}`);
+        }
 
         await sendDataToBackend(userMessage, responseText); // 데이터 백엔드로 전송
     } catch (error) {

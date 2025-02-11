@@ -163,6 +163,7 @@
             flex-grow: 2;
             display: flex;
             justify-content: center;
+            margin-right: 10%;
         }
 
         .auth-box {
@@ -260,7 +261,6 @@
         .image-wrapper:hover img {
             filter: blur(5px); /* 마우스 올렸을 때 흐리게 만드는 효과 */
         }
-
 
         .campus-text {
             position: absolute;
@@ -625,13 +625,13 @@
                                     <p class="card-rest-name" th:text="${shop.name}"></p>
                                     <div class="image-btn-container">
                                         <div class="like-section">
-                                            <p id="likeCount" th:text="${shop.likeCount}"></p>
-                                                <form th:action="@{/toggleLike}" method="POST">
-                                                    <input type="hidden" name="shopId" th:value="${shop.id}">
-                                                    <button type="submit" class="like-btn">
-                                                <img class="like-icon" src="https://cdn-icons-png.flaticon.com/512/535/535183.png" alt="Heart Icon">
-                                                    </button>
+                                            <form th:action="@{/toggleLike}" method="POST">
+                                                <input type="hidden" name="shopId" th:value="${shop.id}">
+                                                <button type="submit" class="like-btn">
+                                                    <img class="like-icon" src="https://cdn-icons-png.flaticon.com/512/535/535183.png" alt="Heart Icon">
+                                                </button>
                                             </form>
+                                            <p id="likeCount" th:text="${shop.likeCount}"></p>
                                         </div>
                                     </div>
                                 </li>

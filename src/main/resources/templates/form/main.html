@@ -243,22 +243,24 @@
 
         .image-wrapper {
             position: relative;
-            width: 535px;
+            width: 50%; /* 원하는 크기로 설정 */
             height: 100%;
             overflow: hidden;
             cursor: pointer;
+            transition: filter 0.3s ease;
         }
 
         .image-wrapper img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: filter 0.3s ease;
+            transition: filter 0.3s ease; /* 흐려지는 효과 부드럽게 전환 */
         }
 
-        .image-wrapper.blurred img {
-            filter: blur(10px);
+        .image-wrapper:hover img {
+            filter: blur(5px); /* 마우스 올렸을 때 흐리게 만드는 효과 */
         }
+
 
         .campus-text {
             position: absolute;
@@ -550,7 +552,7 @@
             <div class="common-desk-header">
                 <div class="header-wrap">
                     <div class="main-logo">
-                        <a href="/">
+                        <a href="/main">
                             <img class="logo" src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo">
                         </a>
                     </div>
@@ -571,24 +573,26 @@
             </div>
         </header>
 
-        <div class="top-nav-content" style="display: none;">
+        <div class="banner-box" id="toggleBanner">
+            <div class="Banner-Wrap">
+                <p class="Banner-Content" id="bannerText" onclick="toggleCampusView()">클릭하면 원하는 캠퍼스를 선택할 수 있어용</p>
+                <div class="Banner-Selection"></div>
+            </div>
+        </div>
+        
+        <!-- 캠퍼스 이미지 영역 -->
+        <div class="top-nav-content" id="campusImages" style="display: none;">
             <div class="top-nav-key-visual">
                 <div class="image-container">
-                    <div class="image-wrapper left-image" onclick="filterByLocation('가좌동')">
+                    <div class="image-wrapper left-image">
                         <img src="https://www.gnu.ac.kr/upload/main/na/bbs_1047/ntt_2258160/img_796b61c4-e42a-44bc-8dff-4887eaa1c37f1730876309843.jpg" alt="가좌캠퍼스">
                         <p class="campus-text">가좌캠퍼스</p>
                     </div>
-                    <div class="image-wrapper right-image" onclick="filterByLocation('칠암동')">
+                    <div class="image-wrapper right-image">
                         <img src="https://www.gnu.ac.kr/common/nttEditorImgView.do?imgKey=96b1e7e4b113c43914996108683bca1b" alt="칠암캠퍼스">
                         <p class="campus-text">칠암캠퍼스</p>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="banner-box" id="toggleBanner">
-            <div class="Banner-Wrap">
-                <p class="Banner-Content">클릭하면 원하는 캠퍼스를 선택할 수 있어용</p>
-                <div class="Banner-Selection"></div>
+                </div>                
             </div>
         </div>
 
@@ -733,6 +737,20 @@
             }
             adjustLayout();
         });
+
+        function toggleCampusView() {
+            const campusImages = document.getElementById("campusImages");
+            const bannerText = document.getElementById("bannerText");
+
+            // 캠퍼스 이미지 영역의 표시 상태 확인 후 토글
+            if (campusImages.style.display === "none") {
+                campusImages.style.display = "block"; // 이미지 보이게
+                bannerText.style.display = "none"; // 글자 숨기기
+            } else {
+                campusImages.style.display = "none"; // 이미지 숨기기
+                bannerText.style.display = "block"; // 글자 다시 보이게
+            }
+        }
 
         </script>
 </body>

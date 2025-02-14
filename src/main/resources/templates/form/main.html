@@ -46,7 +46,7 @@
         }
 
         .header-wrap {
-            background-color: #9FD1D5;
+            background-color: #41bbca;
             width: 1070px;
             display: flex;
             justify-content: space-between;
@@ -289,7 +289,7 @@
             width: 100%;
             padding: 10px;
             border: none;
-            border-radius: 5px;
+            border-radius: 15px;
             font-size: 16px;
         }
 
@@ -332,7 +332,7 @@
             width: 100%;
             margin-bottom: 40px;
             background-color: #fff;
-            border-radius: 10px;
+            border-radius: 40px;
             padding: 20px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
@@ -361,6 +361,7 @@
             font-size: 24px;
             font-weight: bold;
             color: #333;
+            margin-left: 1%;
         }
 
         .card-section-rest-cnt {
@@ -389,6 +390,7 @@
             height: 100%;
             object-fit: cover;
             object-position: center;
+            border-radius: 20px;
         }
 
         .card-rest-name {
@@ -523,7 +525,7 @@
             padding: 0;
             border: none;
             border-radius: 50%;
-            background-color: #88CDD0;
+            background-color: #41bbca;
             color: white;
             font-size: 16px;
             cursor: pointer;
@@ -628,7 +630,7 @@
                                             <form th:action="@{/toggleLike}" method="POST">
                                                 <input type="hidden" name="shopId" th:value="${shop.id}">
                                                 <button type="submit" class="like-btn">
-                                                    <img class="like-icon" src="https://cdn-icons-png.flaticon.com/512/535/535183.png" alt="Heart Icon">
+                                                    <img class="like-icon" src="https://cdn-icons-png.flaticon.com/512/833/833472.png" alt="Heart Icon">
                                                 </button>
                                             </form>
                                             <p id="likeCount" th:text="${shop.likeCount}"></p>
@@ -641,7 +643,7 @@
                     </section>
                 </th:block>
             <a href="/ask" class="fixed-button">
-            <img src="https://www.gnu.ac.kr/images/web/main/sub_cnt/bs03.png" alt="캐릭터 기본형" width="50" height="50">
+                <img src="https://www.gnu.ac.kr/images/web/main/sub_cnt/bs03.png" alt="캐릭터 기본형" width="50" height="50">
             </a>
         </div>
     </main>

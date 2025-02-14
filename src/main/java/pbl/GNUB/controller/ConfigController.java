@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/config")
+//@RequestMapping("/config")
 public class ConfigController {
-    @Value("${openai.api.key}")
+    //@Value("${openai.api.key}")
     private String openaiApiKey;
 
     @GetMapping("/apiKey")

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +27,12 @@ public class BoardService {
     @Transactional
     public void save(BoardDto boardDTO, Member author) {
         System.out.println("Saving board with author: " + author.getEmail());
-        Board board = Board.toSaveEntity(boardDTO, author);
+        
+        Board board = new Board();
+        board.setTitle(boardDTO.getTitle());
+        board.setContent(boardDTO.getContent());
+        board.setAuthor(author);
+
         boardRepository.save(board);
     }
 
@@ -88,5 +94,8 @@ public class BoardService {
         return boardRepository.findByAuthorEmail(email);
     }
 
-    
+    public List<Board> getMorePosts(int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.by(Sort.Direction.DESC, "boardCreatedTime"));
+        return boardRepository.findAll(pageable).getContent();
+    }
 }

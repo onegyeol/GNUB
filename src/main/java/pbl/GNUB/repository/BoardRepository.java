@@ -21,6 +21,8 @@ public interface BoardRepository extends JpaRepository<Board, Long>{
     List<Board> findByAuthorEmail(@Param("email") String email);
 
     @Query("SELECT b FROM Board b WHERE b.author.email = :email")
-    Page<Board> findByAuthorEmailPaged(@Param("email") String email, Pageable pageable);        
+    Page<Board> findByAuthorEmailPaged(@Param("email") String email, Pageable pageable);     
+    
+
 
 }

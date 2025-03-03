@@ -6,10 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GNUB - 게시판</title>
     <link rel="icon" type="image/png" href="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144">
-    <link rel="stylesheet" th:href="@{/css/style.css}">
     <style>
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
             font-family: 'Noto Sans KR', sans-serif;
@@ -22,12 +20,14 @@
         body, html {
             background-color: #f0f0f0;
             min-width: 1070px;
+            overflow: auto; /* 스크롤 가능하도록 설정 */
         }
 
         #root {
             width: 100%;
             min-height: auto;
             overflow-x: hidden;
+            padding-bottom: 70px; /* 푸터 높이만큼 패딩 추가 */
         }
 
         .header-content {
@@ -204,120 +204,116 @@
             transform: translateY(-50%);
         }
 
-        .table-container h1 {
-            font-size: 300%;
-            color: black;
-            text-align: center; /* 왼쪽 정렬 */
-            width: 100%; /* 헤더 및 푸터 크기 내에 맞게 */
-            padding-bottom: 1.5%;
-            padding-top: 1%;
+        .container {
+            max-width: 1070px;
+            margin: auto;
+            padding: 20px;
+            padding-bottom: 100px; /* 푸터 공간 확보 */
         }
 
-        .boardimg{
-            width:100%;
-            height: 100%;
-            object-fit: contain;
+        .container h1{
+            margin-bottom: 1%;
+            margin-left: 2%;
         }
 
-        .board-table {
-            overflow: auto; /* 테이블이 길어지면 가로 스크롤 */
-            width: 1070px;
+        .post-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding-bottom: 80px; /* 푸터와 겹치지 않도록 */
+        }
+
+        .post-card {
+            display: flex;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             align-items: center;
-            margin: 0 auto;
-            height: 100%;
         }
 
-        .board-table th, .board-table td {
-            font-family: 'Arial', sans-serif;
-            padding: 12px;
-            text-align: center;
-            border-bottom: 1px solid #ddd;
+        .post-image {
+            width: 150px;
+            height: 100px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-right: 15px;
         }
 
-        .board-table th {
-            background-color: #41bbca;
-            text-align: center; /* 중앙 정렬 */
-            font-family: 'Arial', sans-serif;
+        .post-content {
+            flex: 1;
+        }
+
+        .post-title {
             font-size: 18px;
-        }
-
-        .pagination-container, .pagination .href-write {
-            position: absolute;
-            bottom: 70px; /* 푸터 위로 배치되도록 위치 지정 */
-            right: -400px;
-            justify-content: center;
-        }
-
-        .pagination-container {
-            position: fixed; /* 고정된 위치 */
-            bottom: 60px; /* 푸터 바로 위에 배치 */
-            left: 50%;
-            transform: translateX(-50%); /* 가로 중앙 정렬 */
-            width: auto;
-            z-index: 101; /* 다른 요소들보다 위에 위치 */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px 15px;
-        }
-
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px; /* 버튼 간격 */
-        }
-
-        /* 페이지네이션 버튼 스타일 */
-        .pagination a {
-            padding: 8px 16px;
-            background-color: #41bbca; /* 기존 배경색 유지 */
-            color: black !important; /* 글씨 색을 검정색으로 고정 */
-            text-decoration: none;
-            border-radius: 4px;
             font-weight: bold;
+            color: #333;
+            text-decoration: none;
         }
 
-        /* "이전", "다음" 버튼에 검정색 적용 */
-        .pagination a:first-child, /* "이전" 버튼 */
-        .pagination a:last-child {  /* "다음" 버튼 */
-            color: black !important;
+        .post-title:hover {
+            text-decoration: underline;
         }
 
-        .pagination-container a {
-            display: inline-block;
-            padding: 8px 16px;
-            margin: 0 4px;
+        .post-date {
+            font-size: 14px;
+            color: #777;
+            margin-top: 5px;
+        }
+
+        .post-description {
+            font-size: 14px;
+            color: #555;
+            margin-top: 10px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .write-button {
+            position: fixed;
+            bottom: 80px; /* 푸터 위로 띄우기 */
+            right: calc((100% - 1070px) / 2); /* 헤더와 푸터에 맞춰 정렬 */
             background-color: #41bbca;
-            color: black;
+            color: white;
+            width: 50px; /* 너비 지정 */
+            height: 50px; /* 높이 지정 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%; /* 완전히 원형으로 */
+            font-size: 24px; /* 아이콘 크기 */
             text-decoration: none;
-            border-radius: 4px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            margin-right: 1%;
         }
 
-        .pagination a.disabled {
-            pointer-events: none;
-            color: #ccc;
-        }
-
-        .pagination a.active {
-            color: blue;
-            font-weight: bold;
+        .write-button:hover {
+            background-color: #35a0b0;
         }
 
         .bottom-nav-wrapper {
             width: 100%;
+            display: flex;
+            justify-content: center; /* 중앙 정렬 */
             position: fixed;
             bottom: 0;
             left: 0;
-            background-color: #f0f0f0;
-            border-top: none;
+            z-index: 500;
+            height: 60px;
         }
 
         .bottom-nav {
-            width: 1070px;
+            width: 1070px; /* 헤더와 동일한 너비 */
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
+            height: 100%;
         }
 
         .bottom-nav a {
@@ -363,7 +359,7 @@
             margin: 0 15px; 
         }
 
-        .nav-container .login-logout {
+        .nav-container  {
             margin-left: auto;
         }
 
@@ -376,11 +372,16 @@
         .bottom-nav-wrapper {
             z-index: 400;
         }
-</style>
 
+        @media screen and (max-width: 768px) {
+            .restaurant-card {
+                width: 95%;
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-    
     <header class="header-content">
         <div class="common-desk-header">
             <div class="header-wrap">
@@ -390,13 +391,12 @@
                     </a>
                 </div>
 
-                
                 <div class="search-form">
                     <form action="/search" method="get">
                         <div class="input-wrap">
                             <input class="search-input" type="search" id="query" name="query" placeholder="지역, 음식 또는 식당명 입력" th:value="${searchTerm}" maxlength="255" autocomplete="off">
                             <button type="submit" class="btn-search">
-                                    <img src="/image/searching-icon.png" alt="검색버튼">
+                                <img src="/image/searching-icon.png" alt="검색버튼">
                             </button>
                         </div>
                     </form>
@@ -406,61 +406,29 @@
         </div>
     </header>
 
-    <div class="body">
-        <div class="table-container">
-            <h1>게시판</h1>
-            
-            <table class="board-table">
-                <thead>
-                    <tr>
-                        <th class="post-num">번호</th>
-                        <th class="author">작성자</th>
-                        <th class="post-title">제목</th>
-                        <th class="post-date">작성일</th>
-                        <th>조회수</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="board : ${boardList}">
-                        <td th:text="${board.id}"></td>
-                        <td th:text="${board.authorName}"></td> <!-- 작성자 이름 표시 -->
-                        <td><a th:href="@{|/board/${board.id}|}" th:text="${board.title}"></a></td>
-                        <!-- 날짜 포맷팅: null 값 처리 -->
-                        <td th:text="${board.boardCreatedTime != null ? board.boardCreatedTime : 'N/A'}"></td>
-                        <td th:text="${board.boardHits}"></td>
-                    </tr>
-                </tbody>
-                
-            </table>
-    
-            <div class="pagination-container">
-                <div class="pagination">
-                    <a th:href="@{/board/main(page=${currentPage - 1})}" 
-                        th:class="${currentPage <= 1} ? 'disabled' : ''"
-                        th:onclick="return ${currentPage > 1}">
-                        &laquo; 이전
-                    </a>
-                    
-                    <span th:each="pageNumber : ${#numbers.sequence(1, totalPages)}">
-                        <a th:href="@{/board/main(page=${pageNumber})}" 
-                            th:text="${pageNumber}"
-                            th:class="${pageNumber == currentPage ? 'active' : ''}"></a>
-                    </span>
-                    
-                    <a th:href="@{/board/main(page=${currentPage + 1})}"
-                        th:class="${currentPage >= totalPages} ? 'disabled' : ''"
-                        th:onclick="return ${currentPage < totalPages}">
-                        다음 &raquo;
-                    </a>
-                    
-                    <a th:href="@{/board/write}" class="href-write">글쓰기</a>
+    <div class="container">
+        <h1>📌 게시판</h1>
+
+        <div id="post-list" class="post-list">
+            <div th:each="board : ${boardList}" class="post-card">
+                <!--<img th:src="${board.thumbnail != null ? board.thumbnail : '/images/default-thumbnail.jpg'}" class="post-image">-->
+                <div class="post-content">
+                    <a th:href="@{|/board/${board.id}|}" class="post-title" th:text="${board.title}"></a>
+                    <div class="post-date" th:text="${board.boardCreatedTime}"></div>
+                    <div class="post-description" th:text="${board.content}"></div>
                 </div>
             </div>
         </div>
+
+        <!-- ✅ 로딩 스피너 (데이터 불러오는 중 표시) -->
+        <div id="loading" style="display: none; text-align: center; padding: 20px;">
+            <img src="/images/loading.gif" alt="로딩 중..." width="50">
+        </div>
+
+        
+
     </div>
 
-    <script src="/javascript/script.js" defer></script> <!--script.js 파일을 불러옴 -->
-    
     <div class="bottom-nav-wrapper">
         <nav class="bottom-nav">
             <div class="nav-container">
@@ -498,7 +466,10 @@
         </nav>
     </div>
 
+    <!-- 글쓰기 버튼 -->
+    <a th:href="@{/board/write}" class="write-button">+</a>
 
-    </div>
+
+    
 </body>
 </html>

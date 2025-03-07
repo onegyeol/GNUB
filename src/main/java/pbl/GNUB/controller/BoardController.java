@@ -1,12 +1,20 @@
 package pbl.GNUB.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +30,7 @@ import pbl.GNUB.service.BoardService;
 public class BoardController {
     private final BoardService boardService;
     private final MemberRepository memberRepository;
+    private final String uploadDir = "uploads/";
 
     @GetMapping("/main")
     public String BoardMain(Model model, @RequestParam(value = "page", defaultValue = "1") int page) {
@@ -35,6 +44,38 @@ public class BoardController {
 
         return "form/board";
     }
+
+    @PostMapping("/uploadImage")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> uploadImage(@RequestParam("files") MultipartFile[] files) {
+        Map<String, Object> response = new HashMap<>();
+        List<String> imageUrls = new ArrayList<>();
+
+        if (files.length > 0) {
+            try {
+                for (MultipartFile file : files) {
+                    if (!file.isEmpty()) {
+                        String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+                        Path filePath = Paths.get(uploadDir + fileName);
+                        Files.createDirectories(filePath.getParent());
+                        Files.write(filePath, file.getBytes());
+
+                        imageUrls.add("/uploads/" + fileName);
+                    }
+                }
+                response.put("imageUrls", imageUrls);
+                return ResponseEntity.ok(response);  // ✅ JSON 응답 반환
+            } catch (IOException e) {
+                e.printStackTrace();
+                response.put("error", "파일 업로드 실패");
+                return ResponseEntity.status(500).body(response);
+            }
+        } else {
+            response.put("error", "파일이 없습니다.");
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+    
 
     // 게시글 로딩
     @GetMapping("/load")
@@ -61,7 +102,6 @@ public class BoardController {
             Member author = memberRepository.findByEmail(email)
                                 .orElseThrow(() -> new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
 
-            // HTML 변환 제거 (그대로 저장)
             boardService.save(boardDTO, author);
 
             System.out.println("BoardDTO: " + boardDTO);  // DTO 내용 확인
@@ -77,6 +117,11 @@ public class BoardController {
     @GetMapping("/{id}")
     public String BoardPage(@PathVariable("id") Long id, Model model) {
         BoardDto boardDto = boardService.getBoardById(id);
+
+        // Zero Width No-Break Space 제거
+        String cleanedContent = boardDto.getContent().replaceAll("\uFEFF", "");
+        boardDto.setContent(cleanedContent);
+
         model.addAttribute("board", boardDto);
 
         return "form/post";  // 상세 페이지 템플릿
@@ -86,6 +131,7 @@ public class BoardController {
     @GetMapping("/edit/{id}")
     public String BoardEdit(@PathVariable("id") Long id, Model model) {
         BoardDto boardDto = boardService.getBoardById(id);
+
         model.addAttribute("board", boardDto);
         return "form/edit";
     }
@@ -93,8 +139,11 @@ public class BoardController {
     // 게시글 수정 요청 처리
     @PostMapping("/edit/{id}")
     public String updateBoard(@PathVariable("id") Long id, @ModelAttribute BoardDto boardDTO) {
+        
         // HTML 변환 제거 (그대로 저장)
         boardService.updateBoard(id, boardDTO);
+
+        System.out.println("BoardDTO: " + boardDTO);  // DTO 내용 확인
 
         return "redirect:/board/" + id;  // 수정 후 상세 페이지로 이동
     }

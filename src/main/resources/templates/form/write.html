@@ -531,32 +531,57 @@
 
 
 
-		// summernote	
-		$('#summernote').summernote({
-			height: 370,
-			lang: "ko-KR",
-			focus: true,
-			disableParagraph: false,
-			toolbar: [
-				['fontname', ['fontname']],
-				['fontsize', ['fontsize']],
-				['style', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
-				['table', ['table']],
-				['para', ['ul', 'paragraph']],
-				['height', ['height']],
-				['view',['link','picture']]
-			],
-			fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', '맑은 고딕', '궁서', '굴림체', '굴림', '돋음체', '바탕체'],
-			fontSizes: ['8','9','10','11','12','14','16','18','20','22','24','28','30','36','50','72'],
-			callbacks: {
-				onInit: function() {
-					console.log("Summernote 초기화됨.");
-				},
-				onChange: function(contents, $editable) {
-					console.log("변경된 내용:", contents);
-				}
-			}
-		});
+		$(document).ready(function() {
+            $('#summernote').summernote({
+                height: 400,
+                lang: "ko-KR",
+                focus: true,
+                disableParagraph: false,
+                callbacks: {
+                    onImageUpload: function(files) {
+                        uploadImages(files);  // ✅ 여러 개의 파일 업로드 지원
+                    }
+                },
+                toolbar: [
+                    ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+                    ['insert', ['picture', 'link', 'table']],
+                    ['view', ['fullscreen', 'codeview']]
+                ]
+            });
+        });
+
+        // 📌 다중 이미지 업로드 함수
+        function uploadImages(files) {
+            let formData = new FormData();
+            
+            for (let i = 0; i < files.length; i++) {
+                formData.append("files", files[i]);  // ✅ `files[]` 배열로 추가
+            }
+
+            $.ajax({
+                url: '/board/uploadImage',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    if (response.imageUrls) {
+                        response.imageUrls.forEach(url => {
+                            $('#summernote').summernote('insertImage', url);
+                        });
+                    } else {
+                        alert("이미지 업로드 실패! 다시 시도해주세요.");
+                    }
+                },
+                error: function(error) {
+                    console.error("이미지 업로드 실패:", error);
+                    alert("이미지 업로드 중 오류가 발생했습니다.");
+                }
+            });
+        }
+
+
+
 
 
 		let i = 0;

@@ -64,7 +64,7 @@ public class BoardController {
                     }
                 }
                 response.put("imageUrls", imageUrls);
-                return ResponseEntity.ok(response);  // ✅ JSON 응답 반환
+                return ResponseEntity.ok(response);  // JSON 응답 반환
             } catch (IOException e) {
                 e.printStackTrace();
                 response.put("error", "파일 업로드 실패");

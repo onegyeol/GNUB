@@ -1,8 +1,6 @@
 plugins {
 	id 'java'
-
-	id 'org.springframework.boot' version '3.4.2'
-
+	id 'org.springframework.boot' version '3.3.8'
 	id 'io.spring.dependency-management' version '1.1.6'
 }
 
@@ -45,11 +43,9 @@ dependencies {
 	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
 	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
-	compileOnly 'org.projectlombok:lombok:1.18.30'
-    annotationProcessor 'org.projectlombok:lombok:1.18.30'
-    testCompileOnly 'org.projectlombok:lombok:1.18.30'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
+	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.mysql:mysql-connector-j'
+	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.batch:spring-batch-test'
 	testImplementation 'org.springframework.security:spring-security-test'
@@ -60,13 +56,4 @@ dependencies {
 
 test {
     useJUnitPlatform() // test 블록 안에서 메서드를 호출해야 합니다.
-	ignoreFailures = true
 }
-
-tasks.withType(Test).configureEach {
-    reports {
-        html.required.set(false) // HTML 리포트 비활성화
-        junitXml.required.set(false) // XML 리포트도 비활성화 (선택 사항)
-    }
-}
-

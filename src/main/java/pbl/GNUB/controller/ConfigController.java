@@ -17,11 +17,11 @@ public class ConfigController {
     //@Value("${openai.api.key}")
     private String openaiApiKey;
 
-    //@GetMapping("/apiKey")
+    @GetMapping("/apiKey")
     public ResponseEntity<String> getApiKey() {
         return ResponseEntity.ok(openaiApiKey);
     }
-    //@GetMapping("/database")
+    @GetMapping("/database")
     public Map<String, String> getDatabaseInfo() {
         return Map.of("key1", "value1", "key2", "value2");
     }

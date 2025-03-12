@@ -55,6 +55,7 @@ public class MainController {
         //태그 컨트롤러로 매핑하는거 추가함
         Map<String, List<String>> shopTagsMap = tagController.getShopTagsMap();
         mappingService.mapShopAndShopTagsById(); // shop과 shopTag id 매핑
+
         
         model.addAttribute("shops", shops);
         model.addAttribute("shopTagsMap", shopTagsMap); //이것도 추가함

@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-DATABASE_URL = "mysql+mysqlconnector://root:qwer1234@localhost:3306/GNUB"
+DATABASE_URL = "mysql+mysqlconnector://root:0414@localhost:3306/GNUB"
 
 # 데이터베이스 연결 설정
 engine = create_engine(DATABASE_URL, echo=True)  # echo=True: SQL 쿼리를 출력

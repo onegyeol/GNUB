@@ -26,7 +26,7 @@ import pbl.GNUB.service.ShopTagMappingService;
 public class MainController {
 
     private final JobLauncher jobLauncher;
-    private final Job csvShopJob; // ✅ V2로 변경
+    private final Job csvShopJob; 
     private final ShopService shopService;
     private final TagController tagController;
     private final ShopTagMappingService mappingService;

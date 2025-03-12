@@ -107,12 +107,13 @@ body {
 
 #chat-container {
     width: 100%;
-    max-width: 800px;
+    max-width: 1070px; /* header, footer와 동일한 너비 */
+    height: calc(100vh - 74px - 60px); /* 전체 화면에서 header(74px), footer(60px) 제외 */
     display: flex;
     flex-direction: column;
     background-color: #F0F8F9;
-    height: calc(100vh - 60px); /* 헤더 제외 전체 화면 */
-    overflow: hidden; /* 스크롤 숨김 */
+    margin: 0 auto;
+    overflow: hidden;
 }
 
 #chat-header {
@@ -142,55 +143,59 @@ body {
     text-decoration: underline;
 }
 
+/* 채팅 메시지 영역 */
 #chat-messages {
-    flex: 1;
+    flex: 1; /* 남은 공간을 모두 차지 */
+    overflow-y: auto; /* 내용이 많아지면 스크롤 가능하도록 설정 */
     padding: 10px;
-    overflow-y: auto; /* 세로 스크롤 가능 */
     display: flex;
-    flex-direction: column; /* 메시지 위아래 배치 */
-    gap: 10px; /* 메시지 간 간격 */
+    flex-direction: column;
+    gap: 10px;
     border: 1px solid #ddd;
     border-radius: 10px;
     background-color: #f9f9f9;
-    margin-bottom: 60px;
 }
 
+/* 개별 메시지 스타일 */
 .chat-message {
     max-width: 70%;
     padding: 10px;
     border-radius: 8px;
     word-wrap: break-word; /* 긴 단어 줄바꿈 */
     line-height: 1.4;
-    font-size:16px;
+    font-size: 16px;
 }
 
+/* 사용자 메시지 */
 .chat-message.question {
-    align-self: flex-end; /* 오른쪽 정렬 */
-    background-color: #D8EAFE; /* 사용자 메시지 색상 */
+    align-self: flex-end;
+    background-color: #D8EAFE;
     color: #000;
-    font-size:16px;
-}
-.chat-message.answer {
-    align-self: flex-start; /* 왼쪽 정렬 */
-    background-color: #E6F7E6; /* GPT 메시지 색상 */
-    color: #111;
-    font-size:16px;
 }
 
+/* 봇 응답 메시지 */
+.chat-message.answer {
+    align-self: flex-start;
+    background-color: #E6F7E6;
+    color: #111;
+}
+
+/* 입력창 - 항상 footer 위에 고정 */
 #user-input {
+    width: 100%;
+    max-width: 1070px; /* header, footer와 동일한 너비 */
     position: fixed;
-    bottom: 10px;
-    max-width: 800px;
-    width: calc(100% - 20px); /* 양쪽 여백을 고려한 너비 */
+    bottom: 60px; /* footer 위에 고정 */
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     padding: 10px;
     background-color: #9FD1D5;
     box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
-    
 }
 
-
+/* 입력 필드 */
 #user-input input {
     flex: 1;
     padding: 10px;
@@ -199,6 +204,7 @@ body {
     font-size: 14px;
 }
 
+/* 전송 버튼 */
 #user-input button {
     margin-left: 10px;
     padding: 10px 20px;
@@ -212,8 +218,6 @@ body {
 #user-input button:hover {
     background-color: #4F9898;
 }
-
-
 
 *{
     box-sizing: border-box;

@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -26,7 +27,8 @@ public class Board extends BaseEntity{
     @Column(length=20, nullable = false)
     private String title;
 
-    @Column
+    @Lob // ✅ TEXT로 매핑 (대용량 데이터 저장 가능)
+    @Column(columnDefinition = "TEXT")
     private String content;
     
     @Column

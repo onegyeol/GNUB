@@ -3,7 +3,6 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GNU BOB</title>
     <link rel="icon" type="image/png" href="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144">
     <style>
@@ -51,14 +50,13 @@
         }
 
         .header-wrap {
-            background-color: #9FD1D5;
+            background-color: #41bbca;
+            width: 1070px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            width: 100%;
-            max-width: 1070px; /* 푸터와 동일한 길이로 설정 */
             margin: 0 auto;
-            padding: 0 20px;
+            height: 100%;
         }
 
         .banner-box {
@@ -93,6 +91,11 @@
             padding: 0;
             line-height: 1.5;
         }
+
+        #toggleBanner {
+            margin-top: 3% !important;
+        }
+
 
         .btn-search {
             position: absolute;
@@ -165,11 +168,10 @@
         }
 
         .search-form {
+            flex-grow: 2;
             display: flex;
             justify-content: center;
-            align-items: center;
-            width: 100%;
-            max-width: 1070px; /* 푸터와 동일한 크기 */
+            margin-right: 10%;
         }
 
         .auth-box {
@@ -271,7 +273,6 @@
             filter: blur(5px); /* 마우스 올렸을 때 흐리게 만드는 효과 */
         }
 
-
         .campus-text {
             position: absolute;
             top: 50%;
@@ -300,7 +301,7 @@
             width: 100%;
             padding: 10px;
             border: none;
-            border-radius: 5px;
+            border-radius: 15px;
             font-size: 16px;
         }
 
@@ -344,7 +345,7 @@
             width: 100%;
             margin-bottom: 40px;
             background-color: #fff;
-            border-radius: 10px;
+            border-radius: 40px;
             padding: 20px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
@@ -373,6 +374,7 @@
             font-size: 24px;
             font-weight: bold;
             color: #333;
+            margin-left: 1%;
         }
 
         .card-section-rest-cnt {
@@ -401,6 +403,7 @@
             height: 100%;
             object-fit: cover;
             object-position: center;
+            border-radius: 20px;
         }
 
         .card-rest-name {
@@ -526,32 +529,40 @@
         .nav-container .login-logout {
             margin-left: auto;
         }
+
         .fixed-button {
             position: fixed;
-            bottom: 70px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            padding: 0;
-            border: none;
-            border-radius: 50%;
-            background-color: #88CDD0;
+            bottom: 80px; /* 푸터 위로 띄우기 */
+            right: calc((100% - 1070px) / 2); /* 헤더와 푸터에 맞춰 정렬 */
+            width: 56px; /* 너비 조정 */
+            height: 56px; /* 높이 조정 */
+            border-radius: 50%; /* 완전한 원형 */
+            background-color: #41bbca;
             color: white;
-            font-size: 16px;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            font-size: 24px;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
-            z-index: 399;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            margin-right: 1%;
         }
 
+        /* 버튼 내부 이미지 크기 조정 */
         .fixed-button img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            border-radius: 50%;
+            margin-left: 1%;
         }
+
+        /* 호버 효과 */
+        .fixed-button:hover {
+            background-color: #35a0b0;
+        }
+
 
         .bottom-nav-wrapper {
             z-index: 400;
@@ -652,13 +663,13 @@
                                     <p class="card-rest-name" th:text="${shop.name}"></p>
                                     <div class="image-btn-container">
                                         <div class="like-section">
-                                            <p id="likeCount" th:text="${shop.likeCount}"></p>
-                                                <form th:action="@{/toggleLike}" method="POST">
-                                                    <input type="hidden" name="shopId" th:value="${shop.id}">
-                                                    <button type="submit" class="like-btn">
-                                                <img class="like-icon" src="https://cdn-icons-png.flaticon.com/512/535/535183.png" alt="Heart Icon">
-                                                    </button>
+                                            <form th:action="@{/toggleLike}" method="POST">
+                                                <input type="hidden" name="shopId" th:value="${shop.id}">
+                                                <button type="submit" class="like-btn">
+                                                    <img class="like-icon" src="https://cdn-icons-png.flaticon.com/512/833/833472.png" alt="Heart Icon">
+                                                </button>
                                             </form>
+                                            <p id="likeCount" th:text="${shop.likeCount}"></p>
                                         </div>
                                     </div>
                                 </li>
@@ -668,7 +679,7 @@
                     </section>
                 </th:block>
             <a href="/ask" class="fixed-button">
-            <img src="https://www.gnu.ac.kr/images/web/main/sub_cnt/bs03.png" alt="캐릭터 기본형" width="50" height="50">
+                <img src="https://www.gnu.ac.kr/images/web/main/sub_cnt/bs03.png" alt="캐릭터 기본형" width="50" height="50">
             </a>
         </div>
     </main>

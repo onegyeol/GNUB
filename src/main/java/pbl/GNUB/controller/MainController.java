@@ -1,5 +1,6 @@
 package pbl.GNUB.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,8 +58,20 @@ public class MainController {
         mappingService.mapShopAndShopTagsById(); // shop과 shopTag id 매핑
 
         
+        HashMap<String, List<Shop>> taggedShops =new HashMap<>();
+
+        for(Shop shop : shops) {
+            List<String> shopTags =shopTagsMap.get(shop.getName());
+            if(shopTags !=null) {
+                for(String tag :shopTags) {
+                    taggedShops.computeIfAbsent(tag, k ->new ArrayList<>()).add(shop);
+                }
+            }
+        }
+
         model.addAttribute("shops", shops);
         model.addAttribute("shopTagsMap", shopTagsMap); //이것도 추가함
+        model.addAttribute("taggedShops", taggedShops);
         return "form/main";
     }
 

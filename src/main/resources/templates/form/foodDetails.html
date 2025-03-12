@@ -4,93 +4,498 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>음식점 상세페이지</title>
-    <!-- 타임리프를 사용한 CSS 경로 -->
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>GNUB - 음식점 상세페이지</title>
+    <link rel="icon" type="image/png" href="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144">
+   
+  
     <script src="/javascript/script.js" defer></script> <!-- script.js 파일을 불러옴 -->
     
-    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .body {
+            padding-bottom: 80px; /* 푸터 높이만큼 여백을 추가하여 푸터가 겹치지 않도록 설정 */
+        }
+
+        body, html {
+            background-color: #f0f0f0;
+            min-width: 1070px;
+            overflow: auto; /* 스크롤 가능하도록 설정 */
+        }
+
+        #root {
+            width: 100%;
+            min-height: auto;
+            overflow-x: hidden;
+            padding-bottom: 70px; /* 푸터 높이만큼 패딩 추가 */
+        }
+
+        .header-content {
+            background-color: #f0f0f0;
+            height: 74px;
+            position: sticky;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 400;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .common-desk-header {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-wrap {
+            background-color: #41bbca;
+            width: 1070px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0 auto;
+            height: 100%;
+        }
+
+        .banner-box {
+            margin-top: 0;
+            width: 100%;
+            display: flex;
+            padding-top: 0;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 1; 
+        }
+
+        .banner-wrap {
+            background-color: white;
+            width: 1070px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 0;
+        }
+
+        .banner-content {
+            font-family: 'Arial', sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            line-height: 1.5;
+        }
+
+        .btn-search {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-search img {
+            width: 24px;
+            height: 20px;
+        }
+
+        .main-logo {
+            width: 135px;
+            height: 45px;
+        }
+
+        .main-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .input-wrap {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .input-wrap {
+            position: relative;
+            display: inline-block;
+            margin: 0 auto;
+            width: 500px;
+            max-width: 100%;
+            padding: 0 16px;
+            box-sizing: border-box;
+            font-family: Pretendard, "Apple SD Gothic Neo", sans-serif;
+            font-size: 15px;
+            line-height: 1.5;
+            color: #000;
+            border: none;
+            border-radius: 4px;
+            background-color: #fff;
+            height: calc(100% + 3px);
+        }
+
+        .main-logo {
+            flex: 1;
+        }
+
+        .input-wrap input {
+            width: 100%;
+            padding: 8px 32px 8px 12px;
+            border: none;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: inherit;
+            line-height: inherit;
+            color: inherit;
+            background-color: transparent;
+        }
+        .header-wrap {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: calc(100% + 3px);
+        }
+
+        .search-form {
+            flex-grow: 2;
+            display: flex;
+            justify-content: center;
+            margin-right: 10%;
+        }
+
+        .auth-box {
+            flex: 1;
+        }
+
+        .input-wrap input:focus {
+            outline: none;
+        }
+
+        .input-wrap button {
+            position: absolute;
+            top: 50%;
+            right: 16px;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .search-input {
+            width: 340px;
+            height: 40px;
+            padding: 0 40px 0 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+        }
+
+        .search {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .map-container {
+            width: 100%;
+            max-width: 1070px;
+            height: 400px; /* 지도 높이 설정 */
+            margin: 20px auto; /* 지도 위치 조정 */
+            border-radius: 20px; /* 지도 테두리 둥글게 */
+            overflow: hidden; /* 둥근 효과 유지 */
+        }
+
+        .map {
+            width: 100%;
+            height: 100%;
+        }
+
+        .restaurant-card {
+            width: 90%;
+            max-width: 1000px;
+            background-color: white;
+            border-radius: 40px;
+            padding: 30px;
+            margin: 20px auto; /* 지도 아래 위치 */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        } 
+
+        .restaurant-name {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .restaurant-info{
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+            line-height: 1.5;
+            color: #333;
+        }
+
+        .restaurant-info img {
+            width: 20px; /* 아이콘 크기 조절 */
+            height: 20px;
+            display: inline-block;
+            vertical-align: middle; /* 텍스트와 정렬 */
+            margin-right: 10px; /* 텍스트와 간격 */
+        }
+
+
+        .like-section {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            font-size: 18px; /* 숫자 크기 */
+        }
+
+        .like-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .like-btn {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .heart-icon {
+            width: 20px; /* 하트 크기 */
+            height: 20px;
+            display: inline-block; /* 크기 고정 */
+            margin-left: 5px; /* 숫자와 하트 간격 조정 */
+        }
+
+        .bottom-nav-wrapper {
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            background-color: #f0f0f0;
+            border-top: none;
+        }
+
+        .bottom-nav {
+            width: 1070px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .bottom-nav a {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 0;
+            color: #666;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .bottom-nav a svg {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 4px;
+        }
+
+        @media screen and (max-width: 1070px) {
+        .bottom-nav {
+                width: 100%;
+        }
+        }
+
+        .nav-container {
+            background-color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1070px;
+            margin: 0 auto;
+            padding: 0 16px;
+            border-top: 1px solid rgba(138, 138, 138, 0.1);
+        }
+        .nav-container .menu-items {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-container .menu-item {
+            margin: 0 15px; 
+        }
+
+        .nav-container  {
+            margin-left: auto;
+        }
+
+        .fixed-button img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .bottom-nav-wrapper {
+            z-index: 400;
+        }
+
+        @media screen and (max-width: 768px) {
+            .restaurant-card {
+                width: 95%;
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 <body onload="initMap()">
 
-    <div class="header">
-        <!-- Logo image -->
-        <a th:href="@{/main}"> <!-- 메인 페이지 링크 추가 -->
-            <img src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo" class="logo">
-        </a>
-            
-        <!-- 검색창 -->
-        <div class="search-bar">
-            <form id="sform" name="search" role="search" action="/search" method="get">
-                <input type="text" id="query" name="query" placeholder="검색" maxlength="100" autocomplete="off">
-                <button class="search-btn">
-                    <img src="https://cdn-icons-png.flaticon.com/512/49/49116.png" alt="Search Icon" width="20" height="20">
-                </button>
-            </form>
-        </div>
+    <div id="root">
+        <header class="header-content">
+            <div class="common-desk-header">
+                <div class="header-wrap">
+                    <div class="main-logo">
+                        <a href="/main">
+                            <img class="logo" src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo">
+                        </a>
+                    </div>
 
-        <div class="links">
-            <!-- 로그인 안했을 때 보이는 메뉴바 -->
-            <div th:if="${session.loginEmail == null}">
-                <a th:href="@{/member/login}">Login</a>
-                <a th:href="@{/member/new}">Signup</a>
+                    
+                    <div class="search-form">
+                        <form action="/search" method="get">
+                            <div class="input-wrap">
+                                <input class="search-input" type="search" id="query" name="query" placeholder="지역, 음식 또는 식당명 입력" th:value="${searchTerm}" maxlength="255" autocomplete="off">
+                                <button type="submit" class="btn-search">
+                                        <img src="/image/searching-icon.png" alt="검색버튼">
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="auth-Box"></div>
+                </div>
             </div>
-            <!-- 로그인 했을 때 보이는 메뉴바 -->
-            <div th:if="${session.loginEmail != null}">
-                <a th:href="@{/board/main}">Board</a>
-                <a th:href="@{/myPage}">Mypage</a>
-                <a th:href="@{/member/logout}">Logout</a>
-            </div>
-        </div>
-    </div>
+        </header>
 
-    <div class="content">
-        <div class="map" style="width: 100%; height: 400px;">
-            <p>지도</p>
-        </div>
-    
-        <div class="vertical-line"></div> <!-- 세로 기준선 추가 -->
-    
-        <div class="restaurant-details">
-            <h1 class="restaurant-name"><span th:text="${shop.name}"></span></h1>
-            <div class="info">
-                <p class="label" style="font-size:22px;"><strong>#주메뉴</strong></p>
-                <p class="value" id="mainMenu" th:text="${shop.mainMenu}"></p>
+        <div class="content">
+            <!-- 음식점 정보 -->
+            <div class="restaurant-card">
+                <h1 class="restaurant-name" th:text="${shop.name}"></h1>
+
+                <!-- 지도 컨테이너 -->
+                <div class="map-container">
+                    <div class="map"></div>
+                </div>
+
+                <p class="restaurant-info" id="mainMenu">
+                    <img src="https://github.com/user-attachments/assets/2830e89d-31ca-452a-ba73-1adb5fb2c5e8" alt="메뉴 아이콘">
+                    <span th:utext="${shop.mainMenu}"></span>
+                </p> <br>
                 <script>
                     document.addEventListener("DOMContentLoaded", function () {
                         const mainMenuElem = document.getElementById("mainMenu");
-                        if (mainMenuElem) { // 요소가 존재하는지 확인
-                            const menus = mainMenuElem.textContent.split(",");
-                            if (menus.length > 3) {
-                                mainMenuElem.textContent = menus.slice(0, 3).join(", ") + "...";
+                        if (mainMenuElem) {
+                            const spanElem = mainMenuElem.querySelector("span"); // <span> 내부 텍스트만 변경
+                            if (spanElem) {
+                                const menus = spanElem.textContent.split(",");
+                                if (menus.length > 3) {
+                                    spanElem.innerHTML = menus.slice(0, 3).join(", ") + "...";
+                                }
                             }
                         }
                     });
+
                 </script>
 
+                <p class="restaurant-info">
+                    <img src="https://github.com/user-attachments/assets/35def7f7-a86e-43d0-905c-675c4212c54f" alt="주소 이모티콘">
+                    <span th:text="${shop.address}"></span>
+                </p> <br>
 
-                <br>
+                <p class="restaurant-info">
+                    <img src="https://github.com/user-attachments/assets/ed0707e8-ae3e-44ec-ab96-175a1c9d088b" alt="전화기 이모티콘">
+                    <span th:text="${shop.phone}"></span>
+                </p> <br>
 
-                <p class="label" style="font-size:22px;"><strong>#주소</strong></p>
-                <p class="value" th:text="${shop.address}"></p>
-                
-                <br>
-
-                <p class="label" style="font-size:22px;"><strong>#전화번호</strong></p>
-                <p class="value" th:text="${shop.phone}"></p>
-
-                <br>
                 <div class="like-section">
-                    <p id="likeCount" th:text="${shop.likeCount}"></p>
-                    <form th:action="@{/toggleLike}" method="POST">
-                        <input type="hidden" name="shopId" th:value="${shop.id}">
-                        <button type="submit" class="like-btn">
-                            <img class="like-icon" src="https://cdn-icons-png.flaticon.com/512/535/535183.png" alt="Heart Icon">
-                        </button>
-                    </form>
-                </div>
+                    <div class="like-container">
+                        <span id="likeCount" th:text="${shop.likeCount}"></span>
+                        <form th:action="@{/toggleLike}" method="POST">
+                            <input type="hidden" name="shopId" th:value="${shop.id}">
+                            <button type="submit" class="like-btn">
+                                <img class="heart-icon" src="https://cdn-icons-png.flaticon.com/512/833/833472.png" alt="Heart Icon">
+                            </button>
+                        </form>
+                    </div>
+                </div>                
+                
             </div>
         </div>
+
+        <div class = "content">
+            <div class = "restaurant-card">
+                <h2>영업 시간</h2> <br>
+                <p class="restaurant-info">
+                    <img src="https://github.com/user-attachments/assets/9b60d89e-c39c-4fca-ae68-78b49d267127" alt="영업시간 이모티콘">
+                    <span>11:30 - 20:00</span>
+                </p> <br>
+                <h2>메뉴</h2> <br>
+                <p>음식점 사진들 ... 띄우기 ?</p>
+            </div>
+        </div>
+
+        <div class="bottom-nav-wrapper">
+            <nav class="bottom-nav">
+                <div class="nav-container">
+    
+                    <a th:href="${session.loginEmail != null} ? @{/board/main} : @{/member/login}" class="nav-item">
+                        <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M3 9H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M9 21V9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>게시판</span>
+                    </a>
+                    
+                    <a th:href="@{/main}" class="nav-item">
+                        <svg class="nav-icon" width="29" height="28" viewBox="0 0 29 28" fill="none">
+                        <path d="M14.5 23.8H5.81999C5.58803 23.8 5.39999 23.6119 5.39999 23.38V11.0632C5.39999 10.9292 5.46397 10.8032 5.57219 10.7241L14.2522 4.38107C14.3998 4.27321 14.6002 4.27321 14.7478 4.38107L23.4278 10.7241C23.536 10.8032 23.6 10.9292 23.6 11.0632V23.38C23.6 23.6119 23.412 23.8 23.18 23.8H14.5ZM14.5 23.8V14.5055" stroke="currentColor" stroke-width="1.4"></path>
+                        </svg>
+                        <span>홈</span>
+                    </a>
+                    
+                    <a th:href="${session.loginEmail != null} ? @{/myPage/likeList} : @{/member/login}" class="nav-item">
+                        <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>좋아요</span>
+                    </a>
+                    <a th:href="${session.loginEmail != null} ? @{/myPage} : @{/member/login}" class="nav-item">
+                        <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>마이</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+    
     </div>
 
     <script th:inline="javascript">

@@ -6,129 +6,471 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GNUB - 게시판</title>
     <link rel="icon" type="image/png" href="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144">
-    <!-- 타임리프를 사용한 CSS 경로 -->
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-    
-    <style>
-    .table-container {
-        position: relative;
-        min-height: 600px;
-    }
-    .pagination-container {
-        position: absolute;
-        bottom: 20px;
-        left: 0;
-        right: 0;
-    }
-    .pagination {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .board-table {
-        width: 100%;
-        margin-bottom: 60px;
-    }
-    .pagination a.disabled {
-        pointer-events: none;
-        color: #ccc;
-    }
-    .pagination a.active {
-    color: blue;
-    font-weight: bold;
-    }
-</style>
 
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .body {
+            padding-bottom: 80px; /* 푸터 높이만큼 여백을 추가하여 푸터가 겹치지 않도록 설정 */
+        }
+
+        body, html {
+            background-color: #f0f0f0;
+            min-width: 1070px;
+            overflow: auto; /* 스크롤 가능하도록 설정 */
+        }
+
+        #root {
+            width: 100%;
+            min-height: auto;
+            overflow-x: hidden;
+            padding-bottom: 70px; /* 푸터 높이만큼 패딩 추가 */
+        }
+
+        .header-content {
+            background-color: #f0f0f0;
+            height: 74px;
+            position: sticky;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 400;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .common-desk-header {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-wrap {
+            background-color: #41bbca;
+            width: 1070px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0 auto;
+            height: 100%;
+        }
+
+        .banner-box {
+            margin-top: 0;
+            width: 100%;
+            display: flex;
+            padding-top: 0;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 1; 
+        }
+
+        .banner-wrap {
+            background-color: white;
+            width: 1070px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 0;
+        }
+
+        .banner-content {
+            font-family: 'Arial', sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            line-height: 1.5;
+        }
+
+        .btn-search {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-search img {
+            width: 24px;
+            height: 20px;
+        }
+
+        .main-logo {
+            width: 135px;
+            height: 45px;
+        }
+
+        .main-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .input-wrap {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .input-wrap {
+            position: relative;
+            display: inline-block;
+            margin: 0 auto;
+            width: 500px;
+            max-width: 100%;
+            padding: 0 16px;
+            box-sizing: border-box;
+            font-family: Pretendard, "Apple SD Gothic Neo", sans-serif;
+            font-size: 15px;
+            line-height: 1.5;
+            color: #000;
+            border: none;
+            border-radius: 4px;
+            background-color: #fff;
+            height: calc(100% + 3px);
+        }
+
+        .main-logo {
+            flex: 1;
+        }
+
+        .input-wrap input {
+            width: 100%;
+            padding: 8px 32px 8px 12px;
+            border: none;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: inherit;
+            line-height: inherit;
+            color: inherit;
+            background-color: transparent;
+        }
+        .header-wrap {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: calc(100% + 3px);
+        }
+
+        .search-form {
+            flex-grow: 2;
+            display: flex;
+            justify-content: center;
+            margin-right: 10%;
+        }
+
+        .auth-box {
+            flex: 1;
+        }
+
+        .input-wrap input:focus {
+            outline: none;
+        }
+
+        .input-wrap button {
+            position: absolute;
+            top: 50%;
+            right: 16px;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .search-input {
+            width: 340px;
+            height: 40px;
+            padding: 0 40px 0 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+        }
+
+        .search {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .container {
+            max-width: 1070px;
+            margin: auto;
+            padding: 20px;
+            padding-bottom: 100px; /* 푸터 공간 확보 */
+        }
+
+        .container h1{
+            margin-bottom: 1%;
+            margin-left: 2%;
+        }
+
+        .post-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding-bottom: 80px; /* 푸터와 겹치지 않도록 */
+        }
+
+        .post-card {
+            display: flex;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            align-items: center;
+        }
+
+        .post-image {
+            width: 150px;
+            height: 100px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+
+        .post-content {
+            flex: 1;
+        }
+
+        .post-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .post-title:hover {
+            text-decoration: underline;
+        }
+
+        .post-date {
+            font-size: 14px;
+            color: #777;
+            margin-top: 5px;
+        }
+
+        .post-description {
+            font-size: 14px;
+            color: #555;
+            margin-top: 10px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .write-button {
+            position: fixed;
+            bottom: 80px; /* 푸터 위로 띄우기 */
+            right: calc((100% - 1070px) / 2); /* 헤더와 푸터에 맞춰 정렬 */
+            background-color: #41bbca;
+            color: white;
+            width: 50px; /* 너비 지정 */
+            height: 50px; /* 높이 지정 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%; /* 완전히 원형으로 */
+            font-size: 24px; /* 아이콘 크기 */
+            text-decoration: none;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            margin-right: 1%;
+        }
+
+        .write-button:hover {
+            background-color: #35a0b0;
+        }
+
+        .bottom-nav-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center; /* 중앙 정렬 */
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 500;
+            height: 60px;
+        }
+
+        .bottom-nav {
+            width: 1070px; /* 헤더와 동일한 너비 */
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .bottom-nav a {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 0;
+            color: #666;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .bottom-nav a svg {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 4px;
+        }
+
+        @media screen and (max-width: 1070px) {
+        .bottom-nav {
+                width: 100%;
+        }
+        }
+
+        .nav-container {
+            background-color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1070px;
+            margin: 0 auto;
+            padding: 0 16px;
+            border-top: 1px solid rgba(138, 138, 138, 0.1);
+        }
+        .nav-container .menu-items {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-container .menu-item {
+            margin: 0 15px; 
+        }
+
+        .nav-container  {
+            margin-left: auto;
+        }
+
+        .fixed-button img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .bottom-nav-wrapper {
+            z-index: 400;
+        }
+
+        @media screen and (max-width: 768px) {
+            .restaurant-card {
+                width: 95%;
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="header">
-        <!-- Logo image -->
-        <a th:href="@{/main}">
-            <img src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo" class="logo">
-        </a>
-        
-        <!-- 검색창 -->
-        <div class="search-bar">
-            <form id="sform" name="search" role="search" action="/search" method="get">
-                <input type="text" id="query" name="query" placeholder="검색" maxlength="100" autocomplete="off">
-                <button class="search-btn">
-                    <img src="https://cdn-icons-png.flaticon.com/512/49/49116.png" alt="Search Icon" width="20" height="20">
-                </button>
-            </form>
-        </div>
+    <header class="header-content">
+        <div class="common-desk-header">
+            <div class="header-wrap">
+                <div class="main-logo">
+                    <a href="/main">
+                        <img class="logo" src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo">
+                    </a>
+                </div>
 
-        <div class="links">
-            <!-- 로그인 안했을 때 보이는 메뉴바 -->
-            <div th:if="${session.loginEmail == null}">
-                <a th:href="@{/member/login}">Login</a>
-                <a th:href="@{/member/new}">Signup</a>
-            </div>
-            <!-- 로그인 했을 때 보이는 메뉴바 -->
-            <div th:if="${session.loginEmail != null}">
-                <a th:href="@{/board/main}">Board</a>
-                <a th:href="@{/myPage}">Mypage</a>
-                <a th:href="@{/member/logout}">Logout</a>
+                <div class="search-form">
+                    <form action="/search" method="get">
+                        <div class="input-wrap">
+                            <input class="search-input" type="search" id="query" name="query" placeholder="지역, 음식 또는 식당명 입력" th:value="${searchTerm}" maxlength="255" autocomplete="off">
+                            <button type="submit" class="btn-search">
+                                <img src="/image/searching-icon.png" alt="검색버튼">
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="auth-Box"></div>
             </div>
         </div>
-    </div>
+    </header>
 
-    <div class="body">
-        <div class="table-container">
-            <h1>게시판</h1>
-            
-            <table class="board-table">
-                <thead>
-                    <tr>
-                        <th class="post-num">번호</th>
-                        <th class="author">작성자</th>
-                        <th class="post-title">제목</th>
-                        <th class="post-date">작성일</th>
-                        <th>조회수</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="board : ${boardList}">
-                        <td th:text="${board.id}"></td>
-                        <td th:text="${board.authorName}"></td> <!-- 작성자 이름 표시 -->
-                        <td><a th:href="@{|/board/${board.id}|}" th:text="${board.title}"></a></td>
-                        <!-- 날짜 포맷팅: null 값 처리 -->
-                        <td th:text="${board.boardCreatedTime != null ? board.boardCreatedTime : 'N/A'}"></td>
-                        <td th:text="${board.boardHits}"></td>
-                    </tr>
-                </tbody>
-                
-            </table>
-    
-            <div class="pagination-container">
-                <div class="pagination">
-                    <a th:href="@{/board/main(page=${currentPage - 1})}" 
-                        th:class="${currentPage <= 1} ? 'disabled' : ''"
-                        th:onclick="return ${currentPage > 1}">
-                        &laquo; 이전
-                    </a>
-                    
-                    <span th:each="pageNumber : ${#numbers.sequence(1, totalPages)}">
-                        <a th:href="@{/board/main(page=${pageNumber})}" 
-                            th:text="${pageNumber}"
-                            th:class="${pageNumber == currentPage ? 'active' : ''}"></a>
-                    </span>
-                    
-                    <a th:href="@{/board/main(page=${currentPage + 1})}"
-                        th:class="${currentPage >= totalPages} ? 'disabled' : ''"
-                        th:onclick="return ${currentPage < totalPages}">
-                        다음 &raquo;
-                    </a>
-                    
-                    <a th:href="@{/board/write}" class="href-write">글쓰기</a>
+    <div class="container">
+        <h1>📌 게시판</h1>
+
+        <div id="post-list" class="post-list">
+            <div th:each="board : ${boardList}" class="post-card">
+                <!--<img th:src="${board.thumbnail != null ? board.thumbnail : '/images/default-thumbnail.jpg'}" class="post-image">-->
+                <div class="post-content">
+                    <a th:href="@{|/board/${board.id}|}" class="post-title" th:text="${board.title}"></a>
+                    <div class="post-date" th:text="${board.boardCreatedTime}"></div>
+                    <div class="post-description" th:text="${board.content}"></div>
                 </div>
             </div>
         </div>
+
+        <!-- ✅ 로딩 스피너 (데이터 불러오는 중 표시) -->
+        <div id="loading" style="display: none; text-align: center; padding: 20px;">
+            <img src="/images/loading.gif" alt="로딩 중..." width="50">
+        </div>
+
+        
+
     </div>
 
-    <script src="/javascript/script.js" defer></script> <!--script.js 파일을 불러옴 -->
+    <div class="bottom-nav-wrapper">
+        <nav class="bottom-nav">
+            <div class="nav-container">
+
+                <a th:href="${session.loginEmail != null} ? @{/board/main} : @{/member/login}" class="nav-item">
+                    <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M3 9H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M9 21V9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>게시판</span>
+                </a>
+                
+                <a th:href="@{/main}" class="nav-item">
+                    <svg class="nav-icon" width="29" height="28" viewBox="0 0 29 28" fill="none">
+                    <path d="M14.5 23.8H5.81999C5.58803 23.8 5.39999 23.6119 5.39999 23.38V11.0632C5.39999 10.9292 5.46397 10.8032 5.57219 10.7241L14.2522 4.38107C14.3998 4.27321 14.6002 4.27321 14.7478 4.38107L23.4278 10.7241C23.536 10.8032 23.6 10.9292 23.6 11.0632V23.38C23.6 23.6119 23.412 23.8 23.18 23.8H14.5ZM14.5 23.8V14.5055" stroke="currentColor" stroke-width="1.4"></path>
+                    </svg>
+                    <span>홈</span>
+                </a>
+                
+                <a th:href="${session.loginEmail != null} ? @{/myPage/likeList} : @{/member/login}" class="nav-item">
+                    <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>좋아요</span>
+                </a>
+                <a th:href="${session.loginEmail != null} ? @{/myPage} : @{/member/login}" class="nav-item">
+                    <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>마이</span>
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <!-- 글쓰기 버튼 -->
+    <a th:href="@{/board/write}" class="write-button">+</a>
+
+
     
-
-
-    </div>
 </body>
 </html>

@@ -41,6 +41,12 @@ dependencies {
 	implementation 'org.springframework.security:spring-security-taglibs'
 	implementation 'org.jsoup:jsoup:1.14.3'
 
+	// Spring Batch Core
+    implementation 'org.springframework.boot:spring-boot-starter-batch'
+    
+    // Spring Batch JDBC for JobRepository
+    implementation 'org.springframework.batch:spring-batch-core'
+
 	//Jakarta 설정 어노테이션에 사용된다.
 	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
 	annotationProcessor "jakarta.persistence:jakarta.persistence-api"

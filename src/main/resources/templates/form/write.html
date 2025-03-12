@@ -539,7 +539,7 @@
                 disableParagraph: false,
                 callbacks: {
                     onImageUpload: function(files) {
-                        uploadImages(files);  // ✅ 여러 개의 파일 업로드 지원
+                        uploadImages(files);  // 여러 개의 파일 업로드 지원
                     }
                 },
                 toolbar: [
@@ -550,12 +550,12 @@
             });
         });
 
-        // 📌 다중 이미지 업로드 함수
+        // 다중 이미지 업로드 함수
         function uploadImages(files) {
             let formData = new FormData();
             
             for (let i = 0; i < files.length; i++) {
-                formData.append("files", files[i]);  // ✅ `files[]` 배열로 추가
+                formData.append("files", files[i]);  
             }
 
             $.ajax({

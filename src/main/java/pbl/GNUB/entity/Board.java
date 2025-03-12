@@ -1,7 +1,11 @@
 
 package pbl.GNUB.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -38,7 +42,7 @@ public class Board extends BaseEntity{
     @JoinColumn(name = "member_id")
     private Member author;  // 작성자 (회원)
 
-        // Author 객체를 반환하는 메서드 추가
+    // Author 객체를 반환하는 메서드 추가
     public Member getAuthor() {
         return author;
     }

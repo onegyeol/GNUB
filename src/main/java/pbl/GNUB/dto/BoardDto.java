@@ -2,6 +2,8 @@ package pbl.GNUB.dto;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.jsoup.Jsoup;
 

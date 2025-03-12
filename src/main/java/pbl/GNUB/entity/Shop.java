@@ -47,6 +47,7 @@ public class Shop {
     @Column(length = 1024)  // 이미지 URL 길이를 1024자로 제한
     private String imgUrl; // 이미지 Url
     
+    @Builder.Default
     private int likeCount = 0; // 좋아요 수 카운트
 
     @ManyToMany

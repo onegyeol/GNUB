@@ -37,7 +37,7 @@ public class BoardService {
     public void save(BoardDto boardDTO, Member author){
         System.out.println("Saving board with author: " + author.getEmail());
         
-        // 🔥 <p> 태그 제거, </p>를 <br>로 변환하여 저장
+        // <p> 태그 제거, </p>를 <br>로 변환하여 저장
         String convertedContent = boardDTO.getContent()
                                         .replaceAll("\uFEFF", "")
                                         .replace("<p>", "")
@@ -113,7 +113,7 @@ public class BoardService {
 
         board.setTitle(boardDTO.getTitle());
         board.setContent(convertedContent);
-        
+
         boardRepository.save(board);
     }
 

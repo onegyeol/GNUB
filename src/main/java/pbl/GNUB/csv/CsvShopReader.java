@@ -1,5 +1,6 @@
 package pbl.GNUB.csv;
 
+import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
@@ -30,7 +31,7 @@ public class CsvShopReader {
 
         // csv 파일에서 구분자 지정하고 구분한 데이터 setNames를 통해 각 이름 설정
         defaultLineMapper.setLineTokenizer(new DelimitedLineTokenizer(){{
-            setNames("region", "city", "category", "mainMenu", "name", "address", "phone", "lat", "lng", "imgUrl");
+            setNames("name", "category", "address", "addressInfo", "number", "site", "info", "imgUrl", "mon", "tue", "wen", "thu", "fri", "sat", "sun", "lat", "lng");
             setDelimiter(",");
         }});
 

@@ -29,6 +29,7 @@ public class ShopService {
         return shopRepository.findTop28ByOrderByLikeCountDesc();
     }
 
+    
     public List<Shop> getAllShops() {
         return shopRepository.findAll();
     }    

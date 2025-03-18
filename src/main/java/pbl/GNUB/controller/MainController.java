@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import lombok.extern.slf4j.Slf4j;
 import pbl.GNUB.entity.Shop;
+import pbl.GNUB.entity.ShopMenu;
 import pbl.GNUB.service.ShopService;
 import pbl.GNUB.service.ShopTagMappingService;
 
@@ -44,11 +45,30 @@ public class MainController {
 
     @GetMapping("/main")
     public String showMainPage(Model model) {
-        List<Shop> shops = shopService.getTop28ShopsByLikes(); // 좋아요 기준 상위 28개 조회
 
-        // 태그 컨트롤러로 매핑하는거 추가함
+        List<Shop> shops = shopService.getAllShops();
+
+        Map<String, List<Shop>> categorizedShops = new HashMap<>();
+    
+        for (Shop shop : shops) {
+            String category = (shop.getCategory() == null || shop.getCategory().isEmpty()) ? "기타" : shop.getCategory();
+            categorizedShops.computeIfAbsent(category, k -> new ArrayList<>()).add(shop);
+        }
+    
+        model.addAttribute("categorizedShopsList", categorizedShops.entrySet());
+
+        
+        /* ShopTag.csv 파일 완성 시 까지 주석 처리
+         * 
+         * // 1. 먼저 매핑을 수행 (이름 기준)
+        // mappingService.mapShopAndShopTagsByName();
+
+        // 2. 매핑된 데이터를 기반으로 태그 맵 가져오기
         Map<String, List<String>> shopTagsMap = tagController.getShopTagsMap();
         mappingService.mapShopAndShopTagsById(); // shop과 shopTag id 매핑
+
+        // 3. 좋아요 기준 상위 28개 Shop 가져오기
+        List<Shop> shops = shopService.getTop28ShopsByLikes();
 
         
         HashMap<String, List<Shop>> taggedShops = new HashMap<>();
@@ -65,6 +85,10 @@ public class MainController {
         model.addAttribute("shops", shops);
         model.addAttribute("shopTagsMap", shopTagsMap); // 이 부분도 추가함
         model.addAttribute("taggedShops", taggedShops);
+         * 
+         */
+        
+
         return "form/main";
     }
 
@@ -101,9 +125,14 @@ public class MainController {
     @GetMapping("/shopDetails/{id}") // 음식점 상세 페이지
     public String foodDetailsPage(@PathVariable("id") Long id, Model model) {
         Shop shop = shopService.findShopById(id);
+        List<ShopMenu> shopMenus = shopService.getMenusByShopName(shop.getName());
+
         if (shop != null) {
+            System.out.println("🔴 shopMenus: " + shopMenus);
             model.addAttribute("shop", shop);
+            model.addAttribute("shopMenus", shopMenus);
             return "form/foodDetails";
+
         } else {
             return "error";
         }

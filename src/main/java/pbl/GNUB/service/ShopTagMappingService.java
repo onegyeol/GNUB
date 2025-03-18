@@ -21,16 +21,16 @@ public class ShopTagMappingService {
     private ShopTagRepository shopTagRepository;
 
     @Transactional
-    public void mapShopAndShopTagsById() {
+    public void mapShopAndShopTagsByName() {
         // 모든 Shop과 ShopTag 조회
         List<Shop> shops = shopRepository.findAll();
         List<ShopTag> shopTags = shopTagRepository.findAll();
 
-        // id가 같은 Shop과 ShopTag를 매핑
+        // 이름이 같은 Shop과 ShopTag를 매핑
         for (Shop shop : shops) {
             for (ShopTag tag : shopTags) {
-                if (shop.getId().equals(tag.getId())) {
-                    // 관계 설정
+                if (shop.getName().trim().equalsIgnoreCase(tag.getName().trim())) {
+                    // 연관관계 설정
                     shop.getShopTags().add(tag);
                     tag.getShops().add(shop);
                 }
@@ -39,6 +39,8 @@ public class ShopTagMappingService {
 
         // 저장 (연관 관계가 업데이트됨)
         shopRepository.saveAll(shops);
+        shopTagRepository.saveAll(shopTags); // 양방향 관계인 경우 필요
     }
+
 }
 

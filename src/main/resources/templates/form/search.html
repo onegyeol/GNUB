@@ -205,80 +205,117 @@
             font-weight: bold;
             color: #333;
         }
-        
-        .restaurant_content {
-            display: flex; /* 가로 정렬 */
-            align-items: center; /* 세로 중앙 정렬 */
-            width: 100%;
-            background: white;
-            border-radius: 15px;
-        }
 
-        .restaurant_list {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px; /* 간격 조절 */
-            max-width: 1070px; /* header, footer와 동일한 크기 */
-            width: 100%;
-            margin: 0 auto; /* 중앙 정렬 */
-        }
-
-        .restaurant_img_container {
-            height: 200px; /* 정사각형 */
-            display: flex;
-            justify-content: center;
+        .like-section {
+            display: inline-flex;
             align-items: center;
-            overflow: hidden;
-            border-radius: 12px; /* 둥근 모서리 추가 */
+            gap: 4px; /* 하트와 숫자 사이 간격 */
+            margin-top: 5px;
         }
 
-        .restaurant_img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* 사진이 찌그러지지 않고, 정사각형에 꽉 차도록 */
-            border-radius: 12px;
+        .heart-icon {
+            width: 16px;
+            height: 16px;
         }
 
+        .restaurant_like {
+            font-size: 14px;
+            color: #666;
+        }
+
+        
+        /* 전체 리스트 스타일 */
+        .restaurant_list {
+            max-width: 1070px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 0 16px;  /* Header, Footer와 패딩 통일 */
+            padding-bottom: 80px;  /* Footer 높이만큼 하단 여백 추가 */
+        }
+
+        /* 각 가게 스타일 */
+        .restaurant_item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* 가게 정보 (왼쪽) */
+        .restaurant_info {
+            flex: 1;
+        }
+
+        /* a 태그의 기본 스타일 제거 */
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
 
         .restaurant_name {
-            font-size: 18px;
+            font-size: 200%;
             font-weight: bold;
-            color: #333;
-            text-align: left;
             margin-bottom: 5px;
-            margin-left: 6%;
+            display: block;
+            color: #333; /* 검정색 */
+            text-decoration: none; /* 밑줄 제거 */
         }
 
         .restaurant_tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px; /* 태그 간격 조절 */
-            margin-top: 5px; /* 음식점명과의 간격 */
+            margin-top: 5px;
         }
 
         .restaurant_tag {
-            background-color: #e0e0e0; /* 태그 배경 색상 */
-            color: #333; /* 태그 텍스트 색상 */
-            font-size: 12px;
-            padding: 6px 10px; /* 내부 여백 */
-            border-radius: 15px; /* 둥근 모서리 */
-            text-decoration: none;
             display: inline-block;
-            white-space: nowrap; /* 줄 바꿈 방지 */
-            margin-left: 3%;;
+            margin-right: 8px;
+            padding: 4px 8px;
+            background-color: #e0f7fa;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: #00796b;
+            text-decoration: none;
         }
 
         .restaurant_tag:hover {
-            background-color: #d4d4d4; /* 호버 시 색상 변경 */
+            background-color: #b2ebf2;
         }
 
+        /* 가게 이미지 (오른쪽) */
+        .restaurant_image button {
+            border: none;
+            background: none;
+            padding: 0;
+            cursor: pointer;
+        }
 
-        @media screen and (max-width: 768px) {
-            .restaurant {
-                width: 100%; /* 작은 화면에서는 한 줄에 하나씩 */
+        .restaurant_image img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        /* 반응형 - 모바일 화면 */
+        @media (max-width: 600px) {
+            .restaurant_item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .restaurant_image {
+                margin-top: 10px;
+            }
+
+            .restaurant_image img {
+                width: 100%;
+                height: auto;
             }
         }
+
+
 
         .like-section {
             display: flex;
@@ -463,29 +500,44 @@
         <!-- 음식점 리스트 -->
         <main class="search_menu">
             <div class="restaurant_list">
-                <div th:each="shop : ${shops}" class="restaurant">
-                    <div class="restaurant_content">
-                        <button class="restaurant_img_container" th:onclick="'goToFoodDetails(' + ${shop.id} + ')'">
-                            <img class="restaurant_img" th:src="${shop.imgUrl}" alt="가게이미지">
-                        </button>
-                        <div class="restaurant_text">
-                            <span class="restaurant_name" th:text="${shop.name}"></span>
-                            <!-- 태그 목록 -->
-                            <div class="restaurant_tags">
-                                <th:block th:if="${tags != null}">
-                                    <th:block th:if="${tags.containsKey(shop.name)}">
-                                        <a th:each="tag : ${tags.get(shop.name)}"
-                                           class="restaurant_tag"
-                                           th:href="@{/search/{tag}(tag=${tag})}"
-                                           th:text="${tag}"></a>
-                                    </th:block>
+                <div th:each="shop : ${shops}" class="restaurant_item">
+                    
+                    <!-- 가게 정보 (왼쪽) -->
+                    <div class="restaurant_info">
+                        <a th:href="@{'/shopDetails/' + ${shop.id}}">
+                            <span class="restaurant_name" th:text="${shop.name}"></span> 
+                        </a>
+                        <div class="like-section">
+                            <img class="heart-icon" src="https://cdn-icons-png.flaticon.com/512/833/833472.png" alt="Heart Icon">
+                            <span class="restaurant_like" th:text="${shop.likeCount}"></span>
+                        </div>                        
+                        <span class="restaurant_address" th:text="${shop.address}"></span> <br>
+                        <span class="restaurant_addressinfo" th:text="${shop.addressInfo}"></span>
+                        
+                        <!-- 태그 목록 -->
+                        <div class="restaurant_tags">
+                            <th:block th:if="${tags != null}">
+                                <th:block th:if="${tags.containsKey(shop.name)}">
+                                    <a th:each="tag : ${tags.get(shop.name)}"
+                                       class="restaurant_tag"
+                                       th:href="@{/search/{tag}(tag=${tag})}"
+                                       th:text="${tag}"></a>
                                 </th:block>
-                            </div>
+                            </th:block>
                         </div>
                     </div>
+        
+                    <!-- 가게 이미지 (오른쪽) -->
+                    <div class="restaurant_image">
+                        <button th:onclick="'goToFoodDetails(' + ${shop.id} + ')'">
+                            <img th:src="${shop.imgUrl}" alt="가게이미지">
+                        </button>
+                    </div>
+        
                 </div>
             </div>
         </main>
+        
         <script src="/javascript/search.js" defer></script>
         <script src="/javascript/script.js" defer></script>
 

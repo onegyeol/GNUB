@@ -19,10 +19,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @Builder
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Entity
@@ -59,14 +61,16 @@ public class Shop {
     private int likeCount = 0; // 좋아요 수 카운트
 
     @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ToString.Exclude
     private List<ShopMenu> shopMenus;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-        name = "SHOP_SHOPTAG",
+        name = "shop_shoptag",
         joinColumns = @JoinColumn(name = "shop_id"),
         inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
+    @ToString.Exclude
     private List<ShopTag> shopTags; // ShopTag와의 다대다 관계
 
     // likeCount setter

@@ -238,15 +238,7 @@
             margin-bottom: 10px;
         }
 
-        .restaurant-info{
-            display: flex;
-            align-items: center;
-            font-size: 18px;
-            line-height: 1.5;
-            color: #333;
-        }
-
-        .restaurant-info img {
+        .restaurant-card img {
             width: 20px; /* 아이콘 크기 조절 */
             height: 20px;
             display: inline-block;
@@ -281,6 +273,160 @@
             height: 20px;
             display: inline-block; /* 크기 고정 */
             margin-left: 5px; /* 숫자와 하트 간격 조정 */
+        }
+
+        .business-hours div {
+            margin-bottom: 10px; /* 각 항목마다 간격 */
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .business-hours b {
+            margin-right: 5px;
+        }
+
+        .business-hours span {
+            color: #555;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);  /* 한 줄에 3개 고정 */
+            gap: 12px;
+            padding: 0;
+            list-style: none;
+        }
+
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            font-size: 14px;
+        }
+
+        .menu-name, .menu-price {
+            white-space: nowrap;
+        }
+
+        .dots {
+            flex-grow: 1;
+            border-bottom: 1px dotted #ccc;
+            margin: 0 8px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+
+        .modal-img-wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        
+        .modal-img {
+            width: 50% !important;
+            height: 50% !important;
+            object-fit: contain !important;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+        }
+
+        .menu-link {
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .menu-link:hover {
+            color: #007BFF;
+        }
+
+        /* 갤러리 컨테이너 */
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            padding: 16px;
+        }
+
+        /* 각 이미지 카드 스타일 */
+        .menu-image {
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            background-color: #f5f5f5;
+            padding: 10px;
+            transition: transform 0.3s ease;
+            text-align: center;
+        }
+
+        /* 이미지 스타일 */
+        .menu-image img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        /* 이미지 아래에 메뉴명 */
+        .menu-image p {
+            margin-top: 8px;
+            font-size: 0.9rem;
+            color: #333;
+        }
+
+        /* 호버 시 약간 확대 효과 */
+        .menu-image:hover {
+            transform: scale(1.05);
+        }
+
+        
+
+
+        .more-menu-btn {
+            cursor: pointer;
+            color: #555;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            margin-top: 10px;
+        }
+
+        .more-menu-btn span {
+            margin-left: 5px;
         }
 
         .bottom-nav-wrapper {
@@ -402,26 +548,6 @@
                     <div class="map"></div>
                 </div>
 
-                <p class="restaurant-info" id="mainMenu">
-                    <img src="https://github.com/user-attachments/assets/2830e89d-31ca-452a-ba73-1adb5fb2c5e8" alt="메뉴 아이콘">
-                    <span th:utext="${shop.mainMenu}"></span>
-                </p> <br>
-                <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        const mainMenuElem = document.getElementById("mainMenu");
-                        if (mainMenuElem) {
-                            const spanElem = mainMenuElem.querySelector("span"); // <span> 내부 텍스트만 변경
-                            if (spanElem) {
-                                const menus = spanElem.textContent.split(",");
-                                if (menus.length > 3) {
-                                    spanElem.innerHTML = menus.slice(0, 3).join(", ") + "...";
-                                }
-                            }
-                        }
-                    });
-
-                </script>
-
                 <p class="restaurant-info">
                     <img src="https://github.com/user-attachments/assets/35def7f7-a86e-43d0-905c-675c4212c54f" alt="주소 이모티콘">
                     <span th:text="${shop.address}"></span>
@@ -429,35 +555,163 @@
 
                 <p class="restaurant-info">
                     <img src="https://github.com/user-attachments/assets/ed0707e8-ae3e-44ec-ab96-175a1c9d088b" alt="전화기 이모티콘">
-                    <span th:text="${shop.phone}"></span>
+                    <span th:text="${shop.number}"></span>
                 </p> <br>
 
                 <div class="like-section">
                     <div class="like-container">
-                        <span id="likeCount" th:text="${shop.likeCount}"></span>
                         <form th:action="@{/toggleLike}" method="POST">
                             <input type="hidden" name="shopId" th:value="${shop.id}">
                             <button type="submit" class="like-btn">
                                 <img class="heart-icon" src="https://cdn-icons-png.flaticon.com/512/833/833472.png" alt="Heart Icon">
-                            </button>
-                        </form>
+                            </button> 
+                        </form> &nbsp;
+                        <span id="likeCount" th:text="${shop.likeCount}"></span>
                     </div>
                 </div>                
                 
             </div>
         </div>
 
-        <div class = "content">
-            <div class = "restaurant-card">
-                <h2>영업 시간</h2> <br>
-                <p class="restaurant-info">
+        <div class="content">
+            <div class="restaurant-card">
+                <h2>
                     <img src="https://github.com/user-attachments/assets/9b60d89e-c39c-4fca-ae68-78b49d267127" alt="영업시간 이모티콘">
-                    <span>11:30 - 20:00</span>
-                </p> <br>
-                <h2>메뉴</h2> <br>
-                <p>음식점 사진들 ... 띄우기 ?</p>
+                    영업 시간
+                </h2><br>
+        
+                <div th:if="${#strings.isEmpty(shop.tue) and #strings.isEmpty(shop.wen) and #strings.isEmpty(shop.thu) and #strings.isEmpty(shop.fri) and #strings.isEmpty(shop.sat) and #strings.isEmpty(shop.sun)}">
+                    <span th:text="${shop.mon}"></span>
+                </div>
+        
+                <div class="business-hours" th:if="${!#strings.isEmpty(shop.tue) or !#strings.isEmpty(shop.wen) or !#strings.isEmpty(shop.thu) or !#strings.isEmpty(shop.fri) or !#strings.isEmpty(shop.sat) or !#strings.isEmpty(shop.sun)}">
+                    <div>
+                        <b>월요일 :</b> <span th:text="${!#strings.isEmpty(shop.mon) ? shop.mon : '휴무'}"></span>
+                    </div>
+                    <div>
+                        <b>화요일 :</b> <span th:text="${!#strings.isEmpty(shop.tue) ? shop.tue : (!#strings.isEmpty(shop.mon) ? shop.mon : '휴무')}"></span>
+                    </div>
+                    <div>
+                        <b>수요일 :</b> <span th:text="${!#strings.isEmpty(shop.wen) ? shop.wen : (!#strings.isEmpty(shop.mon) ? shop.mon : '휴무')}"></span>
+                    </div>
+                    <div>
+                        <b>목요일 :</b> <span th:text="${!#strings.isEmpty(shop.thu) ? shop.thu : (!#strings.isEmpty(shop.mon) ? shop.mon : '휴무')}"></span>
+                    </div>
+                    <div>
+                        <b>금요일 :</b> <span th:text="${!#strings.isEmpty(shop.fri) ? shop.fri : (!#strings.isEmpty(shop.mon) ? shop.mon : '휴무')}"></span>
+                    </div>
+                    <div>
+                        <b>토요일 :</b> <span th:text="${!#strings.isEmpty(shop.sat) ? shop.sat : (!#strings.isEmpty(shop.mon) ? shop.mon : '휴무')}"></span>
+                    </div>
+                    <div>
+                        <b>일요일 :</b> <span th:text="${!#strings.isEmpty(shop.sun) ? shop.sun : (!#strings.isEmpty(shop.mon) ? shop.mon : '휴무')}"></span>
+                    </div>
+                </div>
+        
+                <br>
+        
+                <h2>
+                    <img src="https://github.com/user-attachments/assets/7d9701cc-3c84-4f7d-9404-0af56f2afc16" alt="메뉴 이코티콘">
+                    메뉴
+                </h2><br>
+        
+                <div class="menu-section">
+                    <ul id="menuList" class="menu-grid">
+                        <li th:each="menu, iterStat : ${shopMenus}" th:if="${iterStat.index < 4}" class="menu-item">
+                            <span th:text="${menu.menuName}"
+                                  th:attr="data-imgurl=${menu.imgUrl}"
+                                  class="menu-name menu-link">
+                            </span>
+                            <span class="dots"></span>
+                            <span class="menu-price" th:text="${menu.price}"></span>
+                        </li>
+        
+                        <li th:each="menu, iterStat : ${shopMenus}" th:if="${iterStat.index >= 4}" class="menu-item hidden-menu" style="display: none;">
+                            <span th:text="${menu.menuName}"
+                                  th:attr="data-imgurl=${menu.imgUrl}"
+                                  class="menu-name menu-link">
+                            </span>
+                            <span class="dots"></span>
+                            <span class="menu-price" th:text="${menu.price}"></span>
+                        </li>
+                    </ul>
+        
+                    <div th:if="${#lists.size(shopMenus) > 4}" id="moreMenuButton" class="more-menu-btn">
+                        <span id="moreMenuText">더보기</span>
+                        <span id="arrowIcon">▼</span>
+                    </div>
+                </div>
+
+                <!-- 모달창 -->
+                <div id="imageModal" class="modal">
+                    <span class="close" onclick="closeModal()">&times;</span>
+                    <div class="modal-img-wrapper">
+                        <img id="modalImage" class="modal-img">
+                    </div>
+                </div>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', () => {
+                        const moreButton = document.getElementById('moreMenuButton');
+                        const hiddenMenus = document.querySelectorAll('.hidden-menu');
+                        const moreMenuText = document.getElementById('moreMenuText');
+                        const arrowIcon = document.getElementById('arrowIcon');
+                        let isExpanded = false;
+
+                        if (moreButton) {
+                            moreButton.addEventListener('click', () => {
+                                isExpanded = !isExpanded;
+                                hiddenMenus.forEach(menu => {
+                                    menu.style.display = isExpanded ? 'flex' : 'none';
+                                });
+                                moreMenuText.textContent = isExpanded ? '접기' : '더보기';
+                                arrowIcon.textContent = isExpanded ? '▲' : '▼';
+                            });
+                        }
+
+                        // 메뉴 클릭 시 모달 열기
+                        document.querySelectorAll('.menu-link').forEach(menu => {
+                            menu.addEventListener('click', () => {
+                                const imgUrl = menu.getAttribute('data-imgurl');
+                                const modal = document.getElementById('imageModal');
+                                const modalImg = document.getElementById('modalImage');
+                                modal.style.display = 'block';
+                                modalImg.src = imgUrl;
+                            });
+                        });
+
+                        // 모달 닫기
+                        window.onclick = function(event) {
+                            const modal = document.getElementById('imageModal');
+                            if (event.target === modal) {
+                                modal.style.display = 'none';
+                            }
+                        };
+                    });
+
+                    // 모달 닫기 함수
+                    function closeModal() {
+                        document.getElementById('imageModal').style.display = 'none';
+                    }
+                </script>
             </div>
         </div>
+
+        <div class = "content">
+            <div class = "restaurant-card">
+                <h2>음식 사진 </h2>
+                <div class="image-gallery">
+                    <div th:each="menu : ${shopMenus}" class="menu-image">
+                        <img th:src="${menu.imgUrl}" th:alt="${menu.menuName}" />
+                        <p th:text="${menu.menuName}"></p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
+
+
 
         <div class="bottom-nav-wrapper">
             <nav class="bottom-nav">
@@ -518,7 +772,7 @@
             });
         }
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBAMdpdosDTpKxFMChnvC3fEZlQlU2nIBg"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALc92CwPRZXE1Amxh53NyxniBJOHTuka4"></script>
     
 </body>
 </html>

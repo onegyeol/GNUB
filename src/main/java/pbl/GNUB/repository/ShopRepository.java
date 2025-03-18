@@ -13,6 +13,13 @@ public interface ShopRepository extends JpaRepository<Shop, Long> {
       List<Shop> findTop28ByOrderByLikeCountDesc(); // 좋아요 수 기준으로 상위 28개 조회
   
       Shop getShopById(Long id); // 해당 id로 음식점 조회
+
+      @Query("SELECT DISTINCT s FROM Shop s " +
+              "JOIN FETCH s.shopTags st " +
+              "WHERE st.hygiene = 1 OR st.revisit = 1 OR st.recent = 1 OR st.delicious = 1 OR " +
+              "st.goodValue = 1 OR st.mood = 1 OR st.fresh = 1 OR st.kindness = 1 OR st.alone = 1")
+       List<Shop> findAllWithActiveTags();
+
   
       @Query("SELECT DISTINCT s FROM Shop s " +
              "LEFT JOIN s.shopMenus m " +

@@ -73,6 +73,7 @@ public class Shop {
     @ToString.Exclude
     private List<ShopTag> shopTags; // ShopTag와의 다대다 관계
 
+    
     // likeCount setter
     public void setLikeCount(int likeCount) {
         this.likeCount = likeCount;

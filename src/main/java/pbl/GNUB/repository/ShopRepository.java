@@ -20,7 +20,6 @@ public interface ShopRepository extends JpaRepository<Shop, Long> {
               "st.goodValue = 1 OR st.mood = 1 OR st.fresh = 1 OR st.kindness = 1 OR st.alone = 1")
        List<Shop> findAllWithActiveTags();
 
-  
       @Query("SELECT DISTINCT s FROM Shop s " +
              "LEFT JOIN s.shopMenus m " +
              "WHERE LOWER(s.name) LIKE LOWER(CONCAT('%', :query, '%')) OR " +

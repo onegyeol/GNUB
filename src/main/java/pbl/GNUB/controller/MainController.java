@@ -57,6 +57,7 @@ public class MainController {
     
         model.addAttribute("categorizedShopsList", categorizedShops.entrySet());
 
+        
         /* ShopTag.csv 파일 완성 시 까지 주석 처리
          * 
          * // 1. 먼저 매핑을 수행 (이름 기준)

@@ -9,5 +9,6 @@ import pbl.GNUB.entity.ShopMenu;
 @Repository
 public interface ShopMenuRepository extends JpaRepository<ShopMenu, Long> {
     List<ShopMenu> findByRestName(String restName);
+    
 }
 

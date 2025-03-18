@@ -1,5 +1,6 @@
 package pbl.GNUB.dto;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,8 +9,8 @@ import org.jsoup.Jsoup;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import pbl.GNUB.entity.Board;
 
@@ -19,14 +20,14 @@ import pbl.GNUB.entity.Board;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BoardDto {
-    private Long authorId;
-    private String authorName;
+    private Long authorId;  // 작성자 ID
+    private String authorName; // 작성자 이름 추가
     private Long id;
     private String title;
     private String content;
-    private int boardHits;
-    private String boardCreatedTime;
-    private String boardUpdatedTime;
+    private int boardHits;  // 조회수
+    private String boardCreatedTime;  // 날짜를 String으로 변경
+    private String boardUpdatedTime;  // 날짜를 String으로 변경
 
     public static BoardDto toBoardDTO(Board board) {
         BoardDto boardDTO = new BoardDto();
@@ -35,6 +36,7 @@ public class BoardDto {
         boardDTO.setId(board.getId());
         boardDTO.setTitle(board.getTitle());
         
+        // HTML 태그를 제거하고 텍스트만 저장
         String cleanContent = Jsoup.parse(board.getContent()).text();
         boardDTO.setContent(cleanContent);
 
@@ -49,4 +51,5 @@ public class BoardDto {
 
         return boardDTO;
     }
+    
 }

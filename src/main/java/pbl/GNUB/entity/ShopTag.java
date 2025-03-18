@@ -47,5 +47,6 @@ public class ShopTag {
     private Integer value; // `value` 필드 추가
 
     @ManyToMany(mappedBy = "shopTags")
+    @ToString.Exclude
     private List<Shop> shops;
 }

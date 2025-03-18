@@ -8,18 +8,30 @@ import org.springframework.stereotype.Service;
 
 import pbl.GNUB.dto.ShopDto;
 import pbl.GNUB.entity.Shop;
+import pbl.GNUB.entity.ShopMenu;
 import pbl.GNUB.entity.TagMapping;
+import pbl.GNUB.repository.ShopMenuRepository;
 import pbl.GNUB.repository.ShopRepository;
 
 @Service
 public class ShopService {
-    @Autowired
-    private ShopRepository shopRepository;
+
+    private final ShopRepository shopRepository;
+    private final ShopMenuRepository shopMenuRepository;
+
+    public ShopService(ShopRepository shopRepository, ShopMenuRepository shopMenuRepository){
+        this.shopRepository = shopRepository;
+        this.shopMenuRepository = shopMenuRepository;
+    }
     
     // 좋아요 순으로 상위 28개 음식점 가져오기
     public List<Shop> getTop28ShopsByLikes() {
         return shopRepository.findTop28ByOrderByLikeCountDesc();
     }
+
+    public List<Shop> getAllShops() {
+        return shopRepository.findAll();
+    }    
 
     public Shop findShopById(Long id){
         return shopRepository.findById(id).orElse(null);
@@ -38,4 +50,7 @@ public class ShopService {
         return shopRepository.findShopsByDynamicTag(tag, query);
     }
 
+    public List<ShopMenu> getMenusByShopName(String shopName) {
+        return shopMenuRepository.findByRestName(shopName);
+    }
 }

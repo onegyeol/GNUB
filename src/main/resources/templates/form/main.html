@@ -13,21 +13,31 @@
             font-family: 'Noto Sans KR', sans-serif;
         }
 
-        body, html {
+        .body {
+            padding-bottom: 80px; /* 푸터 높이만큼 여백을 추가하여 푸터가 겹치지 않도록 설정 */
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
             background-color: #f0f0f0;
-            min-width: 1070px;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
         }
 
         #root {
-            width: 100%;
-            min-height: auto;
-            overflow-x: hidden;
+            min-height: 100%;
+            padding-bottom: 60px; /* footer height */
         }
 
         .header-content {
             background-color: #f0f0f0;
             height: 74px;
-            position: sticky;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
@@ -35,6 +45,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            padding: 10px 0;
         }
 
         .common-desk-header {
@@ -67,7 +78,8 @@
 
         .banner-wrap {
             background-color: white;
-            width: 1070px;
+            width: 100%;
+            max-width: 1070px;
             margin: 0 auto;
             display: flex;
             justify-content: center;
@@ -112,8 +124,8 @@
         }
 
         .main-logo img {
-            width: 100%;
-            height: 100%;
+            width: 50%;
+            height: 50%;
             object-fit: contain;
         }
 
@@ -125,25 +137,23 @@
 
         .input-wrap {
             position: relative;
-            display: inline-block;
-            margin: 0 auto;
-            width: 500px;
-            max-width: 100%;
+            width: 100%;
+            max-width: 500px; /* 최대 크기 제한 */
+            min-width: 200px; /* 최소 크기 제한 */
             padding: 0 16px;
-            box-sizing: border-box;
             font-family: Pretendard, "Apple SD Gothic Neo", sans-serif;
             font-size: 15px;
-            line-height: 1.5;
-            color: #000;
-            border: none;
-            border-radius: 4px;
-            background-color: #fff;
-            height: calc(100% + 3px);
         }
 
+        /* 로고 크기 조정 */
         .main-logo {
-            flex: 1;
+            display: flex;
+            align-items: center;
+            margin-right: 15px; /* 검색창과 간격 */
+            width: 120px; /* 로고 크기 */
+            height: 40px;
         }
+
 
         .input-wrap input {
             width: 100%;
@@ -187,12 +197,15 @@
             cursor: pointer;
         }
 
+        /* 검색창 둥글게, 흰색 배경 */
         .search-input {
-            width: 340px;
-            height: 40px;
-            padding: 0 40px 0 15px;
-            border: 1px solid #e0e0e0;
-            border-radius: 20px;
+            width: 100%;
+            height: 45px;
+            padding: 10px 40px 10px 15px;
+            border: 1px solid #ccc; /* 테두리 추가 */
+            border-radius: 25px; /* 둥근 모양 */
+            font-size: 16px;
+            outline: none;
         }
 
         .search {
@@ -278,7 +291,8 @@
         }
 
         .tag-container {
-            width: 1070px;
+            width: 100%;
+            max-width: 1070px;
             margin: 20px auto;
             background-color: #f0f0f0;
             border-radius: 10px;
@@ -320,16 +334,19 @@
         .tag-item.active {
             background-color: white;
         }
+
         .content {
-            display: flex;
-            justify-content: center;
+            min-height: calc(100vh - 60px);
+            padding: 20px;
             background-color: #f0f0f0;
         }
 
         .body-box {
-            width: 1070px;
+            width: 100%;
+            max-width: 1070px;
             padding: 40px 0px;
             margin: 0 auto;
+            padding-bottom: 100px;
         }
 
         .card-section {
@@ -389,29 +406,50 @@
             flex-direction: column;
             justify-content: space-between;
         }
+
         .slide-card-item img {
             width: 100%;
-            height: 100%;
+            height: 238px;
             object-fit: cover;
             object-position: center;
             border-radius: 20px;
         }
 
+        /* 링크 밑줄 제거 및 글씨 색상 지정 */
+        a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        a:hover {
+            color: #007bff;
+        }
+
+        /* 식당 이름 스타일 */
         .card-rest-name {
+            text-decoration: none !important; /* 밑줄 제거 */
+            color: #333 !important;           /* 검정색 글씨 */
             margin-top: 10px;
             text-align: center;
             font-weight: bold;
             padding: 0 10px;
         }
 
+        .card-rest-nam a:hover{
+            color: #41bbca;
+        }
+
         .image-btn-container {
             display: flex;
+            justify-content: center;
             align-items: center;
+            margin-top: 5px;
         }
 
         .like-section {
             display: flex;
             align-items: center;
+            gap: 5px;
         }
 
         #likeCount {
@@ -460,18 +498,21 @@
 
         .bottom-nav-wrapper {
             width: 100%;
+            display: flex;
+            justify-content: center; /* 중앙 정렬 */
             position: fixed;
             bottom: 0;
             left: 0;
-            background-color: #f0f0f0;
-            border-top: none;
+            z-index: 500;
+            height: 60px;
         }
 
         .bottom-nav {
-            width: 1070px;
+            width: 1070px; /* 헤더와 동일한 너비 */
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
+            height: 100%;
         }
 
         .bottom-nav a {
@@ -492,10 +533,11 @@
         }
 
         @media screen and (max-width: 1070px) {
-        .bottom-nav {
-                width: 100%;
+            .bottom-nav {
+                    width: 100%;
+            }
         }
-        }
+
 
         .nav-container {
             background-color: white;
@@ -508,6 +550,7 @@
             padding: 0 16px;
             border-top: 1px solid rgba(138, 138, 138, 0.1);
         }
+
         .nav-container .menu-items {
             display: flex;
             align-items: center;
@@ -557,6 +600,21 @@
 
         .bottom-nav-wrapper {
             z-index: 400;
+        }
+
+        /* 반응형: 화면이 작아지면 검색창도 작아짐 */
+        @media screen and (max-width: 768px) {
+            .search-input {
+                font-size: 14px;
+                height: 40px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .search-input {
+                font-size: 12px;
+                height: 35px;
+            }
         }
     </style>
 </head>
@@ -623,6 +681,55 @@
         
         <main class="content">
             <div class="body-box">
+                <th:block th:if="${categorizedShopsList != null}" th:each="entry : ${categorizedShopsList}">
+                    <section class="card-section" th:id="${'category-' + entry.key}">
+                        <div class="card-section-wrap">
+                            <div class="card-section-title-box">
+                                <h2 class="card-section-title">
+                                    <span th:text="${entry.key}">기타</span>
+                                    <span class="card-section-rest-cnt">
+                                        ([[${#lists.size(entry.value)}]])
+                                    </span>
+                                </h2>
+                            </div>
+
+                            <div class="card-slide-wrap">
+                                <ul class="slide-card-list">
+                                    <!-- value가 null이 아닐 때만 출력 -->
+                                    <li th:if="${entry.value != null}" th:each="shop : ${entry.value}" class="slide-card-item">
+                                        <a th:href="@{'/shopDetails/' + ${shop.id}}">
+                                            <img th:src="@{${shop.imgUrl}}" alt="" loading="lazy">
+                                            <p class="card-rest-name" th:text="${shop.name}"></p>
+                                        </a>
+
+                                        <div class="image-btn-container">
+                                            <div class="like-section">
+                                                <form th:action="@{/toggleLike}" method="POST">
+                                                    <input type="hidden" name="shopId" th:value="${shop.id}">
+                                                    <button type="submit" class="like-btn">
+                                                        <img class="like-icon" src="https://cdn-icons-png.flaticon.com/512/833/833472.png" alt="Heart Icon">
+                                                    </button>
+                                                </form>
+                                                <p id="likeCount" th:text="${shop.likeCount}"></p>
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                    <!-- value가 null일 때 대체 메시지 출력 -->
+                                    <li th:if="${entry.value == null}" class="slide-card-item">
+                                        <p>등록된 가게가 없습니다.</p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+                </th:block>
+
+
+
+
+
+                <!-- shopTag.csv 완성 시 까지 주석 처리
                 <th:block th:each="entry : ${taggedShops}">
                     <section class="card-section" th:id="${'tag-' + entry.key}">
                         <div class="card-section-wrap">
@@ -653,12 +760,13 @@
                         </div>
                         </div>
                     </section>
-                </th:block>
-            <a href="/ask" class="fixed-button">
-                <img src="https://www.gnu.ac.kr/images/web/main/sub_cnt/bs03.png" alt="캐릭터 기본형" width="50" height="50">
-            </a>
-        </div>
-    </main>
+                </th:block> -->
+
+                <a href="/ask" class="fixed-button">
+                    <img src="https://www.gnu.ac.kr/images/web/main/sub_cnt/bs03.png" alt="캐릭터 기본형" width="50" height="50">
+                </a>
+            </div>
+        </main>
     </div>
     
     <script src="/javascript/script.js" defer></script>
@@ -700,72 +808,60 @@
         </nav>
     </div>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const toggleBanner = document.getElementById('toggleBanner');
-            const topNavContent = document.querySelector('.top-nav-content');
+            const bannerText = document.getElementById('bannerText');
+            const campusImages = document.getElementById('campusImages');
             const searchInput = document.getElementById('tagSearchInput');
             const tagItems = document.querySelectorAll('.tag-item');
-
-            toggleBanner.addEventListener('click', function() {
-                topNavContent.style.display = topNavContent.style.display === 'none' ? 'block' : 'none';
-                adjustLayout();
-            });
-
-            searchInput.addEventListener('input', function() {
+            const topNavContent = document.querySelector('.top-nav-content');
+    
+            // 배너 클릭 시 캠퍼스 뷰 토글
+            toggleBanner.addEventListener('click', toggleCampusView);
+    
+            // 태그 검색 필터링
+            searchInput.addEventListener('input', function () {
                 const searchTerm = this.value.toLowerCase();
                 tagItems.forEach(item => {
                     const tagText = item.textContent.toLowerCase();
                     item.style.display = tagText.includes(searchTerm) ? '' : 'none';
                 });
             });
-
-            adjustLayout();
-        });
-
-        function adjustLayout() {
-            const header = document.querySelector('.header-content');
-            const banner = document.querySelector('.banner-box');
-            const topNav = document.querySelector('.top-nav-content');
-
-            if (header && banner) {
-                const headerHeight = header.offsetHeight;
-                banner.style.marginTop = `${headerHeight}px`;
-
-                if (topNav) {
-                    if (topNav.style.display !== 'none') {
-                        topNav.style.marginTop = `-${banner.offsetHeight}px`;
-                    } else {
-                        topNav.style.marginTop = '0';
+    
+            // 레이아웃 조정
+            function adjustLayout() {
+                const header = document.querySelector('.header-content');
+                const banner = document.querySelector('.banner-box');
+    
+                if (header && banner) {
+                    const headerHeight = header.offsetHeight;
+                    banner.style.marginTop = `${headerHeight}px`;
+    
+                    if (topNavContent) {
+                        topNavContent.style.marginTop = topNavContent.style.display === 'none' ? '0' : `-${banner.offsetHeight}px`;
                     }
                 }
             }
-        }
-
-        window.addEventListener('load', adjustLayout);
-        window.addEventListener('resize', adjustLayout);
-
-        document.querySelector('.banner-box').addEventListener('click', function() {
-            const topNav = document.querySelector('.top-nav-content');
-            if (topNav) {
-                topNav.style.display = topNav.style.display === 'none' ? 'block' : 'none';
+    
+            // 캠퍼스 뷰 토글 함수
+            function toggleCampusView() {
+                if (campusImages.style.display === "none" || campusImages.style.display === "") {
+                    campusImages.style.display = "block"; 
+                    bannerText.style.display = "none";
+                } else {
+                    campusImages.style.display = "none"; 
+                    bannerText.style.display = "block";
+                }
+                adjustLayout();
             }
+    
+            // 초기 레이아웃 조정
             adjustLayout();
+    
+            // 창 크기 변경 시 레이아웃 다시 조정
+            window.addEventListener('resize', adjustLayout);
         });
-
-        function toggleCampusView() {
-            const campusImages = document.getElementById("campusImages");
-            const bannerText = document.getElementById("bannerText");
-
-            // 캠퍼스 이미지 영역의 표시 상태 확인 후 토글
-            if (campusImages.style.display === "none") {
-                campusImages.style.display = "block"; // 이미지 보이게
-                bannerText.style.display = "none"; // 글자 숨기기
-            } else {
-                campusImages.style.display = "none"; // 이미지 숨기기
-                bannerText.style.display = "block"; // 글자 다시 보이게
-            }
-        }
-
-        </script>
+    </script>
+    
 </body>
 </html>

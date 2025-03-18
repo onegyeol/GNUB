@@ -12,6 +12,7 @@ import lombok.*;
 @Table(name = "SHOPMENU")
 @Builder
 public class ShopMenu {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

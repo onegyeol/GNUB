@@ -141,6 +141,21 @@
             height: calc(100% + 3px);
         }
 
+        .search-input {
+            width: 340px;
+            height: 40px;
+            padding: 0 40px 0 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+        }
+
+        .search {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
         .main-logo {
             flex: 1;
         }
@@ -391,7 +406,7 @@
                         <div class="input-wrap">
                             <input class="search-input" type="search" id="query" name="query" placeholder="지역, 음식 또는 식당명 입력" th:value="${searchTerm}" maxlength="255" autocomplete="off">
                             <button type="submit" class="btn-search">
-                                <img src="/image/searching-icon.png" alt="검색버튼">
+                                <img src="https://github.com/user-attachments/assets/19865e59-1076-4b33-ae6a-9cfbd7b5bbb2" alt="검색버튼">
                             </button>
                         </div>
                     </form>

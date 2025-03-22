@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta charset="UTF-8">
+    <title>GNU BOB - 지도</title>
+     <!-- ✅ API Key를 Thymeleaf로 동적 주입 -->
+    <script th:src="'https://maps.googleapis.com/maps/api/js?key=' + ${googleMapsApiKey} + '&libraries=places&callback=initMap'" async defer></script>
+   
+    <link rel="icon" type="image/png" href="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .body {
+            padding-bottom: 80px; /* 푸터 높이만큼 여백을 추가하여 푸터가 겹치지 않도록 설정 */
+        }
+
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            overflow: auto; /* 스크롤 가능하도록 설정 */
+        }
+
+        #root {
+            width: 100%;
+            min-height: auto;
+            overflow-x: hidden;
+            padding-bottom: 70px; /* 푸터 높이만큼 패딩 추가 */
+        }
+
+        .header-content {
+            background-color: #f0f0f0;
+            height: 74px;
+            position: sticky;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 400;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .common-desk-header {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-wrap {
+            background-color: #41bbca;
+            width: 1070px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0 auto;
+            height: 100%;
+        }
+
+        .banner-box {
+            margin-top: 0;
+            width: 100%;
+            display: flex;
+            padding-top: 3%;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 1; 
+        }
+
+
+        .banner-content {
+            font-family: 'Arial', sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            line-height: 1.5;
+        }
+
+        .btn-search {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .main-logo {
+            width: 135px;
+            height: 45px;
+        }
+
+        .main-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* 기존 input-wrap 관련 중복 제거하고 재정의 */
+        .input-wrap {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            padding: 0 12px;
+            box-sizing: border-box;
+            font-family: Pretendard, "Apple SD Gothic Neo", sans-serif;
+            font-size: 15px;
+            color: #000;
+            border: none;
+            border-radius: 4px;
+            background-color: #fff;
+            height: 40px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* 입력창 */
+        .input-wrap input {
+            flex: 1;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 15px;
+            background-color: transparent;
+        }
+
+        /* 검색 버튼 */
+        .input-wrap button {
+            background: none;
+            border: none;
+            padding: 0 8px;
+            cursor: pointer;
+        }
+
+        /* 검색 아이콘 크기 */
+        .btn-search img {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* 반응형: 모바일 기준 */
+        @media screen and (max-width: 768px) {
+            .search-form {
+                width: 100%;
+                margin: 0;
+                padding: 0 8px;
+            }
+
+            .input-wrap {
+                width: 100%;
+                padding: 0 8px;
+            }
+
+            .input-wrap input {
+                font-size: 14px;
+            }
+
+            .btn-search img {
+                width: 18px;
+                height: 18px;
+            }
+        }
+
+
+        .main-logo {
+            flex: 1;
+        }
+
+        .header-wrap {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: calc(100% + 3px);
+        }
+
+        .search-form {
+            flex-grow: 2;
+            display: flex;
+            justify-content: center;
+            margin-right: 10%;
+        }
+
+        .auth-box {
+            flex: 1;
+        }
+
+        .input-wrap input:focus {
+            outline: none;
+        }
+
+        .input-wrap button {
+            position: absolute;
+            top: 50%;
+            right: 16px;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .search-input {
+            width: 340px;
+            height: 40px;
+            padding: 0 40px 0 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+        }
+
+        .search {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+
+        .menu-item {
+            margin: 0 15px;
+        }
+
+        .menu-item a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .menu-item a:hover {
+            color: #007bff;
+        }
+
+        .map-container {
+            width: 100%;
+            max-width: 1070px;
+            height: calc(100vh - 134px); /* header 74px + footer 60px 기준 */
+            min-height: 400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+
+        #map {
+            width: 100%;
+            height: 100%; /* 부모 높이를 따라가도록 설정 */
+        }
+
+        .bottom-nav-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center; /* 중앙 정렬 */
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 500;
+            height: 60px;
+        }
+
+        .bottom-nav {
+            width: 1070px; /* 헤더와 동일한 너비 */
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .bottom-nav a {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 0;
+            color: #666;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .bottom-nav a svg {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 4px;
+        }
+
+        @media screen and (max-width: 1070px) {
+            .bottom-nav {
+                    width: 100%;
+            }
+        }
+
+
+        .nav-container {
+            background-color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1070px;
+            margin: 0 auto;
+            padding: 0 16px;
+            border-top: 1px solid rgba(138, 138, 138, 0.1);
+        }
+
+        .nav-container .menu-items {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-container .menu-item {
+            margin: 0 15px; 
+        }
+
+        .nav-container .login-logout {
+            margin-left: auto;
+        }
+
+        .fixed-button {
+            position: fixed;
+            bottom: 80px; /* 푸터 위로 띄우기 */
+            right: calc((100% - 1070px) / 2); /* 헤더와 푸터에 맞춰 정렬 */
+            width: 56px; /* 너비 조정 */
+            height: 56px; /* 높이 조정 */
+            border-radius: 50%; /* 완전한 원형 */
+            background-color: #41bbca;
+            color: white;
+            font-size: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            margin-right: 1%;
+        }
+
+        /* 버튼 내부 이미지 크기 조정 */
+        .fixed-button img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-left: 1%;
+        }
+
+        /* 호버 효과 */
+        .fixed-button:hover {
+            background-color: #35a0b0;
+        }
+
+
+        .bottom-nav-wrapper {
+            z-index: 400;
+        }
+
+        /* 반응형: 화면이 작아지면 검색창도 작아짐 */
+        @media screen and (max-width: 768px) {
+            .search-input {
+                font-size: 14px;
+                height: 40px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .search-input {
+                font-size: 12px;
+                height: 35px;
+            }
+        }
+
+        @media screen and (max-width: 1070px) {
+            body, html {
+                min-width: 100%;
+            }
+        }
+
+
+    </style>
+    
+</head>
+<body>
+    <div id="root">
+        <header class="header-content">
+            <div class="common-desk-header">
+                <div class="header-wrap">
+                    <div class="main-logo">
+                        <a href="/main">
+                            <img class="logo" src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo">
+                        </a>
+                    </div>
+
+                    
+                    <div class="search-form">
+                        <form action="/search" method="get">
+                            <div class="input-wrap">
+                                <input class="search-input" type="search" id="query" name="query" placeholder="지역, 음식 또는 식당명 입력" th:value="${searchTerm}" maxlength="255" autocomplete="off">
+                                <button type="submit" class="btn-search">
+                                        <img src="https://github.com/user-attachments/assets/19865e59-1076-4b33-ae6a-9cfbd7b5bbb2" alt="검색버튼">
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="auth-Box"></div>
+                </div>
+            </div>
+        </header>
+
+        <div class="map-container">
+            <div id="map"></div>
+        </div>
+        
+
+        <script>
+            let map;
+            let markers = []; // 생성된 마커들을 관리할 배열
+            let shopsVisible = false; // 마커 표시 상태 저장
+
+            function initMap() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(position => {
+                        const userLocation = { lat: position.coords.latitude, lng: position.coords.longitude };
+
+                        // 지도 초기화
+                        map = new google.maps.Map(document.getElementById("map"), {
+                            center: userLocation,
+                            zoom: 15,
+                            styles: [
+                                {
+                                    featureType: "poi",  // POI 전체
+                                    elementType: "labels", // 라벨만 제거할 경우
+                                    stylers: [{ visibility: "off" }]
+                                },
+                                {
+                                    featureType: "poi.business",  // 상점 관련 POI만
+                                    elementType: "all",
+                                    stylers: [{ visibility: "off" }]
+                                }
+                            ]
+                        });
+
+                        // 내위치
+                        const myLocation = {
+                            url: "https://github.com/user-attachments/assets/a2a22265-fb9e-4c91-ad09-ecfd3ea83057", 
+                            scaledSize: new google.maps.Size(40, 40),
+                            origin: new google.maps.Point(0, 0),
+                            anchor: new google.maps.Point(15, 30),
+                        };
+
+                        // 현재 위치 마커 추가
+                        new google.maps.Marker({
+                            position: userLocation,
+                            map: map,
+                            title: "현재 위치",
+                            icon: myLocation
+                        });
+
+                         // 음식점 띄우기 버튼 생성
+                        const buttonDiv = document.createElement("div");
+                        buttonDiv.style.backgroundColor = "#fff";
+                        buttonDiv.style.border = "2px solid #ccc";
+                        buttonDiv.style.borderRadius = "8px";
+                        buttonDiv.style.padding = "8px 12px";
+                        buttonDiv.style.margin = "10px";
+                        buttonDiv.style.fontSize = "14px";
+                        buttonDiv.style.cursor = "pointer";
+                        buttonDiv.style.textAlign = "center";
+                        buttonDiv.style.boxShadow = "0px 2px 6px rgba(0,0,0,0.3)";
+                        buttonDiv.innerText = "🍽️ 음식점 띄우기";
+                        buttonDiv.onclick = loadShops;  // 버튼 클릭 시 음식점 마커 표시 함수 실행
+
+                        // ✅ 클릭 시 마커 토글
+                        buttonDiv.onclick = () => {
+                            if (shopsVisible) {
+                                hideShopMarkers(); // 마커 제거
+                                buttonDiv.innerText = "🍽️ 음식점 띄우기";
+                            } else {
+                                loadShops(); // 마커 표시
+                                buttonDiv.innerText = "❌ 음식점 숨기기";
+                            }
+                            shopsVisible = !shopsVisible;
+                        };
+
+                        // 버튼을 지도에 추가
+                        map.controls[google.maps.ControlPosition.TOP_RIGHT].push(buttonDiv);
+                    });
+                } else {
+                    alert("위치 정보를 사용할 수 없습니다.");
+                }
+            }
+
+            // 음식점 데이터를 가져오는 함수
+            function loadShops() {
+                const bounds = map.getBounds(); // 현재 지도 화면의 경계 가져오기
+                const ne = bounds.getNorthEast(); // 북동쪽 좌표
+                const sw = bounds.getSouthWest(); // 남서쪽 좌표
+
+                console.log("현재 지도 영역:", ne.lat(), ne.lng(), sw.lat(), sw.lng()); // 디버깅용
+
+                // 음식점 마커 아이콘 설정 (테스트용 아이콘 URL 적용)
+                const customIcon = {
+                    url: "https://github.com/user-attachments/assets/e17ed7d7-903e-495c-9f1e-83f144adfdff", 
+                    scaledSize: new google.maps.Size(30, 30),
+                    origin: new google.maps.Point(0, 0),
+                    anchor: new google.maps.Point(15, 30),
+                };
+
+
+                // 기존 마커 삭제 (중복 표시 방지)
+                markers.forEach(marker => marker.setMap(null));
+                markers = [];
+
+                // 서버에 현재 지도 영역을 전달하여 해당 지역 음식점 가져오기
+                fetch(`/api/shops?neLat=${ne.lat()}&neLng=${ne.lng()}&swLat=${sw.lat()}&swLng=${sw.lng()}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("Fetched shops:", data);
+
+                        data.forEach(shop => {
+                            if (shop.lat && shop.lng) {
+                                const position = { lat: parseFloat(shop.lat), lng: parseFloat(shop.lng) };
+
+                                const marker = new google.maps.Marker({
+                                    position: position,
+                                    map: map,
+                                    title: shop.name,
+                                    icon: customIcon,
+                                });
+
+                                // InfoWindow 생성
+                                const infoWindow = new google.maps.InfoWindow({
+                                    content: `
+                                        <div style="font-size: 14px; font-family: 'Noto Sans KR', sans-serif;">
+                                            <strong>${shop.name}</strong><br/>
+                                            <span style="color: gray;">${shop.address}</span>
+                                        </div>
+                                    `
+                                });
+
+                                // 마우스 오버 시 열기
+                                marker.addListener("mouseover", () => {
+                                    infoWindow.open(map, marker);
+                                });
+
+                                // 마우스 아웃 시 닫기
+                                marker.addListener("mouseout", () => {
+                                    infoWindow.close();
+                                });
+
+                                // ✅ 마커 클릭 시 상세 페이지 이동
+                                marker.addListener("click", () => {
+                                    console.log(`🔗 이동: /shopDetails/${shop.id}`);
+                                    window.location.href = `/shopDetails/${shop.id}`;
+                                });
+
+                                google.maps.event.addListener(infoWindow, 'domready', () => {
+                                    const closeBtn = document.querySelector(".gm-ui-hover-effect");
+                                    if (closeBtn) closeBtn.style.display = "none";
+                                });
+
+                                markers.push(marker); // 마커 리스트에 추가
+                            } else {
+                                console.warn("Invalid shop location:", shop);
+                            }
+                        });
+                    })
+                    .catch(error => console.error("Error fetching shop data:", error));
+            }
+
+            // 마커 제거 함수
+            function hideShopMarkers() {
+                markers.forEach(marker => marker.setMap(null));
+                markers = [];
+            }
+
+        </script>
+        
+        <div class="bottom-nav-wrapper">
+            <nav class="bottom-nav">
+                <div class="nav-container">
+
+                    <a th:href="${session.loginEmail != null} ? @{/board/main} : @{/member/login}" class="nav-item">
+                        <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M3 9H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M9 21V9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>게시판</span>
+                    </a>
+                    
+                    <a th:href="@{/main}" class="nav-item">
+                        <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 9.5L12 3l9 6.5V21a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-5H10v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z" />
+                        </svg>
+                        <span>홈</span>
+                    </a>
+                    
+                    
+                    <a th:href="@{/map}" class="nav-item">
+                        <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21 3 6"></polygon>
+                            <line x1="9" y1="3" x2="9" y2="18"></line>
+                            <line x1="15" y1="6" x2="15" y2="21"></line>
+                        </svg>
+                        <span>지도</span>
+                    </a>
+                    
+                    <a th:href="${session.loginEmail != null} ? @{/myPage} : @{/member/login}" class="nav-item">
+                        <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>마이</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+    
+    
+</body>
+
+</html>

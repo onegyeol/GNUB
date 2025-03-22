@@ -1,6 +1,8 @@
 package pbl.GNUB.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,20 @@ public class ShopService {
     public List<Shop> getAllShops() {
         return shopRepository.findAll();
     }    
+
+    public List<Map<String, Object>> getShopsByBounds(Double neLat, Double neLng, Double swLat, Double swLng){
+        List<Shop> shops = shopRepository.findShopsByBounds(swLat, neLat, swLng, neLng);
+
+        return shops.stream().map(shop -> {
+            Map<String, Object> shopData = new HashMap<>();
+            shopData.put("id", shop.getId());
+            shopData.put("name", shop.getName());
+            shopData.put("address", shop.getAddress());
+            shopData.put("lat", shop.getLat());
+            shopData.put("lng", shop.getLng());
+            return shopData;
+        }).collect(Collectors.toList());
+    }
 
     public Shop findShopById(Long id){
         return shopRepository.findById(id).orElse(null);

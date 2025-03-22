@@ -14,6 +14,9 @@ public interface ShopRepository extends JpaRepository<Shop, Long> {
   
       Shop getShopById(Long id); // 해당 id로 음식점 조회
 
+      @Query("SELECT s FROM Shop s WHERE s.lat BETWEEN :swLat AND :neLat AND s.lng BETWEEN :swLng AND :neLng")
+       List<Shop> findShopsByBounds(@Param("swLat") Double swLat, @Param("neLat") Double neLat, @Param("swLng") Double swLng, @Param("neLng") Double neLng);
+
       @Query("SELECT DISTINCT s FROM Shop s " +
               "JOIN FETCH s.shopTags st " +
               "WHERE st.hygiene = 1 OR st.revisit = 1 OR st.recent = 1 OR st.delicious = 1 OR " +

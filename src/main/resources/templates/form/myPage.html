@@ -6,81 +6,331 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>마이페이지</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/bottom.css}">
     <style>
-        /* 헤더 스타일 */
+        body {
+            background-color: #f0f0f0;
+        }
+        .page-container {
+            width: 1070px;
+            margin: 0 auto;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
         .header-container h1 {
-            font-size: 40px; /* MyPage 제목 크기 조정 */
-            text-align: center; /* 제목 가운데 정렬 */
+            font-size: 40px;
+            text-align: left;
         }
-
-        /* content 섹션 스타일 */
-        .content {
-            display: flex;
-            justify-content: center;
-            gap: 20px; /* 요소 간격 */
-            margin-top: 20px; /* 상단 여백 */
+        .profile {
+            text-align: center;
+            margin-bottom: 20px;
         }
-
-        .content div {
-            text-align: center; /* 이미지와 텍스트 가운데 정렬 */
+        .profile-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
         }
-
-        .content p {
-            font-size: 20px;
+        .profile .name {
+            font-size: 32px;
+            font-weight: bold;
         }
-
-        /* info 섹션 스타일 */
-        .info {
-            display: flex;
-            flex-direction: column;
-            align-items: center; /* 가운데 정렬 */
-            margin-top: 40px; /* 상단 여백 */
-        }
-
-        .info p {
+        .profile .department {
             font-size: 18px;
-            margin: 5px 0; /* 위아래 간격 */
+        }
+        .content-container { /* 공통 container 스타일 */
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 20px;
+            background-color: white;
+        }
+        .content-title { /* 공통 title 스타일 */
+            background-color: #41bbca;
+            padding: 15px;
+        }
+
+        .content-title-text { /* 공통 title text 스타일 */
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .content-body { /* 공통 body 스타일 */
+            padding: 15px;
+        }
+        .content-item { /* 공통 item 스타일 */
+            display: flex;
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            align-items: center; /* 세로 정렬 추가 */
+        }
+        .content-item:last-child {
+            border-bottom: none;
+        }
+        .content-label { /* 공통 label 스타일 */
+            font-weight: bold;
+            width: 150px;
+            text-align: left; /* 텍스트 왼쪽 정렬 */
+        }
+        .content-value { /* 공통 value 스타일 */
+            margin-left: 20px;
+        }
+        .profile-info { /* 프로필 섹션 추가 스타일 */
+        }
+
+        .activity-log { /* 활동 내역 섹션 추가 스타일 */
+        }
+        .edit-btn {
+            margin-left: 10px;
+            padding: 5px 10px;
+            background-color: #41bbca;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .edit-btn:hover {
+            background-color: #3aa9b8;
+        }
+        .modal {
+            display: none; /* 초기 상태에서 숨김 */
+            position: fixed; /* 화면 고정 */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+            z-index: 1000; /* 다른 요소 위에 표시 */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 0;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .modal-content .content-title {
+            background-color: #41bbca;
+            padding: 15px;
+            position: relative;
+        }
+
+        .modal-content .content-title-text {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-align:center /* 새로 추가한부분 */
+            
+        }
+
+        .modal-content .close {
+            color: black;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+            transform: none; /* 변경한부분 */
+        }
+    
+
+        .modal-content .content-body {
+            padding: 16px;
+        }
+
+        .modal-content .content-item {
+            margin-bottom: 15px; /* 간격 조정 */
+            align-items: center; /* 세로 중앙 정렬 */
+            /* flex-direction: column; */
+            justify-content: space-between;
+        }
+
+        .modal-content .content-label {
+            font-size: 17px;
+            font-weight: bold;
+            display: inline-block; /* 인라인 블록으로 변경 */
+            width: 35%; /* 너비 조정 */
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        .modal-content input[type="password"] {
+            width: 63%;  /* 텍스트 상자 크기 조정 */
+            padding: 14px;
+            margin-top: 5px;
+            border: none;
+            border-radius: 4px;
+            background-color: #f0f0f0;
+            font-size: 17px;
+            height: 28px;
+            display: inline-block;
+        }
+
+        .modal-content .edit-btn {
+            width: 100%;
+            padding: 18px;
+            background-color: #41bbca;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            text-align: center;
+            margin-top: 10px; /* 위쪽 간격 추가 */
+            margin-bottom: 10px; /* 아래쪽 간격 추가 */
+        }
+
+        .modal-content .edit-btn:hover {
+            background-color: #3aa9b8;
+        }
+        #passwordMatchMessage {
+            font-size: 13px;
+            height: 20px; /* 공간 확보 */
+            margin-bottom: 10px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <!-- 로고 이미지 -->
-        <a th:href="@{/main}">
-            <img src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo" class="logo">
-        </a>
-        <div class="links">
-            <div th:if="${session.loginEmail != null}">
-                <a th:href="@{/board/main}">Board</a>
-                <a th:href="@{/myPage}">Mypage</a>
-                <a th:href="@{/member/logout}">Logout</a>
+    <div class="page-container">
+        <div class="header">
+            <a th:href="@{/main}">
+                <img src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo" class="logo">
+            </a>
+            <div class="links">
+                <div th:if="${session.loginEmail != null}">
+                    <a th:href="@{/board/main}">Board</a>
+                    <a th:href="@{/myPage}">Mypage</a>
+                    <a th:href="@{/member/logout}">Logout</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="header-container">
+            <h1 class="h1">My Page</h1>
+        </div>
+
+        <div class="profile">
+            <img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fde.pinterest.com%2Fpin%2Fin-2024--1035898351783248927%2F&psig=AOvVaw1f6qtIu6B7OIxMjrAqoM2F&ust=1741151789213000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNjtroHW74sDFQAAAAAdAAAAABAE" alt="User Profile" class="profile-image">
+            <div class="name" th:text="${member != null ? member.name : ''}"></div>
+            <div class="department" th:text="${departmentCollege} + ' / ' + ${departmentName}"></div>
+        </div>
+
+        <div class="content-container profile-info">
+            <div class="content-title">
+                <span class="content-title-text">내 프로필</span>
+            </div>
+            <div class="content-body">
+                <div class="content-item">
+                    <span class="content-label">이름:</span>
+                    <span class="content-value" th:text="${member.name}"></span>
+                </div>
+                <div class="content-item">
+                    <span class="content-label">학부/학과:</span>
+                    <span class="content-value" th:text="${departmentCollege} + ' / ' + ${departmentName}"></span>
+                </div>
+                <div class="content-item">
+                    <span class="content-label">이메일:</span>
+                    <span class="content-value" th:text="${member.email}"></span>
+                </div>
+                <div class="content-item">
+                    <span class="content-label">비밀번호:</span>
+                    <span class="content-value">********</span>
+                    <button class="edit-btn" onclick="openPasswordModal()">수정</button>
+
+                    <div id="passwordModal" class="modal">
+                        <div class="modal-content content-container">
+                            <div class="content-title">
+                                <span class="content-title-text">비밀번호 변경</span>
+                                <span class="close" onclick="closePasswordModal()">&times;</span>
+                            </div>
+                            <div class="content-body">
+                                <form th:action="@{/member/change-password}" method="post">
+                                    <div class="content-item">
+                                        <label for="currentPassword" class="content-label">현재 비밀번호:</label>
+                                        <input type="password" id="currentPassword" name="currentPassword" class="content-value" required>
+                                    </div>
+                                    <div class="content-item">
+                                        <label for="newPassword" class="content-label">새 비밀번호:</label>
+                                        <input type="password" id="newPassword" name="newPassword" class="content-value" required>
+                                    </div>
+                                    <div class="content-item">
+                                        <label for="confirmPassword" class="content-label">새 비밀번호 확인:</label>
+                                        <input type="password" id="confirmPassword" class="content-value" required onkeyup="checkPasswordMatch()">
+                                    </div>
+                                    <p id="passwordMatchMessage" style="color: red; font-size: 13px;"></p>
+                                    <div class="content-item">
+                                        <button type="submit" class="edit-btn" id="changePasswordButton" disabled>변경</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="content-container activity-log">
+            <div class="content-title">
+                <span class="content-title-text">활동내역</span>
+            </div>
+            <div class="content-body">
+                <div class="content-item">
+                    <span class="content-label">내가 작성한 글</span>
+                    <button class="edit-btn" th:onclick="'window.location.href=\'' + @{/myPage/myPost} + '\''">바로가기</button>
+                </div>
+                <div class="content-item">
+                    <span class="content-label">내가 좋아요한 가게</span>
+                    <button class="edit-btn" th:onclick="'window.location.href=\'' + @{/myPage/likeList} + '\''">바로가기</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="header-container">
-        <h1 class="h1">My Page</h1>
-    </div>
 
-    <div class="content">
-        <div>
-            <a th:href="@{/myPage/myPost}">
-                <img src="/image/gnub_logo.png" alt="내가 작성한 글">
-            </a>
-            <p> 내가 작성한 글 </p>
-        </div>
-        <div>
-            <a th:href="@{/myPage/likeList}">
-                <img src="/image/gnub_logo.png" alt="내가 좋아요한 가게">
-            </a>
-            <p> 내가 좋아요한 가게 </p>
-        </div>
-    </div>
+    <th:block th:replace="~{form/bottom :: body}"></th:block>
+    
+    
+    <script>
+    function checkPasswordMatch() {
+        var newPassword = document.getElementById("newPassword").value;
+        var confirmPassword = document.getElementById("confirmPassword").value;
+        var messageElement = document.getElementById("passwordMatchMessage");
+        var changePasswordButton = document.getElementById("changePasswordButton");
 
-    <div class="info">
-        <p>이름: <span th:text="${member.name}"></span></p>
-        <p>단과대 / 학과: <span th:text="${departmentCollege} + ' / ' + ${departmentName}"></span></p>
-        <p>이메일: <span th:text="${member.email}"></span></p>
-    </div>
+        if (newPassword === confirmPassword) {
+            messageElement.textContent = "비밀번호가 서로 일치합니다.";
+            messageElement.style.color = "green";
+            changePasswordButton.disabled = false;
+        } else {
+            messageElement.textContent = "새 비밀번호가 서로 일치하지 않습니다.";
+            messageElement.style.color = "red";
+            changePasswordButton.disabled = true;
+        }
+    }
+    function openPasswordModal() {
+        document.getElementById('passwordModal').style.display = 'block';
+    }
+
+    function closePasswordModal() {
+        document.getElementById('passwordModal').style.display = 'none';
+        document.getElementById('currentPassword').value = '';
+        document.getElementById('newPassword').value = '';
+        document.getElementById('confirmPassword').value = '';
+        document.getElementById('passwordMatchMessage').textContent = ''; // 메시지 초기화
+        document.getElementById('changePasswordButton').disabled = true; // 버튼 초기화
+    }
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closePasswordModal();
+        }
+    });
+    </script>
 </body>
 </html>

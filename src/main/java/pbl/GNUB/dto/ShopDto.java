@@ -17,6 +17,7 @@ import pbl.GNUB.entity.Shop;
 @ApiModel(value = "음식점정보")
 public class ShopDto {
 
+
     @ApiModelProperty(name = "rest")
     private String name; // 업소명 
 
@@ -91,5 +92,4 @@ public class ShopDto {
             .lng(this.lng)
             .build();
     }
-
 }

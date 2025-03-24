@@ -1,39 +1,66 @@
 package pbl.GNUB.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+@Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http        
+        http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/member/new", "/member/login", "/member/logout", "/main", "/css/**", "/js/**").permitAll() // Allow access to sign-up and login pages
-                .anyRequest().authenticated() // All other requests require authentication
+                .requestMatchers("/member/**", "/main", "/css/**", "/js/**", "/img/**", "/Terms/**", "/shopDetails/**", "/search/**", "/map/**").permitAll()
+                .anyRequest().authenticated()
             )
             .formLogin(form -> form
-                .loginPage("/member/login") // Custom login page
-                .loginProcessingUrl("/member/login") // 폼 action 경로
-                .defaultSuccessUrl("/main", true) // 로그인 성공 시 리다이렉트될 경로
-                .failureUrl("/member/login?error=true") // 로그인 실패 시 리다이렉트 경로
+                .loginPage("/member/login")
+                .loginProcessingUrl("/member/login")
+                .usernameParameter("email")
+                .passwordParameter("password")
+                .defaultSuccessUrl("/main", true)
+                .failureUrl("/member/login?error=true")
                 .permitAll()
             )
             .logout(logout -> logout
                 .logoutUrl("/member/logout")
-                .logoutSuccessUrl("/main") // 로그아웃 성공 후 메인페이지 이동
-                .invalidateHttpSession(true) // 세션 무효화
+                .logoutSuccessUrl("/main")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
                 .permitAll()
+            )
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+            )
+            .csrf(csrf -> csrf
+                .disable() // 일단 문제 파악용으로 꺼도 됨. 나중에 다시 켜야 함
             );
+
+            
 
         return http.build();
     }
+
+    @Bean
+    public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder, UserDetailsService userDetailsService) throws Exception {
+        return http.getSharedObject(AuthenticationManagerBuilder.class)
+                .userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder)
+                .and()
+                .build();
+    }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {

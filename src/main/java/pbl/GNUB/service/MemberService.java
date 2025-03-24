@@ -109,4 +109,10 @@ public class MemberService {
         return departmentRepository.findById(departmentId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 학과입니다: " + departmentId));
     }
+
+    public Member getMemberEntityByEmail(String email) {
+        return memberRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("이메일에 해당하는 회원이 없습니다: " + email));
+    }
+    
 }

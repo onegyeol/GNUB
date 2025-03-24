@@ -254,6 +254,10 @@
             margin-bottom: 10px;
         }
 
+        .save-button {
+            cursor: pointer;
+        }
+
         .restaurant-card img {
             width: 20px; /* 아이콘 크기 조절 */
             height: 20px;
@@ -557,6 +561,13 @@
             <!-- 음식점 정보 -->
             <div class="restaurant-card">
                 <h1 class="restaurant-name" th:text="${shop.name}"></h1>
+
+                <div class="save-button">
+                    <svg aria-label="저장" class="save-icon" fill="currentColor" height="24" role="img" viewBox="0 0 24 24" width="24">
+                        <title>저장</title>
+                        <polygon fill="none" points="20 21 12 13.44 4 21 4 3 20 3 20 21" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></polygon>
+                    </svg>
+                </div>
 
                 <!-- 지도 컨테이너 -->
                 <div class="map-container">

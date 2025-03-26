@@ -5,162 +5,582 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>내가 좋아요한 가게</title>
+    <link rel="icon" type="image/png" href="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144">
+   
     <!-- 타임리프를 사용한 CSS 경로 -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
     
     
     <style>
-        /* 링크 스타일 */
-        .header .links {
-            display: flex; /* 플렉스 박스 사용 */
-            align-items: center; /* 수직 정렬 */
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', sans-serif;
         }
 
-        /* 링크 기본 스타일 */
-        .header a {
-            margin-left: 10px; /* 링크 간격 */
-            text-decoration: none; /* 밑줄 없음 */
-            color: black; /* 글자 색상 */
-            font-size: 25px; /* 글자 크기 */
+        .body {
+            padding-bottom: 80px; /* 푸터 높이만큼 여백을 추가하여 푸터가 겹치지 않도록 설정 */
+        }
+
+        body, html {
+            background-color: #f0f0f0;
+            min-width: 1070px;
+            overflow: auto; /* 스크롤 가능하도록 설정 */
+        }
+
+        #root {
+            width: 100%;
+            min-height: auto;
+            overflow-x: hidden;
+            padding-bottom: 70px; /* 푸터 높이만큼 패딩 추가 */
+        }
+
+        .header-content {
+            background-color: #f0f0f0;
+            height: 74px;
+            position: sticky;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 400;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .common-desk-header {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-wrap {
+            background-color: #41bbca;
+            width: 1070px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0 auto;
+            height: 100%;
+        }
+
+        .banner-box {
+            margin-top: 0;
+            width: 100%;
+            display: flex;
+            padding-top: 0;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 1; 
+        }
+
+        .banner-wrap {
+            background-color: white;
+            width: 1070px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 0;
+        }
+
+        .banner-content {
+            font-family: 'Arial', sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            line-height: 1.5;
+        }
+
+        .btn-search {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-search img {
+            width: 24px;
+            height: 20px;
+        }
+
+        .main-logo {
+            width: 135px;
+            height: 45px;
+        }
+
+        .main-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .input-wrap {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .input-wrap {
+            position: relative;
+            display: inline-block;
+            margin: 0 auto;
+            width: 500px;
+            max-width: 100%;
+            padding: 0 16px;
+            box-sizing: border-box;
+            font-family: Pretendard, "Apple SD Gothic Neo", sans-serif;
+            font-size: 15px;
+            line-height: 1.5;
+            color: #000;
+            border: none;
+            border-radius: 4px;
+            background-color: #fff;
+            height: calc(100% + 3px);
+        }
+
+        .btn-search {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-search img {
+            width: 24px;
+            height: 24px;
         }
         
-        /* 이미지 버튼 컨테이너 스타일 */
-        .image-buttons {
-            display: flex; /* 플렉스 박스 사용 */
-            justify-content: flex-start; /* 버튼 간격 조절 */
-            margin: 20px auto; /* 상하 여백 추가 및 중앙 정렬 */
-            width: 80%; /* 전체 너비의 80%로 설정 */
-            flex-wrap: wrap; /* 줄 바꿈을 허용하여 여러 줄로 배치 */
+
+        .main-logo {
+            flex: 1;
         }
 
-        /* 이미지 버튼 스타일 */
-        .image-btn {
-            background-color: transparent; /* 배경색 투명 */
-            border: none; /* 테두리 없음 */
-            cursor: pointer; /* 커서 포인터로 변경 */
-            margin: 0 10px; /* 버튼 간격 추가 */
+        .input-wrap input {
+            width: 100%;
+            padding: 8px 32px 8px 12px;
+            border: none;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: inherit;
+            line-height: inherit;
+            color: inherit;
+            background-color: transparent;
+        }
+        .header-wrap {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: calc(100% + 3px);
         }
 
-        /* 이미지의 최대 너비 설정 */
-        .image-btn img {
-            width: 300px; /* 원하는 너비로 설정 */
-            height: 200px; /* 원하는 높이로 설정 */
-            object-fit: cover; /* 비율 유지하면서 잘라내기 */
+        .search-form {
+            flex-grow: 2;
+            display: flex;
+            justify-content: center;
+            margin-right: 10%;
         }
 
-        /* 이미지 버튼 컨테이너 스타일 */
-        .image-btn-container {
-            display: flex; /* 플렉스 박스 사용 */
-            flex-direction: column; /* 세로 정렬 */
-            align-items: center; /* 중앙 정렬 */
-            width: 23%; /* 4개씩 배치하기 위해 각 컨테이너의 너비 설정 */
-            margin: 1%; /* 간격을 일정하게 유지하기 위한 여백 */
+        .auth-box {
+            flex: 1;
         }
 
-        /* 글상자 스타일 */
-        .text-area {
-            margin-right: 10px; /* 버튼과의 간격 */
-            padding: 5px; /* 패딩 추가 */
-            border: none; /* 테두리 없음 */
-            border-radius: 5px; /* 모서리 둥글게 */
-            width: 100%; /* 너비를 100%로 설정 */
-            height: 10px; /* 높이 설정 */
-            resize: none; /* 크기 조절 비활성화 */
-            background-color: none; /* 배경색 설정 */
-            text-align: center; /* 가로 중앙 정렬 */
-            line-height: 50px; /* 수직 중앙 정렬을 위한 높이 설정 */            
-            cursor: pointer; /* 포인터 커서 */
+        .input-wrap input:focus {
+            outline: none;
         }
 
-        .number-display {
-            margin-top: 10px; /* 글상자와 숫자 간격 */
-            font-size: 15px; /* 숫자 크기 */
+        .input-wrap button {
+            position: absolute;
+            top: 50%;
+            right: 16px;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
         }
 
-        /* 버튼을 글상자 옆에 붙이기 위해 flex 사용 */
-        .text-area-container {
-            display: flex; /* 플렉스 박스 사용 */
-            align-items: center; /* 중앙 정렬 */
-            margin-top: 10px; /* 이미지와 글상자 간격 */
-            width: 100%; /* 너비를 100%로 설정 */
+        .search-input {
+            width: 340px;
+            height: 40px;
+            padding: 0 40px 0 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
         }
-        .toggle-btn {
-            margin-left: 10px; /* 버튼과의 간격 */
-            padding: 5px 10px; /* 버튼 패딩 */
-            border: none; /* 테두리 없음 */
-            border-radius: 5px; /* 모서리 둥글게 */
-            background-color: #88CDD0; /* 배경색 */
-            color: black; /* 글자 색상 */
-            cursor: pointer; /* 포인터 커서 */
+
+        .search {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
         }
-        .fixed-button {
-            position: fixed; /* 고정 위치 설정 */
-            bottom: 20px; /* 화면 하단에서의 거리 */
-            right: 20px; /* 화면 우측에서의 거리 */
-            background-color: #88CDD0; /* 버튼 배경색 */
-            padding: 10px 15px; /* 버튼 패딩 */
-            border: none; /* 테두리 없음 */
-            border-radius: 5px; /* 모서리 둥글게 */
-            color: white; /* 글자 색상 */
-            font-size: 16px; /* 글자 크기 */
-            cursor: pointer; /* 커서 포인터로 변경 */
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* 그림자 효과 */
+        
+        .like-section {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px; /* 하트와 숫자 사이 간격 */
+            margin-top: 5px;
         }
-        .fixed-button button {
-            background-color: transparent; /* 투명 배경 */
-            border: none; /* 테두리 없음 */
-            color: inherit; /* 부모의 색상 상속 */
-            font-size: inherit; /* 부모의 글자 크기 상속 */
-            cursor: pointer; /* 커서 포인터로 변경 */
-        }      
+
+        .heart-icon {
+            width: 16px;
+            height: 16px;
+        }
+
+        .restaurant_like {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .header-container {
+            width: 100%;
+            display: flex;
+            justify-content: center; /* 가운데 정렬 */
+            align-items: center;
+            margin: 30px 0; /* 위아래 여백 */
+        }
+
+        .header-container .h1 {
+            font-size: 32px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+
+        /* 전체 리스트 스타일 */
+        .restaurant_list {
+            max-width: 1070px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 0 16px;  /* Header, Footer와 패딩 통일 */
+            padding-bottom: 80px;  /* Footer 높이만큼 하단 여백 추가 */
+        }
+
+        /* 각 가게 스타일 */
+        .restaurant_item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* 가게 정보 (왼쪽) */
+        .restaurant_info {
+            flex: 1;
+        }
+
+        /* a 태그의 기본 스타일 제거 */
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .restaurant_name {
+            font-size: 200%;
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+            color: #333; /* 검정색 */
+            text-decoration: none; /* 밑줄 제거 */
+        }
+
+        .restaurant_tags {
+            margin-top: 5px;
+        }
+
+        .restaurant_tag {
+            display: inline-block;
+            margin-right: 8px;
+            padding: 4px 8px;
+            background-color: #e0f7fa;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: #00796b;
+            text-decoration: none;
+        }
+
+        .restaurant_tag:hover {
+            background-color: #b2ebf2;
+        }
+
+        /* 가게 이미지 (오른쪽) */
+        .restaurant_image button {
+            border: none;
+            background: none;
+            padding: 0;
+            cursor: pointer;
+        }
+
+        .restaurant_image img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        /* 반응형 - 모바일 화면 */
+        @media (max-width: 600px) {
+            .restaurant_item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .restaurant_image {
+                margin-top: 10px;
+            }
+
+            .restaurant_image img {
+                width: 100%;
+                height: auto;
+            }
+        }
+
+
+
+        .like-section {
+            display: flex;
+            align-items: center;
+        }
+
+        #likeCount {
+            font-size: 14px;
+            color: #666;
+            margin-right: 5px;
+        }
+
+        .like-btn {
+            width: 25px;
+            height: 25px;
+            padding: 0;
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .like-icon {
+            width: 25px !important;
+            height: 25px !important;
+            max-width: 25px !important;
+            max-height: 25px !important;
+            object-fit: contain;
+        }
+    
+
+        .bottom-nav-wrapper {
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            background-color: #f0f0f0;
+            border-top: none;
+        }
+
+        .bottom-nav {
+            width: 1070px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .bottom-nav a {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 0;
+            color: #666;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .bottom-nav a svg {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 4px;
+        }
+
+        @media screen and (max-width: 1070px) {
+        .bottom-nav {
+                width: 100%;
+        }
+        }
+
+        .nav-container {
+            background-color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1070px;
+            margin: 0 auto;
+            padding: 0 16px;
+            border-top: 1px solid rgba(138, 138, 138, 0.1);
+        }
+        .nav-container .menu-items {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-container .menu-item {
+            margin: 0 15px; 
+        }
+
+        .nav-container  {
+            margin-left: auto;
+        }
+
+        .fixed-button img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .bottom-nav-wrapper {
+            z-index: 400;
+        }
+
+        @media screen and (max-width: 768px) {
+            .restaurant-card {
+                width: 95%;
+                padding: 20px;
+            }
+        }
     </style>
 </head>
 <body>
-    
-    <div class="header">
-        <!-- 로고 이미지 -->
-        <a th:href="@{/main}"> <!-- 메인 페이지 링크 추가 -->
-             <img src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo" class="logo">
-        </a>
-        
-        <div class="links">
-            <div th:if="${session.loginEmail != null}">
-                <a th:href="@{/board/main}">Board</a>
-                <a th:href="@{/myPage}">Mypage</a>
-                <a th:href="@{/member/logout}">Logout</a>
-            </div>
-        </div>
-    </div>
+    <div id = "root">
+        <header class="header-content">
+            <div class="common-desk-header">
+                <div class="header-wrap">
+                    <div class="main-logo">
+                        <a href="/main">
+                            <img class="logo" src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo">
+                        </a>
+                    </div>
 
-    <div class="header-container">
-        <h1 class="h1">내가 좋아요한 가게</h1>
-    </div>
-
-    <!-- 식당 리스트 -->
-    <main class="search_menu">
-        <div class="restaurant_list">
-            <div th:if="${#lists.isEmpty(likedShops)}">
-                <h2 style="font-size: 5em; font-weight: bold; color: #333;">텅.</h2>
-            </div>
-            <!-- 반복문으로 데이터 렌더링 -->
-            <div th:each="shop : ${likedShops}" class="restaurant">
-                <div class="restaurant_content">
-                    <button class="restaurant_img_container" th:onclick="'goToFoodDetails(' + ${shop.id} + ')'">
-                        <img class="restaurant_img" th:src="${shop.imgUrl}" alt="가게이미지">
-                    </button>
                     
-                    <div class="restaurant_text">
-                        <span class="restaurant_name" th:text="${shop.name}"></span>
+                    <div class="search-form">
+                        <form action="/search" method="get">
+                            <div class="input-wrap">
+                                <input class="search-input" type="search" id="query" name="query" placeholder="지역, 음식 또는 식당명 입력" th:value="${searchTerm}" maxlength="255" autocomplete="off">
+                                <button type="submit" class="btn-search">
+                                        <img src="https://github.com/user-attachments/assets/19865e59-1076-4b33-ae6a-9cfbd7b5bbb2" alt="검색버튼">
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="auth-Box"></div>
+                </div>
+            </div>
+        </header>
+
+        <div class="header-container">
+            <h1 class="h1">👍 내가 좋아요한 가게</h1>
+        </div>
+
+        <!-- 식당 리스트 -->
+        <main class="search_menu">
+            <div class="restaurant_list">
+                <div th:if="${#lists.isEmpty(likedShops)}">
+                    <h2 style="text-align: center; font-size: 5em; font-weight: bold; color: #333;">텅.</h2>
+                </div>
+                <!-- 반복문으로 데이터 렌더링 -->
+                <div th:each="shop : ${likedShops}" class="restaurant_item">
+                    <!-- 가게 정보 (왼쪽) -->
+                    <div class="restaurant_info">
+                        <a th:href="@{'/shopDetails/' + ${shop.id}}">
+                            <span class="restaurant_name" th:text="${shop.name}"></span> 
+                        </a>
+                        <div class="like-section">
+                            <img class="heart-icon" src="https://cdn-icons-png.flaticon.com/512/833/833472.png" alt="Heart Icon">
+                            <span class="restaurant_like" th:text="${shop.likeCount}"></span>
+                        </div>                        
+                        <span class="restaurant_address" th:text="${shop.address}"></span> <br>
+                        <span class="restaurant_addressinfo" th:text="${shop.addressInfo}"></span>
+                        
+                        <!-- 태그 목록 -->
                         <div class="restaurant_tags">
-                            <span class="restaurant_tag" th:text="'#' + ${shop.region}"></span>
-                            <span class="restaurant_tag" th:text="'#' + ${shop.category}"></span>
+                            <th:block th:if="${tags != null}">
+                                <th:block th:if="${tags.containsKey(shop.name)}">
+                                    <a th:each="tag : ${tags.get(shop.name)}"
+                                       class="restaurant_tag"
+                                       th:href="@{/search/{tag}(tag=${tag})}"
+                                       th:text="${tag}"></a>
+                                </th:block>
+                            </th:block>
                         </div>
+                    </div>
+        
+                    <!-- 가게 이미지 (오른쪽) -->
+                    <div class="restaurant_image">
+                        <button th:onclick="'goToFoodDetails(' + ${shop.id} + ')'">
+                            <img th:src="${shop.imgUrl}" alt="가게이미지">
+                        </button>
                     </div>
                 </div>
             </div>
+        </main>
+
+        <div class="bottom-nav-wrapper">
+            <nav class="bottom-nav">
+                <div class="nav-container">
+
+                    <a th:href="${session.loginEmail != null} ? @{/board/main} : @{/member/login}" class="nav-item">
+                        <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M3 9H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M9 21V9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>게시판</span>
+                    </a>
+                    
+                    <a th:href="@{/main}" class="nav-item">
+                        <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 9.5L12 3l9 6.5V21a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-5H10v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z" />
+                        </svg>
+                        <span>홈</span>
+                    </a>
+                    
+                    
+                    <a th:href="@{/map}" class="nav-item">
+                        <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21 3 6"></polygon>
+                            <line x1="9" y1="3" x2="9" y2="18"></line>
+                            <line x1="15" y1="6" x2="15" y2="21"></line>
+                        </svg>
+                        <span>지도</span>
+                    </a>
+                    
+                    <a th:href="${#authorization.expression('isAuthenticated()')} ? @{/myPage} : @{/member/login}" class="nav-item">
+                        <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>마이</span>
+                    </a>
+                </div>
+            </nav>
         </div>
-    </main>
     
+    </div>
         
     <script src="/javascript/script.js" defer></script> <!--script.js 파일을 불러옴 -->
 

@@ -6,9 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GNUB - 음식점 상세페이지</title>
     <link rel="icon" type="image/png" href="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144">
-   
-  
-    <script src="/javascript/script.js" defer></script> <!-- script.js 파일을 불러옴 -->
     
     <style>
         * {
@@ -338,50 +335,139 @@
             margin: 0 8px;
         }
 
-        .modal {
-            display: none;
+        .modal-overlay {
             position: fixed;
-            z-index: 9999;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 999;
+        }
+
+        .modal-sheet {
+            position: fixed;
+            bottom: 0;
             left: 0;
-            top: 0;
-            width: 100vw;
-            height: 100vh;
-            justify-content: center;
-            align-items: center;
-            background-color: rgba(0, 0, 0, 0.8);
+            right: 0;
+            background: white;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            padding: 20px;
+            max-width: 1030px;
+            margin: 0 auto;
+            box-shadow: 0 -8px 16px rgba(0, 0, 0, 0.1); /* 윗부분 그림자 */
+            transform: translateY(100%);
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+        }
+
+        .modal-sheet.show {
+            transform: translateY(0%);
         }
 
 
-        .modal-img-wrapper {
-            width: 100%;
-            height: 100%;
+        .modal-handle {
+            width: 40px;
+            height: 4px;
+            background-color: #ccc;
+            border-radius: 2px;
+            margin: 0 auto 16px;
+        }
+
+        .modal-title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .modal-body {
             display: flex;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column;
+            gap: 12px;
         }
 
-        
-        .modal-img {
-            width: 50% !important;
-            height: 50% !important;
-            object-fit: contain !important;
+        .bookmark-default {
+            padding: 12px;
+            font-size: 15px;
             border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            text-align: left;
+            cursor: pointer;
         }
 
-        .close {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            color: #fff;
-            font-size: 40px;
+        .bookmark-default:hover {
+            background-color: #eaeaea;
+        }
+
+        .folder-list button {
+            width: 100%;
+            padding: 12px;
+            font-size: 15px;
+            text-align: left;
+            background-color: #f0f0f0;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .folder-list button:hover {
+            background-color: #e0e0e0;
+        }
+
+        .folder-create {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .folder-create input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        .create-folder-btn {
+            padding: 10px 14px;
+            background-color: #41bbca;
+            border: none;
+            border-radius: 8px;
+            color: white;
             font-weight: bold;
             cursor: pointer;
         }
 
-        .close:hover,
-        .close:focus {
-            color: #bbb;
+        .create-folder-btn:hover {
+            background-color: #38a4b2;
+        }
+
+        .modal-footer {
+            margin-top: 20px;
+            text-align: right;
+        }
+
+        .modal-footer button {
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+
+
+        .folder-create {
+            display: flex;
+            margin-top: 15px;
+            gap: 8px;
+        }
+
+        .folder-create input {
+            flex: 1;
+            padding: 6px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
 
         .menu-link {
@@ -431,8 +517,6 @@
         .menu-image:hover {
             transform: scale(1.05);
         }
-
-        
 
 
         .more-menu-btn {
@@ -530,7 +614,7 @@
         }
     </style>
 </head>
-<body onload="initMap()">
+<body>
     <div id="root">
         <header class="header-content">
             <div class="common-desk-header">
@@ -562,12 +646,48 @@
             <div class="restaurant-card">
                 <h1 class="restaurant-name" th:text="${shop.name}"></h1>
 
-                <div class="save-button">
-                    <svg aria-label="저장" class="save-icon" fill="currentColor" height="24" role="img" viewBox="0 0 24 24" width="24">
-                        <title>저장</title>
-                        <polygon fill="none" points="20 21 12 13.44 4 21 4 3 20 3 20 21" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></polygon>
+                <!-- 저장 버튼 영역 -->
+                <div class="save-button" onclick="toggleBookmark()">
+                    <svg id="bookmarkIcon" class="save-icon" width="24" height="24" viewBox="0 0 24 24">
+                        <polygon id="bookmarkIconPolygon"
+                            th:attr="fill=${isBookmarked} ? 'black' : 'none'"
+                            points="20 21 12 13.44 4 21 4 3 20 3 20 21"
+                            stroke="black"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2" />
                     </svg>
                 </div>
+
+                <!-- Dimmed Background -->
+                <div class="modal-overlay" id="modalOverlay" onclick="closeModal()" style="display: none;"></div>
+
+                <!-- Modal Bottom Sheet -->
+                <div class="modal-sheet" id="bookmarkModal" style="display: none;">
+                    <div class="modal-header">
+                        <div class="modal-handle"></div>
+                        <h3 class="modal-title">폴더에 저장</h3>
+                    </div>
+
+                    <div class="modal-body">
+                        <button class="bookmark-default" onclick="saveBookmark(null)">⭐ 그냥 저장하기</button>
+
+                        <div id="folderList" class="folder-list">
+                            <!-- 폴더 버튼들 동적으로 삽입됨 -->
+                        </div>
+
+                        <div class="folder-create">
+                            <input type="text" id="newFolderName" placeholder="새 폴더 이름">
+                            <button type="button" class="create-folder-btn" onclick="createFolder()">폴더 만들기</button>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" onclick="closeModal()">닫기</button>
+                    </div>
+                </div>
+
+
 
                 <!-- 지도 컨테이너 -->
                 <div class="map-container">
@@ -771,7 +891,7 @@
                         <span>지도</span>
                     </a>
                     
-                    <a th:href="${session.loginEmail != null} ? @{/myPage} : @{/member/login}" class="nav-item">
+                    <a th:href="${#authorization.expression('isAuthenticated()')} ? @{/myPage} : @{/member/login}" class="nav-item">
                         <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -785,34 +905,164 @@
     </div>
 
     <script th:inline="javascript">
-        function initMap() {
-            var latitude = /*[[${shop.lat}]]*/ 0; // 실제 lat 값으로 대체
-            var longitude = /*[[${shop.lng}]]*/ 0; // 실제 lng 값으로 대체됩
-            var shopLocation = {lat: latitude, lng: longitude};
-    
-            // 지도를 생성합니다
-            var map = new google.maps.Map(document.querySelector(".map"), {
-                zoom: 18, // 지도의 확대 수준
-                center: shopLocation // 지도의 중심을 식당 위치로 설정
-            });
+        // 지도 초기화 함수는 window 객체에 등록해 전역 노출시켜야 Google API에서 callback 가능
+        window.initMap = function () {
+            const latitude = parseFloat('[[${shop.lat}]]');
+            const longitude = parseFloat('[[${shop.lng}]]');
 
-            // 음식점 마커 아이콘 설정 (테스트용 아이콘 URL 적용)
-            const customIcon = {
-                    url: "https://github.com/user-attachments/assets/e17ed7d7-903e-495c-9f1e-83f144adfdff", 
-                    scaledSize: new google.maps.Size(50, 50),
-                    origin: new google.maps.Point(0, 0),
-                    anchor: new google.maps.Point(15, 30),
-                };
+            const shopLocation = { lat: latitude, lng: longitude };
+
+            console.log("Latitude:", latitude);
+            console.log("Longitude:", longitude);
+
     
-            // 마커를 생성합니다
-            var marker = new google.maps.Marker({
+            const map = new google.maps.Map(document.querySelector(".map"), {
+                zoom: 18,
+                center: shopLocation
+            });
+    
+            const customIcon = {
+                url: "https://github.com/user-attachments/assets/e17ed7d7-903e-495c-9f1e-83f144adfdff",
+                scaledSize: new google.maps.Size(50, 50),
+                origin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(15, 30),
+            };
+    
+            new google.maps.Marker({
                 position: shopLocation,
                 map: map,
                 icon: customIcon
             });
-        }
+        };
+    
+        // 북마크 관련 스크립트
+        document.addEventListener("DOMContentLoaded", () => {
+            const isLoggedIn = [[${isLoggedIn}]]; // true 또는 false (boolean)
+            const memberId = isLoggedIn ? [[${memberId}]] : null;
+            const shopId = Number('[[${shop.id}]]'); // 숫자로 변환하니까 이건 문자열 감싸도 OK
+
+            let isBookmarked = [[${isBookmarked}]];
+    
+            window.toggleBookmark = function () {
+                if (!memberId) {
+                    alert("로그인 후 이용 가능합니다.");
+                    window.location.href = "/member/login";
+                    return;
+                }
+    
+                if (isBookmarked) {
+                    fetch(`/bookmarks?memberId=${memberId}&shopId=${shopId}`, { method: 'DELETE' })
+                        .then(() => {
+                            isBookmarked = false;
+                            updateBookmarkIcon();
+                        });
+                } else {
+                    openModal();
+                }
+            };
+    
+            window.saveBookmark = function (folderId) {
+                fetch(`/bookmarks?memberId=${memberId}&shopId=${shopId}${folderId ? `&folderId=${folderId}` : ''}`, {
+                    method: 'POST'
+                }).then(() => {
+                    isBookmarked = true;
+                    updateBookmarkIcon();
+                    closeModal();
+                });
+            };
+    
+            function updateBookmarkIcon() {
+                const polygon = document.getElementById("bookmarkIconPolygon");
+                if (polygon) polygon.setAttribute("fill", isBookmarked ? "black" : "none");
+            }
+    
+            updateBookmarkIcon();
+
+            window.openModal = function () {
+                const modal = document.getElementById("bookmarkModal");
+                const overlay = document.getElementById("modalOverlay");
+
+                modal.style.display = "block";
+                overlay.style.display = "block";
+
+                // 강제로 리플로우 시켜서 transition 작동하게 함
+                void modal.offsetWidth;
+                modal.classList.add("show");
+
+                fetch(`/bookmarks/folders?memberId=${memberId}`)
+                    .then(res => res.json())
+                    .then(folders => {
+                        const list = document.getElementById("folderList");
+                        list.innerHTML = '';
+                        folders.forEach(folder => {
+                            const btn = document.createElement("button");
+                            btn.innerText = folder.name;
+                            btn.onclick = () => saveBookmark(folder.id);
+                            list.appendChild(btn);
+                        });
+                    });
+            };
+
+            window.closeModal = function () {
+                const modal = document.getElementById("bookmarkModal");
+                const overlay = document.getElementById("modalOverlay");
+
+                modal.classList.remove("show");
+                overlay.style.display = "none";
+
+                // 애니메이션 완료 후 완전히 숨김
+                setTimeout(() => {
+                    modal.style.display = "none";
+                }, 300); // transition 시간과 동일
+            };
+
+
+            // 스와이프 감지
+            let startY = 0;
+            let endY = 0;
+
+            const modal = document.getElementById("bookmarkModal");
+
+            modal.addEventListener("touchstart", (e) => {
+                startY = e.touches[0].clientY;
+            }, { passive: true });
+
+            modal.addEventListener("touchmove", (e) => {
+                endY = e.touches[0].clientY;
+            }, { passive: true });
+
+            modal.addEventListener("touchend", () => {
+                const distance = endY - startY;
+                if (distance > 70) { // 아래로 스와이프
+                    closeModal();
+                }
+            });
+
+
+
+    
+            window.createFolder = function () {
+                const name = document.getElementById("newFolderName").value;
+                if (!name.trim()) return;
+
+                console.log("📦 폴더 만들기 시도:", name, memberId);
+
+                fetch(`/bookmarks/folders?memberId=${memberId}&name=${encodeURIComponent(name)}`, {
+                    method: 'POST'
+                }).then(() => {
+                    console.log("✅ 폴더 생성 완료");
+                    openModal(); // 다시 불러오기
+                }).catch(err => {
+                    console.error("❌ 폴더 생성 실패:", err);
+                });
+            };
+    
+            
+        });
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALc92CwPRZXE1Amxh53NyxniBJOHTuka4"></script>
+    
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALc92CwPRZXE1Amxh53NyxniBJOHTuka4&callback=initMap" async defer></script>
+
     
 </body>
 </html>

@@ -520,7 +520,7 @@
                 markers = [];
 
                 // 서버에 현재 지도 영역을 전달하여 해당 지역 음식점 가져오기
-                fetch(`/api/shops?neLat=${ne.lat()}&neLng=${ne.lng()}&swLat=${sw.lat()}&swLng=${sw.lng()}`)
+                fetch(location.origin + `/api/shops?neLat=${ne.lat()}&neLng=${ne.lng()}&swLat=${sw.lat()}&swLng=${sw.lng()}`)
                     .then(response => response.json())
                     .then(data => {
                         console.log("Fetched shops:", data);

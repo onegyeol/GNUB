@@ -103,14 +103,6 @@ public class MemberController {
             return "redirect:/member/login?error=true";
         }
     }
-
-
-    
-    @GetMapping("/logout")
-    public String Logout(HttpSession session) {
-        SecurityContextHolder.clearContext(); // SecurityContext 초기화
-        session.invalidate(); // 세션 무효화
-        return "redirect:/main"; // 메인 폼 뷰를 반환
-    }
+  
 
 }

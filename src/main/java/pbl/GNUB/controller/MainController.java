@@ -1,5 +1,6 @@
 package pbl.GNUB.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,8 +18,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import lombok.extern.slf4j.Slf4j;
+import pbl.GNUB.entity.Member;
 import pbl.GNUB.entity.Shop;
 import pbl.GNUB.entity.ShopMenu;
+import pbl.GNUB.repository.MemberRepository;
+import pbl.GNUB.service.BookmarkService;
 import pbl.GNUB.service.ShopService;
 import pbl.GNUB.service.ShopTagMappingService;
 
@@ -31,20 +35,31 @@ public class MainController {
     private final ShopService shopService;
     private final TagController tagController;
     private final ShopTagMappingService mappingService;
+    private final MemberRepository memberRepository;
+    private final BookmarkService bookmarkService;
 
     @Autowired
     public MainController(JobLauncher jobLauncher, Job csvShopJob, 
                         JobRepository jobRepository, ShopService shopService, 
-                        TagController tagController, ShopTagMappingService mappingService) {
+                        TagController tagController, ShopTagMappingService mappingService, 
+                        MemberRepository memberRepository, BookmarkService bookmarkService) {
         this.jobLauncher = jobLauncher;
         this.csvShopJob = csvShopJob;
         this.shopService = shopService;
         this.tagController = tagController;
         this.mappingService = mappingService;
+        this.memberRepository = memberRepository;
+        this.bookmarkService = bookmarkService;
     }
 
     @GetMapping("/main")
-    public String showMainPage(Model model) {
+    public String showMainPage(Model model, Principal principal) {
+
+        if (principal != null) {
+            System.out.println("✅ 로그인된 사용자: " + principal.getName());
+        } else {
+            System.out.println("❌ 비로그인 상태");
+        }
 
         List<Shop> shops = shopService.getAllShops();
 
@@ -123,20 +138,39 @@ public class MainController {
 
 
     @GetMapping("/shopDetails/{id}") // 음식점 상세 페이지
-    public String foodDetailsPage(@PathVariable("id") Long id, Model model) {
+    public String foodDetailsPage(@PathVariable("id") Long id, Model model, Principal principal) {
         Shop shop = shopService.findShopById(id);
-        List<ShopMenu> shopMenus = shopService.getMenusByShopName(shop.getName());
 
-        if (shop != null) {
-            System.out.println("🔴 shopMenus: " + shopMenus);
-            model.addAttribute("shop", shop);
-            model.addAttribute("shopMenus", shopMenus);
-            return "form/foodDetails";
-
-        } else {
+        if (shop == null) {
             return "error";
         }
+
+        List<ShopMenu> shopMenus = shopService.getMenusByShopName(shop.getName());
+
+        model.addAttribute("shop", shop);
+        model.addAttribute("shopMenus", shopMenus);
+
+        boolean isBookmarked = false;
+
+        // 로그인 여부 확인
+        if (principal != null) {
+            String email = principal.getName(); // 로그인된 사용자 email
+            Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("로그인 사용자 정보를 찾을 수 없음: " + email));
+            isBookmarked = bookmarkService.isBookmarked(member, shop);
+
+            model.addAttribute("isLoggedIn", true);
+            model.addAttribute("memberId", member.getId());
+            model.addAttribute("memberName", member.getName());
+        } else {
+            model.addAttribute("isLoggedIn", false);
+        }
+
+        model.addAttribute("isBookmarked", isBookmarked);
+
+        return "form/foodDetails";
     }
+
 
     // GPT 화면
     @GetMapping("/ask")

@@ -28,6 +28,12 @@ public class ShopDto {
     @Column(columnDefinition = "VARCHAR(255) CHARACTER SET utf8mb4")
     private String address; // 주소
 
+    @ApiModelProperty(name = "SET")
+    private String location; //위치 구분 
+
+    @ApiModelProperty(name = "캠퍼스")
+    private String campus; // 캠퍼스 구분 (가좌정문/후문, 칠암정문/후문)
+
     @ApiModelProperty(name = "address_info")
     private String addressInfo; // 주메뉴
 
@@ -50,8 +56,8 @@ public class ShopDto {
     @ApiModelProperty(name = "Tue")
     private String tue; // 화요일
 
-    @ApiModelProperty(name = "Wen")
-    private String wen; // 수요일
+    @ApiModelProperty(name = "Wed")
+    private String wed; // 수요일
 
     @ApiModelProperty(name = "Thu")
     private String thu; // 목요일
@@ -71,11 +77,16 @@ public class ShopDto {
     @ApiModelProperty(name = "lng")
     private Double lng; // 경도
 
+    @ApiModelProperty(name = "Rest_id")
+    private String restId;
+
     public Shop toEntity(){ //Shop 엔티티 반환
         return Shop.builder()
             .name(this.name)
             .category(this.category)
             .address(this.address)
+            .location(this.location)
+            .campus(this.campus)
             .addressInfo(this.addressInfo)
             .number(this.number)
             .site(this.site)
@@ -83,13 +94,14 @@ public class ShopDto {
             .imgUrl(this.imgUrl)
             .mon(this.mon)
             .tue(this.tue)
-            .wen(this.wen)
+            .wed(this.wed)
             .thu(this.thu)
             .fri(this.fri)
             .sat(this.sat)
             .sun(this.sun)
             .lat(this.lat)
             .lng(this.lng)
+            .restId(this.restId)
             .build();
     }
 }

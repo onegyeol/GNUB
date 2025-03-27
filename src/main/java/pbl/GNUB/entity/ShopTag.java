@@ -26,25 +26,22 @@ public class ShopTag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String restId;
+
     @Column(name = "name", unique = true)
     private String name;
 
-    private int hygiene;
-    private int revisit;
-    private int recent;
-    private int delicious;
-    private int goodValue;
-    private int mood;
-    private int fresh;
-    private int kindness;
     private int alone;
-    private int chilamDong;
-    private int gajwaDong;
-
-    @Column(columnDefinition = "TEXT")
-    private String tags;
-
-    private Integer value; // `value` 필드 추가
+    private int date;
+    private int delicious;
+    private int fresh;
+    private int goodValue;
+    private int hygiene;
+    private int kindness;
+    private int many;
+    private int mood;
+    private int parking;
+    private int recent;
 
     @ManyToMany(mappedBy = "shopTags")
     @ToString.Exclude

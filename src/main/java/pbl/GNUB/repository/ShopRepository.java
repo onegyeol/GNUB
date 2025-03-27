@@ -17,11 +17,12 @@ public interface ShopRepository extends JpaRepository<Shop, Long> {
       @Query("SELECT s FROM Shop s WHERE s.lat BETWEEN :swLat AND :neLat AND s.lng BETWEEN :swLng AND :neLng")
        List<Shop> findShopsByBounds(@Param("swLat") Double swLat, @Param("neLat") Double neLat, @Param("swLng") Double swLng, @Param("neLng") Double neLng);
 
+       /* 이전 태그로 사용했던 쿼리문들 
       @Query("SELECT DISTINCT s FROM Shop s " +
               "JOIN FETCH s.shopTags st " +
               "WHERE st.hygiene = 1 OR st.revisit = 1 OR st.recent = 1 OR st.delicious = 1 OR " +
               "st.goodValue = 1 OR st.mood = 1 OR st.fresh = 1 OR st.kindness = 1 OR st.alone = 1")
-       List<Shop> findAllWithActiveTags();
+       List<Shop> findAllWithActiveTags();*/
 
       @Query("SELECT DISTINCT s FROM Shop s " +
              "LEFT JOIN s.shopMenus m " +
@@ -29,6 +30,7 @@ public interface ShopRepository extends JpaRepository<Shop, Long> {
              "LOWER(m.menuName) LIKE LOWER(CONCAT('%', :query, '%'))")
       List<Shop> searchShops(@Param("query") String query);
   
+      /* 
       @Query("SELECT DISTINCT s FROM Shop s " +
              "JOIN s.shopTags t " +
              "LEFT JOIN s.shopMenus m " +
@@ -48,6 +50,6 @@ public interface ShopRepository extends JpaRepository<Shop, Long> {
              "AND (:query IS NULL OR :query = '' OR " +
              "(LOWER(s.name) LIKE LOWER(CONCAT('%', :query, '%')) OR " +
              "LOWER(m.menuName) LIKE LOWER(CONCAT('%', :query, '%'))))")
-      List<Shop> findShopsByDynamicTag(@Param("tag") String tag, @Param("query") String query);
+      List<Shop> findShopsByDynamicTag(@Param("tag") String tag, @Param("query") String query);*/
   }
   

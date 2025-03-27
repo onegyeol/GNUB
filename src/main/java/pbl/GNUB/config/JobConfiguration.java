@@ -30,7 +30,7 @@ public class JobConfiguration {
         return new JobBuilder("csvShopJob", jobRepository)
             .start(csvShopReaderStep())
             .next(csvShopTagReaderStep())
-            .next(csvShopMenuReaderStep())
+            //.next(csvShopMenuReaderStep())
             .build();
     }
 

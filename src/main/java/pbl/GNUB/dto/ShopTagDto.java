@@ -17,60 +17,61 @@ import pbl.GNUB.entity.ShopTag;
 @ApiModel(value = "음식점태그정보")
 public class ShopTagDto {
 
-    @ApiModelProperty(name = "업소명")
+    @ApiModelProperty(name = "rest")
     private String name;
 
-    @ApiModelProperty(name = "위생등급제 가게")
-    private int hygiene;
+    @ApiModelProperty(name = "Rest_id")
+    private String restId;
 
-    @ApiModelProperty(name = "재방문률이 높은")
-    private int revisit;
+    @ApiModelProperty(name = "alone")
+    private int alone;
 
-    @ApiModelProperty(name = "최근에 자주가는")
-    private int recent;
-
-    @ApiModelProperty(name = "맛있는")
+    @ApiModelProperty(name = "date")
+    private int date;
+    
+    @ApiModelProperty(name = "delicious")
     private int delicious;
 
-    @ApiModelProperty(name = "가성비")
-    private int goodValue;
-
-    @ApiModelProperty(name = "깔끔하고 분위기가 좋은")
-    private int mood;
-
-    @ApiModelProperty(name = "신선한")
+    @ApiModelProperty(name = "fresh")
     private int fresh;
 
-    @ApiModelProperty(name = "친절한")
+    @ApiModelProperty(name = "goodValue")
+    private int goodValue;
+
+    @ApiModelProperty(name = "hygiene")
+    private int hygiene;
+
+    @ApiModelProperty(name = "kindness")
     private int kindness;
 
-    @ApiModelProperty(name = "혼밥")
-    private int alone;
+    @ApiModelProperty(name = "many")
+    private int many;
+
+    @ApiModelProperty(name = "mood")
+    private int mood;
     
-    @ApiModelProperty(name = "칠암동")
-    private int chilamDong;
+    @ApiModelProperty(name = "parking")
+    private int parking;
 
-    @ApiModelProperty(name = "가좌동")
-    private int gajwaDong;
+    @ApiModelProperty(name = "recent")
+    private int recent;
 
-    @ApiModelProperty(name = "태그")
-    private String tags;
 
     public ShopTag toEntity() {
         return ShopTag.builder()
             .name(this.name)
-            .hygiene(this.hygiene)
-            .revisit(this.revisit)
-            .recent(this.recent)
-            .delicious(this.delicious)
-            .goodValue(this.goodValue)
-            .mood(this.mood)
-            .fresh(this.fresh)
-            .kindness(this.kindness)
+            .restId(this.restId)
             .alone(this.alone)
-            .chilamDong(this.chilamDong)
-            .gajwaDong(this.gajwaDong)
-            .tags(this.tags)
+            .date(this.date)
+            .delicious(this.delicious)
+            .fresh(this.fresh)
+            .goodValue(this.goodValue)
+            .hygiene(this.hygiene)
+            .kindness(this.kindness)
+            .many(this.many)
+            .mood(this.mood)
+            .parking(this.parking)
+            .recent(this.recent)
             .build();
     }
 
@@ -78,18 +79,17 @@ public class ShopTagDto {
 
     public ShopTagDto(ShopTag shopTag) {
         this.name = shopTag.getName();
-        this.hygiene = shopTag.getHygiene();
-        this.revisit = shopTag.getRevisit();
-        this.recent = shopTag.getRecent();
-        this.delicious = shopTag.getDelicious();
-        this.goodValue = shopTag.getGoodValue();
-        this.mood = shopTag.getMood();
-        this.fresh = shopTag.getFresh();
-        this.kindness = shopTag.getKindness();
         this.alone = shopTag.getAlone();
-        this.chilamDong = shopTag.getChilamDong();
-        this.gajwaDong = shopTag.getGajwaDong();
-        this.tags = shopTag.getTags();
+        this.date = shopTag.getDate();
+        this.delicious = shopTag.getDelicious();
+        this.fresh = shopTag.getFresh();
+        this.goodValue = shopTag.getGoodValue();
+        this.hygiene = shopTag.getHygiene();
+        this.kindness = shopTag.getKindness();
+        this.many = shopTag.getMany();
+        this.mood = shopTag.getMood();
+        this.parking = shopTag.getParking();
+        this.recent = shopTag.getRecent();
     }
     
 }

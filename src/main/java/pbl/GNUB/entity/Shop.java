@@ -38,6 +38,8 @@ public class Shop {
     private String name; // 업소명
     private String category; // 업태
     private String address; // 주소
+    private String location;
+    private String campus;
     private String addressInfo;
     private String number; // 전화번호
     private String site; // 해당 사이트
@@ -48,7 +50,7 @@ public class Shop {
 
     private String mon;
     private String tue;
-    private String wen;
+    private String wed;
     private String thu;
     private String fri;
     private String sat;
@@ -56,6 +58,8 @@ public class Shop {
 
     private Double lat; // 위도
     private Double lng; // 경도
+
+    private String restId; // 정문후문 및 캠퍼스 구분 id
 
     @Builder.Default
     private int likeCount = 0; // 좋아요 수 카운트

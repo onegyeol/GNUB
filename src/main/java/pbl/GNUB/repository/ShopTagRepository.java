@@ -10,39 +10,38 @@ import pbl.GNUB.entity.ShopTag;
 
 public interface ShopTagRepository extends JpaRepository<ShopTag, Long> {
         ShopTag findByName(String name);
-        List<ShopTag> findByValue(Integer value);
 
         @Query("SELECT s FROM ShopTag s WHERE s.name = :name " +
-            "AND s.hygiene = :hygiene AND s.revisit = :revisit " +
-            "AND s.recent = :recent AND s.delicious = :delicious " +
-            "AND s.goodValue = :goodValue AND s.mood = :mood " +
-            "AND s.fresh = :fresh AND s.kindness = :kindness " +
-            "AND s.alone = :alone AND s.chilamDong = :chilamDong " +
-            "AND s.gajwaDong = :gajwaDong")
+            "AND s.alone = :alone AND s.date = :date " +
+            "AND s.delicious = :delicious AND s.fresh = :fresh " +
+            "AND s.goodValue = :goodValue AND s.hygiene = :hygiene " +
+            "AND s.kindness = :kindness AND s.many = :many " +
+            "AND s.mood = :mood AND s.parking = :parking " +
+            "AND s.recent = :recent")
         ShopTag findByAllFields(@Param("name") String name,
-                            @Param("hygiene") int hygiene,
-                            @Param("revisit") int revisit,
-                            @Param("recent") int recent,
-                            @Param("delicious") int delicious,
-                            @Param("goodValue") int goodValue,
-                            @Param("mood") int mood,
-                            @Param("fresh") int fresh,
-                            @Param("kindness") int kindness,
                             @Param("alone") int alone,
-                            @Param("chilamDong") int chilamDong,
-                            @Param("gajwaDong") int gajwaDong);
+                            @Param("date") int date,
+                            @Param("delicious") int delicious,
+                            @Param("fresh") int fresh,
+                            @Param("goodValue") int goodValue,
+                            @Param("hygiene") int hygiene,
+                            @Param("kindness") int kindness,
+                            @Param("many") int many,
+                            @Param("mood") int mood,
+                            @Param("parking") int parking,
+                            @Param("recent") int recent);
                             
-        List<ShopTag> findByHygiene(int value);
-        List<ShopTag> findByRevisit(int value);
-        List<ShopTag> findByRecent(int value);
-        List<ShopTag> findByDelicious(int value);
-        List<ShopTag> findByGoodValue(int value);
-        List<ShopTag> findByMood(int value);
-        List<ShopTag> findByFresh(int value);
-        List<ShopTag> findByKindness(int value);
         List<ShopTag> findByAlone(int value);
-        List<ShopTag> findByChilamDong(int value);
-        List<ShopTag> findByGajwaDong(int value);
+        List<ShopTag> findByDate(int value);
+        List<ShopTag> findByDelicious(int value);
+        List<ShopTag> findByFresh(int value);
+        List<ShopTag> findByGoodValue(int value);
+        List<ShopTag> findByHygiene(int value);
+        List<ShopTag> findByKindness(int value);
+        List<ShopTag> findByMany(int value);
+        List<ShopTag> findByMood(int value);
+        List<ShopTag> findByParking(int value);
+        List<ShopTag> findByRecent(int value);
 }
     
 

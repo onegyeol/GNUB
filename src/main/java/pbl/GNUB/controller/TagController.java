@@ -54,6 +54,9 @@ public class TagController{
         return "form/main";
     }
 
+    /* 
+    기존에 1로 매핑했지만 현재 1이 아닌 정수들이 들어있어서 못쓰지만 일단 주석처리함 (삭제안하고)
+    
     public Map<String, List<String>> getShopTagsMap() {
         List<Shop> shops = shopRepository.findAllWithActiveTags();
         Map<String, List<String>> shopTagsMap = new HashMap<>();
@@ -82,7 +85,7 @@ public class TagController{
         System.out.println("🎯 최종 shopTagsMap 결과: " + shopTagsMap);
     
         return shopTagsMap;
-    }
+    }*/
     
     
     

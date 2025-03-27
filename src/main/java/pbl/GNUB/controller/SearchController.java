@@ -27,18 +27,21 @@ public class SearchController {
     @GetMapping("/search")
     public String searchPage(@RequestParam(value = "query", required = false) String query, Model model) {
         //태그 컨트롤러로 매핑하는거 추가함
-        Map<String, List<String>> tags = tagController.getShopTagsMap();
+        //Map<String, List<String>> tags = tagController.getShopTagsMap();
         
         // 검색어가 있을 경우
         List<Shop> shops = shopService.searchShops(query);
         
         model.addAttribute("shops", shops);
         model.addAttribute("query", query);
-        model.addAttribute("tags", tags); //이것도 추가함
+        //model.addAttribute("tags", tags); //이것도 추가함
         
         return "form/search";  // 결과를 보여줄 뷰 반환
     }
 
+    /* 
+    기존 태그들을 못써서 일단 주석
+    
     @GetMapping("/search/{tag}")
     public String getShopsByTag(
             @PathVariable("tag") String tag,
@@ -51,7 +54,7 @@ public class SearchController {
         // 태그와 검색어를 조합하여 필터링
         List<Shop> shops = shopService.getShopsByTagField(englishTag, query);
 
-        Map<String, List<String>> tags = tagController.getShopTagsMap();
+        //Map<String, List<String>> tags = tagController.getShopTagsMap();
         Map<Long, List<String>> shopTagsMap = shops.stream()
                 .collect(Collectors.toMap(
                         Shop::getId,
@@ -64,10 +67,11 @@ public class SearchController {
         model.addAttribute("query", query);
         model.addAttribute("shopTagsMap", shopTagsMap);
         model.addAttribute("selectedTag", tag);
-        model.addAttribute("tags", tags);
+        //model.addAttribute("tags", tags);
 
         return "form/search";
     }
+        */
     
     
 }

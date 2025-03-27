@@ -63,9 +63,11 @@ public class ShopService {
         return shopRepository.searchShops(query);  // 동일한 값으로 세 가지 필드 검색
     }
 
+    /*
     public List<Shop> getShopsByTagField(String tag, String query) {
         return shopRepository.findShopsByDynamicTag(tag, query);
     }
+    */
 
     public List<ShopMenu> getMenusByShopName(String shopName) {
         return shopMenuRepository.findByRestName(shopName);

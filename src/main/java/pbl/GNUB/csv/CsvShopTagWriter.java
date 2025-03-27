@@ -24,10 +24,9 @@ public class CsvShopTagWriter implements ItemWriter<ShopTagDto> {
     public void write(Chunk<? extends ShopTagDto> items) throws Exception {
         for(ShopTagDto dto : items){
             ShopTag existingTag = shopTagRepository.findByAllFields(
-                dto.getName(), dto.getHygiene(), dto.getRevisit(),
-                dto.getRecent(), dto.getDelicious(), dto.getGoodValue(),
-                dto.getMood(), dto.getFresh(), dto.getKindness(),
-                dto.getAlone(), dto.getChilamDong(), dto.getGajwaDong()
+                 dto.getName(), dto.getAlone(), dto.getDate(), dto.getDelicious(), dto.getFresh(),
+                 dto.getGoodValue(), dto.getHygiene(), dto.getKindness(), dto.getMany(), dto.getMood(),
+                 dto.getParking(), dto.getRecent()
             );
             if(existingTag == null) {
                 ShopTag newTag = dto.toEntity();

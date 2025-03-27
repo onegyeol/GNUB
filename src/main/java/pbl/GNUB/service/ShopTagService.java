@@ -20,38 +20,38 @@ public class ShopTagService {
         List<ShopTag> shopTags;
 
         switch (tag) {
-            case "hygiene":
-                shopTags = shopTagRepository.findByHygiene(value);
+            case "alone":
+                shopTags = shopTagRepository.findByAlone(value);
                 break;
-            case "revisit":
-                shopTags = shopTagRepository.findByRevisit(value);
-                break;
-            case "recent":
-                shopTags = shopTagRepository.findByRecent(value);
+            case "date":
+                shopTags = shopTagRepository.findByDate(value);
                 break;
             case "delicious":
                 shopTags = shopTagRepository.findByDelicious(value);
                 break;
+            case "fresh":
+                shopTags = shopTagRepository.findByFresh(value);
+                break;
             case "goodValue":
                 shopTags = shopTagRepository.findByGoodValue(value);
                 break;
-            case "mood":
-                shopTags = shopTagRepository.findByMood(value);
-                break;
-            case "fresh":
-                shopTags = shopTagRepository.findByFresh(value);
+            case "hygiene":
+                shopTags = shopTagRepository.findByHygiene(value);
                 break;
             case "kindness":
                 shopTags = shopTagRepository.findByKindness(value);
                 break;
-            case "alone":
-                shopTags = shopTagRepository.findByAlone(value);
+            case "many":
+                shopTags = shopTagRepository.findByMany(value);
                 break;
-            case "chilamDong":
-                shopTags = shopTagRepository.findByChilamDong(value);
+            case "mood":
+                shopTags = shopTagRepository.findByMood(value);
                 break;
-            case "gajwaDong":
-                shopTags = shopTagRepository.findByGajwaDong(value);
+            case "parking":
+                shopTags = shopTagRepository.findByParking(value);
+                break;
+            case "recent":
+                shopTags = shopTagRepository.findByRecent(value);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid tag: " + tag);

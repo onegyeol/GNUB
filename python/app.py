@@ -14,7 +14,6 @@ import os
 
 
 app = Flask(__name__)
-CORS(app, resources={r"/ask/*": {"origins": "*"}})
 
 # Flask-Executor 설정
 executor = Executor(app)

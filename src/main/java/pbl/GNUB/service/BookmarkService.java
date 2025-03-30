@@ -48,6 +48,7 @@ public class BookmarkService {
         bookmarkRepository.save(bookmark);
     }
 
+    @Transactional
     public void unbookmarkShop(Long memberId, Long shopId){
         Member member = memberRepository.findById(memberId).orElseThrow();
         Shop shop = shopRepository.findById(shopId).orElseThrow();
@@ -73,13 +74,13 @@ public class BookmarkService {
 
 
      // 폴더 생성
-     public void createFolder(Long memberId, String folderName) {
+    public BookmarkFolder createFolder(Long memberId, String folderName) {
         Member member = memberRepository.findById(memberId).orElseThrow();
         BookmarkFolder folder = new BookmarkFolder();
         folder.setMember(member);
         folder.setName(folderName);
-
-        bookmarkFolderRepository.save(folder);
+    
+        return bookmarkFolderRepository.save(folder); // 반환!
     }
 
     // 폴더 전체 조회

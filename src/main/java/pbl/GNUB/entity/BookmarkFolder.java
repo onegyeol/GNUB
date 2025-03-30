@@ -2,6 +2,8 @@ package pbl.GNUB.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -25,7 +27,8 @@ public class BookmarkFolder {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    @OneToMany(mappedBy = "folder", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "folder", fetch = FetchType.LAZY, orphanRemoval = true)
+    @JsonIgnore
     private List<Bookmark> bookmarks;
     
 }

@@ -66,11 +66,18 @@ public class BookmarkController {
     
 
     @PostMapping("/folders")
-    public ResponseEntity<Void> createFolder(@RequestParam Long memberId,
-                                            @RequestParam String name) {
-        bookmarkService.createFolder(memberId, name);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Map<String, Object>> createFolder(@RequestParam Long memberId,
+                                                            @RequestParam String name) {
+        BookmarkFolder folder = bookmarkService.createFolder(memberId, name);
+
+        Map<String, Object> response = Map.of(
+            "id", folder.getId(),
+            "name", folder.getName()
+        );
+
+        return ResponseEntity.ok(response); // 👈 JSON으로 반환
     }
+
 
 
 }

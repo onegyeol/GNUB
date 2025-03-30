@@ -726,11 +726,11 @@
                     영업 시간
                 </h2><br>
         
-                <div th:if="${#strings.isEmpty(shop.tue) and #strings.isEmpty(shop.wen) and #strings.isEmpty(shop.thu) and #strings.isEmpty(shop.fri) and #strings.isEmpty(shop.sat) and #strings.isEmpty(shop.sun)}">
+                <div th:if="${#strings.isEmpty(shop.tue) and #strings.isEmpty(shop.wed) and #strings.isEmpty(shop.thu) and #strings.isEmpty(shop.fri) and #strings.isEmpty(shop.sat) and #strings.isEmpty(shop.sun)}">
                     <span th:text="${shop.mon}"></span>
                 </div>
         
-                <div class="business-hours" th:if="${!#strings.isEmpty(shop.tue) or !#strings.isEmpty(shop.wen) or !#strings.isEmpty(shop.thu) or !#strings.isEmpty(shop.fri) or !#strings.isEmpty(shop.sat) or !#strings.isEmpty(shop.sun)}">
+                <div class="business-hours" th:if="${!#strings.isEmpty(shop.tue) or !#strings.isEmpty(shop.wed) or !#strings.isEmpty(shop.thu) or !#strings.isEmpty(shop.fri) or !#strings.isEmpty(shop.sat) or !#strings.isEmpty(shop.sun)}">
                     <div>
                         <b>월요일 :</b> <span th:text="${!#strings.isEmpty(shop.mon) ? shop.mon : '휴무'}"></span>
                     </div>
@@ -738,7 +738,7 @@
                         <b>화요일 :</b> <span th:text="${!#strings.isEmpty(shop.tue) ? shop.tue : (!#strings.isEmpty(shop.mon) ? shop.mon : '휴무')}"></span>
                     </div>
                     <div>
-                        <b>수요일 :</b> <span th:text="${!#strings.isEmpty(shop.wen) ? shop.wen : (!#strings.isEmpty(shop.mon) ? shop.mon : '휴무')}"></span>
+                        <b>수요일 :</b> <span th:text="${!#strings.isEmpty(shop.wed) ? shop.wed : (!#strings.isEmpty(shop.mon) ? shop.mon : '휴무')}"></span>
                     </div>
                     <div>
                         <b>목요일 :</b> <span th:text="${!#strings.isEmpty(shop.thu) ? shop.thu : (!#strings.isEmpty(shop.mon) ? shop.mon : '휴무')}"></span>
@@ -788,13 +788,6 @@
                     </div>
                 </div>
 
-                <!-- 모달창 -->
-                <div id="imageModal" class="modal">
-                    <span class="close" onclick="closeModal()">&times;</span>
-                    <div class="modal-img-wrapper">
-                        <img id="modalImage" class="modal-img">
-                    </div>
-                </div>
 
                 <script>
                     document.addEventListener('DOMContentLoaded', () => {
@@ -992,6 +985,7 @@
                 fetch(`/bookmarks/folders?memberId=${memberId}`)
                     .then(res => res.json())
                     .then(folders => {
+                        console.log("폴더 목록:", folders);
                         const list = document.getElementById("folderList");
                         list.innerHTML = '';
                         folders.forEach(folder => {
@@ -1037,27 +1031,23 @@
                     closeModal();
                 }
             });
-
-
-
     
             window.createFolder = function () {
-                const name = document.getElementById("newFolderName").value;
-                if (!name.trim()) return;
-
-                console.log("📦 폴더 만들기 시도:", name, memberId);
+                const name = document.getElementById("newFolderName").value.trim();
+                if (!name) return;
 
                 fetch(`/bookmarks/folders?memberId=${memberId}&name=${encodeURIComponent(name)}`, {
                     method: 'POST'
-                }).then(() => {
-                    console.log("✅ 폴더 생성 완료");
-                    openModal(); // 다시 불러오기
+                })
+                .then(res => res.json())
+                .then(folder => {
+                    console.log("✅ 폴더 생성:", folder);
+                    saveBookmark(folder.id);  // 자동 저장
+                    closeModal();             // 모달 닫기
                 }).catch(err => {
                     console.error("❌ 폴더 생성 실패:", err);
                 });
-            };
-    
-            
+            };       
         });
     </script>
     

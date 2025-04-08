@@ -48,8 +48,6 @@ export default function MainPage() {
       <header className="header-content">
         <div className="common-desk-header">
           <div className="header-wrap">
-            <div className="main-logo">
-            </div>
             <div className="search-form">
               <form action="/search" method="get">
                 <div className="input-wrap">

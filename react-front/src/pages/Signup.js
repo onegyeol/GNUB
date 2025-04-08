@@ -201,16 +201,43 @@ export default function Signup() {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const fields = ['#name', '#college', '#department', '#email', '#password', '#confirmPassword'];
     const empty = fields.some(selector => !$(selector).val());
     if (empty) return alert('모든 항목을 입력하세요.');
     if (!isEmailAvailable) return alert('이메일 중복 확인을 해주세요.');
     if ($('#password').val() !== $('#confirmPassword').val()) return alert('비밀번호가 일치하지 않습니다.');
-
-    alert('회원가입이 완료되었습니다!');
-    $('#joinForm').submit();
+  
+    const memberData = {
+      name: $('#name').val(),
+      college: $('#college').val(),
+      departmentId: $('#department').val(),
+      email: $('#email').val(),
+      password: $('#password').val(),
+    };
+  
+    try {
+      const res = await fetch('http://localhost:8080/api/member/new', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(memberData),
+      });
+      
+  
+      if (res.ok) {
+        alert('회원가입이 완료되었습니다!');
+        window.location.href = '/main'; // 리디렉션 등 원하는 동작
+      } else {
+        const err = await res.json();
+        alert(`회원가입 실패: ${err.message}`);
+      }
+    } catch (e) {
+      alert('회원가입 중 오류가 발생했습니다.');
+    }
   };
+  
 
   return (
     <div className='join-wrapper'>

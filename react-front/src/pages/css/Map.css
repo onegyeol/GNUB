@@ -1,0 +1,266 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+.body {
+    padding-bottom: 80px; /* 푸터 높이만큼 여백을 추가하여 푸터가 겹치지 않도록 설정 */
+}
+
+body, html {
+    background-color: #f0f0f0;
+    min-width: 1070px;
+    overflow: auto; /* 스크롤 가능하도록 설정 */
+}
+
+#root {
+    padding-top: 3%;      /* 헤더 높이만큼 여백 줌 */
+    padding-bottom: 3%;   /* 푸터 겹침 방지 */
+    overflow-x: hidden;
+}
+
+.header-content {
+    position: fixed;        /* ← 기존 sticky → fixed */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 74px;
+    z-index: 1000;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.common-desk-header {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.header-wrap {
+    background-color: #41bbca;
+    width: 1070px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+    height: 100%;
+}
+
+.banner-box {
+    margin-top: 0;
+    width: 100%;
+    display: flex;
+    padding-top: 0%;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 1; 
+}
+
+.banner-wrap {
+    background-color: white;
+    width: 1070px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.banner-content {
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
+}
+
+.btn-search {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-search img {
+    width: 24px;
+    height: 24px;
+}
+
+.input-wrap {
+    position: relative;
+    display: inline-block;
+    margin: 0 auto;
+    max-width: 100%;
+    padding: 0 16px;
+    box-sizing: border-box;
+    font-family: Pretendard, "Apple SD Gothic Neo", sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #000;
+    border: none;
+    border-radius: 4px;
+    background-color: #fff;
+    height: calc(100% + 3px);
+}
+
+.input-wrap input {
+    width: 100%;
+    padding: 8px 200px 8px 12px;
+    border: none;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    color: inherit;
+    background-color: transparent;
+}
+
+.header-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: calc(100% + 3px);
+}
+
+.bottom-nav-wrapper {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background-color: #fff;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+}
+
+
+.bottom-nav {
+    width: 1070px; /* 헤더와 동일한 너비 */
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.bottom-nav a {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 0;
+    color: #666;
+    text-decoration: none;
+    font-size: 12px;
+}
+
+.bottom-nav a svg {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 4px;
+}
+
+.nav-container {
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1070px;
+    margin: 0 auto;
+    padding: 0 16px;
+    border-top: 1px solid rgba(138, 138, 138, 0.1);
+}
+
+.nav-container .menu-items {
+    display: flex;
+    align-items: center;
+}
+
+.nav-container .menu-item {
+    margin: 0 15px; 
+}
+
+.nav-container .login-logout {
+    margin-left: auto;
+}
+
+.fixed-button {
+    position: fixed;
+    bottom: 80px; /* 푸터 위로 띄우기 */
+    right: calc((100% - 1070px) / 2); /* 헤더와 푸터에 맞춰 정렬 */
+    width: 56px; 
+    height: 56px; 
+    border-radius: 50%; 
+    background-color: #41bbca;
+    color: white;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    margin-right: 1%;
+}
+
+/* 버튼 내부 이미지 크기 조정 */
+.fixed-button img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-left: 1%;
+}
+
+/* 호버 효과 */
+.fixed-button:hover {
+    background-color: #35a0b0;
+}
+
+
+.bottom-nav-wrapper {
+    z-index: 400;
+}
+
+@media screen and (max-width: 768px) {
+    html, body {
+        min-width: auto;
+        overflow-x: hidden;
+    }
+
+    .header-wrap,
+    .banner-wrap,
+    .body-box,
+    .bottom-nav {
+        width: 100%;
+        max-width: 100%;
+        padding: 0 3px;
+        box-sizing: border-box;
+    }
+
+    .bottom-nav-wrapper {
+        height: 56px;
+    }
+
+    .bottom-nav a {
+        font-size: 10px;
+        padding: 6px 0;
+    }
+
+    .bottom-nav a svg {
+        width: 20px;
+        height: 20px;
+    }
+}

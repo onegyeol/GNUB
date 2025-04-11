@@ -33,20 +33,24 @@ public class MemberApiController {
     public ResponseEntity<?> login(@RequestBody MemberFormDto memberFormDto, HttpSession session) {
         MemberFormDto loginResult = memberService.login(memberFormDto);
         if (loginResult != null) {
-            session.setAttribute("loginEmail", loginResult.getEmail());
-
             List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
             Authentication authentication = new UsernamePasswordAuthenticationToken(
                     loginResult.getEmail(), null, authorities
             );
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
+            // ✅ 여기가 핵심
+            session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
+
+            System.out.println("로그인 성공: " + loginResult);
             return ResponseEntity.ok(Map.of("message", "로그인 성공"));
         } else {
+            System.out.println("로그인 실패: ");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("message", "로그인 실패"));
         }
     }
+
 
     @PostMapping("/new")
     public ResponseEntity<?> signup(@RequestBody MemberFormDto memberFormDto) {

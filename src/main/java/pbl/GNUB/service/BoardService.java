@@ -60,36 +60,61 @@ public class BoardService {
     public Page<BoardDto> findPaginated(int page, int pageSize) {
         Pageable pageable = PageRequest.of(page - 1, pageSize);
         Page<Board> boardPage = boardRepository.findAll(pageable);
-        return boardPage.map(BoardDto::toBoardDTO);
+    
+        return boardPage.map(board -> {
+            String summary = extractSummary(board.getContent());
+            String thumbnail = extractThumbnail(board.getContent());
+            return BoardDto.toBoardDTO(board, summary, thumbnail);
+        });
     }
 
+
     public Page<BoardDto> findPaginatedMyPosts(int page, int pageSize, String email) {
-        Pageable pageable = PageRequest.of(page - 1, pageSize);
-        Page<Board> boardPage = boardRepository.findByAuthorEmailPaged(email, pageable);
-        return boardPage.map(BoardDto::toBoardDTO);
+    Pageable pageable = PageRequest.of(page - 1, pageSize);
+    Page<Board> boardPage = boardRepository.findByAuthorEmailPaged(email, pageable);
+
+    return boardPage.map(board -> {
+        String summary = extractSummary(board.getContent());
+        String thumbnail = extractThumbnail(board.getContent());
+        return BoardDto.toBoardDTO(board, summary, thumbnail);
+        });
     }
     public List<BoardDto> findAllBoardDto() {
         List<Board> boardList = boardRepository.findAll();
         List<BoardDto> boardDTOList = new ArrayList<>();
         for (Board board : boardList) {
-            boardDTOList.add(BoardDto.toBoardDTO(board));
+            String summary = extractSummary(board.getContent());
+            String thumbnail = extractThumbnail(board.getContent());
+            boardDTOList.add(BoardDto.toBoardDTO(board, summary, thumbnail));
         }
         return boardDTOList;
     }
 
     @Transactional
-    public BoardDto getBoardById(Long id) {
-        Board board = boardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid board Id: " + id));
-        increaseBoardHits(board);
+public BoardDto getBoardById(Long id) {
+    Board board = boardRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid board Id: " + id));
+    increaseBoardHits(board);
 
-        // HTML Escape 해제 (출력 시 태그 적용되도록)
-        String unescapedContent = HtmlUtils.htmlUnescape(board.getContent());
+    String unescapedContent = HtmlUtils.htmlUnescape(board.getContent());
 
-        BoardDto boardDto = BoardDto.toBoardDTO(board);
-        boardDto.setContent(unescapedContent); // 변환된 html 적용
+    String summary = extractSummary(board.getContent());
+    String thumbnail = extractThumbnail(board.getContent());
 
-        return boardDto;
+    BoardDto boardDto = BoardDto.toBoardDTO(board, summary, thumbnail);
+    boardDto.setContent(unescapedContent); // HTML 그대로 적용
+
+    return boardDto;
+    }
+    
+    private String extractSummary(String content) {
+        String text = Jsoup.parse(content).text();
+        return text.length() > 100 ? text.substring(0, 100) + "..." : text;
+    }
+    
+    private String extractThumbnail(String content) {
+        Document doc = Jsoup.parse(content);
+        return doc.select("img").stream().findFirst().map(img -> img.attr("src")).orElse(null);
     }
 
     @Transactional
@@ -132,4 +157,32 @@ public class BoardService {
         Pageable pageable = PageRequest.of(page, pageSize, Sort.by(Sort.Direction.DESC, "boardCreatedTime"));
         return boardRepository.findAll(pageable).getContent();
     }
+
+    public Page<BoardDto> findPaginatedWithSort(int page, int pageSize, String sort) {
+        Sort sorting = switch (sort) {
+            case "hits" -> Sort.by(Sort.Direction.DESC, "boardHits");
+            default -> Sort.by(Sort.Direction.DESC, "createdTime");
+        };
+        Pageable pageable = PageRequest.of(page - 1, pageSize, sorting);
+        Page<Board> boardPage = boardRepository.findAll(pageable);
+    
+        return boardPage.map(board -> {
+            String summary = extractSummary(board.getContent());
+            String thumbnail = extractThumbnail(board.getContent());
+            return BoardDto.toBoardDTO(board, summary, thumbnail);
+        });
+    }
+    
+    public Page<BoardDto> searchBoards(String keyword, int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page - 1, pageSize);
+        Page<Board> boardPage = boardRepository.findByTitleContainingIgnoreCase(keyword, pageable);
+    
+        return boardPage.map(board -> {
+            String summary = extractSummary(board.getContent());
+            String thumbnail = extractThumbnail(board.getContent());
+            return BoardDto.toBoardDTO(board, summary, thumbnail);
+        });
+    }
+    
+
 }

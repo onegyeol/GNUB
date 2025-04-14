@@ -33,17 +33,31 @@ public class BoardController {
     private final String uploadDir = "uploads/";
 
     @GetMapping("/main")
-    public String BoardMain(Model model, @RequestParam(value = "page", defaultValue = "1") int page) {
-        int pageSize = 10;
-        Page<BoardDto> boardPage = boardService.findPaginated(page, pageSize);
+public String BoardMain(
+        Model model,
+        @RequestParam(value = "page", defaultValue = "1") int page,
+        @RequestParam(value = "sort", defaultValue = "created") String sort,
+        @RequestParam(value = "query", required = false) String query
+) {
+    int pageSize = 10;
+    Page<BoardDto> boardPage;
 
-        model.addAttribute("boardList", boardPage.getContent());
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", boardPage.getTotalPages());
-        model.addAttribute("totalItems", boardPage.getTotalElements());
-
-        return "form/board";
+    if (query != null && !query.isEmpty()) {
+        boardPage = boardService.searchBoards(query, page, pageSize);
+        model.addAttribute("searchTerm", query);
+        model.addAttribute("isSearch", true);
+    } else {
+        boardPage = boardService.findPaginatedWithSort(page, pageSize, sort);
+        model.addAttribute("sortOption", sort);
+        model.addAttribute("isSearch", false);
     }
+
+    model.addAttribute("boardList", boardPage.getContent());
+    model.addAttribute("currentPage", page);
+    model.addAttribute("totalPages", boardPage.getTotalPages());
+
+    return "form/board";
+}
 
     @PostMapping("/uploadImage")
     @ResponseBody

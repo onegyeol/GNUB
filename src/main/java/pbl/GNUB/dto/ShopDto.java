@@ -17,6 +17,8 @@ import pbl.GNUB.entity.Shop;
 @ApiModel(value = "음식점정보")
 public class ShopDto {
 
+    @ApiModelProperty(name = "id")
+    private Long id; 
 
     @ApiModelProperty(name = "rest")
     private String name; // 업소명 
@@ -80,6 +82,8 @@ public class ShopDto {
     @ApiModelProperty(name = "Rest_id")
     private String restId;
 
+    private int likeCount;
+    
     public Shop toEntity(){ //Shop 엔티티 반환
         return Shop.builder()
             .name(this.name)
@@ -106,6 +110,7 @@ public class ShopDto {
     }
 
     public ShopDto(Shop shop) {
+        this.id = shop.getId(); 
         this.name = shop.getName();
         this.category = shop.getCategory();
         this.address = shop.getAddress();
@@ -126,6 +131,7 @@ public class ShopDto {
         this.lat = shop.getLat();
         this.lng = shop.getLng();
         this.restId = shop.getRestId();
+        this.likeCount = shop.getLikeCount();
     }
     
 

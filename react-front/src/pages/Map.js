@@ -3,8 +3,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Wrapper } from '@googlemaps/react-wrapper';
 import { fetchGoogleMapsKey, fetchShopsInBounds } from '../service/MapApi';
-import './css/Map.css';
-
 const containerStyle = {
   width: '100%',
   height: 'calc(100vh - 74px)',

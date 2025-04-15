@@ -14,5 +14,4 @@ public class GnubApplication {
         SpringApplication.run(GnubApplication.class, args);
     }
 
-
 }

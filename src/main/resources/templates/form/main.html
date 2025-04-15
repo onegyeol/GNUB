@@ -670,29 +670,32 @@
                 </th:block>
             </div>
         </div>
+
+        
+        
         <main class="content">
             <div class="body-box">
-                <th:block th:if="${categorizedShopsList != null}" th:each="entry : ${categorizedShopsList}">
-                    <section class="card-section" th:id="${'category-' + entry.key}">
+                <th:block th:each="entry : ${taggedShops}">
+                    <section th:id="${'tag-' + entry.value.hashId}" class="card-section">
                         <div class="card-section-wrap">
                             <div class="card-section-title-box">
-                                <h2 class="card-section-title">
-                                    <span th:text="${entry.key}">기타</span>
-                                    <span class="card-section-rest-cnt">
-                                        ([[${#lists.size(entry.value)}]])
-                                    </span>
-                                </h2>
+                                <h2 class="card-section-title" th:text="${entry.key}"></h2>
+                                <span class="card-section-rest-cnt">
+                                    ([[${#lists.size(entry.value.shops)}]])
+                                </span>
+                                <!--/*
+                                <span class="card-section-rest-cnt" th:if="${entry.value.shops != null}">
+                                    ([[${#lists.size(entry.value.shops)}]])
+                                </span>
+                                */-->
                             </div>
-
                             <div class="card-slide-wrap">
                                 <ul class="slide-card-list">
-                                    <!-- value가 null이 아닐 때만 출력 -->
-                                    <li th:if="${entry.value != null}" th:each="shop : ${entry.value}" class="slide-card-item">
+                                    <li th:each="shop : ${entry.value.shops}" class="slide-card-item">
                                         <a th:href="@{'/shopDetails/' + ${shop.id}}">
                                             <img th:src="@{${shop.imgUrl}}" alt="" loading="lazy">
                                             <p class="card-rest-name" th:text="${shop.name}"></p>
                                         </a>
-
                                         <div class="image-btn-container">
                                             <div class="like-section">
                                                 <form th:action="@{/toggleLike}" method="POST">
@@ -705,11 +708,6 @@
                                             </div>
                                         </div>
                                     </li>
-
-                                    <!-- value가 null일 때 대체 메시지 출력 -->
-                                    <li th:if="${entry.value == null}" class="slide-card-item">
-                                        <p>등록된 가게가 없습니다.</p>
-                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -720,7 +718,8 @@
 
 
 
-                <!-- shopTag.csv 완성 시 까지 주석 처리
+
+                <!--/* shopTag.csv 완성 시 까지 주석 처리
                 <th:block th:each="entry : ${taggedShops}">
                     <section class="card-section" th:id="${'tag-' + entry.key}">
                         <div class="card-section-wrap">
@@ -751,7 +750,7 @@
                         </div>
                         </div>
                     </section>
-                </th:block> -->
+                </th:block> */-->
 
                 <a href="/ask" class="fixed-button">
                     <img src="https://www.gnu.ac.kr/images/web/main/sub_cnt/bs03.png" alt="캐릭터 기본형" width="50" height="50">
@@ -759,7 +758,7 @@
             </div>
         </main>
     </div>
-    
+    <th:block th:replace="~{form/bottom :: body}"></th:block>
     <script src="/javascript/script.js" defer></script>
     
     <div class="bottom-nav-wrapper">
@@ -859,6 +858,5 @@
             window.addEventListener('resize', adjustLayout);
         });
     </script>
-    <th:block th:replace="~{form/bottom :: body}"></th:block>
 </body>
 </html>

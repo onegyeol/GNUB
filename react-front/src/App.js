@@ -5,7 +5,7 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Mypage from './pages/Mypage';
 import Main from './pages/Main';
-import MapPage from './pages/Map';
+import MapPage from './pages/Map'; 
 import BookmarkList from './pages/BookmarkList';
 import LikeList from './pages/LikeList';
 

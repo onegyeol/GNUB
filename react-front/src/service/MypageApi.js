@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+axios.defaults.withCredentials = true;
+
 const BASE = 'http://localhost:8080';
 
 export const fetchMyInfo = () =>

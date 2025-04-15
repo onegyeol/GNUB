@@ -14,6 +14,8 @@ public class WebConfig implements WebMvcConfigurer {
                 .addResourceLocations("file:uploads/");
         registry.addResourceHandler("/javascript/**")
                 .addResourceLocations("classpath:/static/javascript/");
+        registry.addResourceHandler("/image/**")
+                .addResourceLocations("classpath:/static/image/");
     }
 
     // ✅ CORS 설정 추가
@@ -24,4 +26,6 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowCredentials(true); // 세션/쿠키 공유
     }
+
+
 }

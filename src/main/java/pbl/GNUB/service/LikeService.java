@@ -117,4 +117,8 @@ public class LikeService {
                     .collect(Collectors.toList());
     }
 
+    public int getLikeCount(Long shopId) {
+        return likeRepository.countByShopId(shopId);
+    }
+
 }

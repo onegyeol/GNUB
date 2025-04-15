@@ -12,4 +12,5 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
     List<Like> findByShopId(Long shopId); // 음식점 좋아요 조회
     List<Like> findByMember(Member member); // 멤버 조회 
     List<Like> findByMemberEmail(String memberEmail);
+    int countByShopId(Long shopId);
 }

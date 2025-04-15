@@ -45,7 +45,7 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("springBatch/**", "/member/**", "/main", "/css/**", "/js/**", "/img/**",
-                                 "/Terms/**", "/shopDetails/**", "/search/**", "/map/**")
+                                 "/Terms/**", "/shopDetails/**", "/search/**", "/map/**", "/board/**")
                 .permitAll()
                 .anyRequest().authenticated()
             )

@@ -56,7 +56,6 @@ export default function LikeList() {
                     <span className="restaurant_like">{shop.likeCount}</span>
                   </div>
                   <span className="restaurant_address">{shop.address}</span> <br />
-                  <span className="restaurant_addressinfo">{shop.addressInfo}</span>
                 </div>
 
                 <div className="restaurant_image">

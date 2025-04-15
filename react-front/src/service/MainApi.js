@@ -7,4 +7,3 @@ export const fetchCategorizedShops = async () => {
   const response = await axios.get(`${BASE_URL}/shops`);
   return response.data;
 };
-

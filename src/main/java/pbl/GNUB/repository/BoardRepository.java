@@ -23,6 +23,6 @@ public interface BoardRepository extends JpaRepository<Board, Long>{
     @Query("SELECT b FROM Board b WHERE b.author.email = :email")
     Page<Board> findByAuthorEmailPaged(@Param("email") String email, Pageable pageable);     
     
-
+    Page<Board> findByTitleContainingIgnoreCase(String keyword, Pageable pageable);
 
 }

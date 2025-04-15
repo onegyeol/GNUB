@@ -43,6 +43,9 @@
             justify-content: center;
             align-items: center;
         }
+        .hidden {
+            display: none;
+        }
 
         .common-desk-header {
             width: 100%;
@@ -249,6 +252,11 @@
             font-size: 28px;
             font-weight: bold;
             margin-bottom: 10px;
+        }
+        .restaurant-name-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .save-button {
@@ -644,8 +652,8 @@
         <div class="content">
             <!-- 음식점 정보 -->
             <div class="restaurant-card">
-                <h1 class="restaurant-name" th:text="${shop.name}"></h1>
-
+                <div class="restaurant-name-container">
+                    <h1 class="restaurant-name" th:text="${shop.name}"></h1>
                 <!-- 저장 버튼 영역 -->
                 <div class="save-button" onclick="toggleBookmark()">
                     <svg id="bookmarkIcon" class="save-icon" width="24" height="24" viewBox="0 0 24 24">
@@ -715,7 +723,17 @@
                         <span id="likeCount" th:text="${shop.likeCount}"></span>
                     </div>
                 </div>                
-                
+            
+            </div>
+        </div>
+        <div class="content hidden" id="tagContent">
+            <div class="restaurant-card">
+                <h2>
+                    맛도리 태그누르기기
+                </h2>
+                <div class="tag-container">
+                    <div class="tag-name">태그 들어갈 자리리</div>
+                </div>
             </div>
         </div>
 
@@ -898,6 +916,17 @@
     </div>
 
     <script th:inline="javascript">
+
+        
+        function initMap() {
+            var latitude = /*[[${shop.lat}]]*/ 0; // 실제 lat 값으로 대체
+            var longitude = /*[[${shop.lng}]]*/ 0; // 실제 lng 값으로 대체됩
+            var shopLocation = {lat: latitude, lng: longitude};
+    
+            // 지도를 생성합니다
+            var map = new google.maps.Map(document.querySelector(".map"), {
+                zoom: 18, // 지도의 확대 수준
+                center: shopLocation // 지도의 중심을 식당 위치로 설정
         // 지도 초기화 함수는 window 객체에 등록해 전역 노출시켜야 Google API에서 callback 가능
         window.initMap = function () {
             const latitude = parseFloat('[[${shop.lat}]]');
@@ -926,6 +955,8 @@
                 map: map,
                 icon: customIcon
             });
+        }
+
         };
     
         // 북마크 관련 스크립트
@@ -1053,6 +1084,7 @@
     
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALc92CwPRZXE1Amxh53NyxniBJOHTuka4&callback=initMap" async defer></script>
 
+    
     
 </body>
 </html>

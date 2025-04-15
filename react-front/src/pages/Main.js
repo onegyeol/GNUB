@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { fetchCategorizedShops } from '../service/MainApi';
+import { toggleLike } from '../service/LikeApi';
 import './css/Main.css';
 
 export default function MainPage() {
@@ -7,10 +8,31 @@ export default function MainPage() {
   const [tagSearch, setTagSearch] = useState('');
   const [categorizedShops, setCategorizedShops] = useState({});
 
-  console.log("전체 카테고리:", Object.keys(categorizedShops));
-  Object.entries(categorizedShops).forEach(([category, shops]) => {
-    console.log(`${category}: ${shops.length}개`);
-  });
+  const handleLikeToggle = async (shopId, category) => {
+    console.log("📍 shopId 확인:", shopId);
+
+    try {
+      const data = await toggleLike(shopId); // axios 함수 사용
+
+      setCategorizedShops(prev => {
+        const updated = { ...prev };
+        updated[category] = updated[category].map(shop => {
+
+          return shop.shopId === shopId
+            ? { ...shop, likeCount: data.likeCount }
+            : shop;
+        });
+
+        return updated;
+      });
+    } catch (err) {
+      if (err.response?.status === 401) {
+        window.location.href = "/member/login";
+      } else {
+        console.error("좋아요 처리 실패:", err);
+      }
+    }
+  };
 
 
   const toggleCampusView = () => {
@@ -20,7 +42,6 @@ export default function MainPage() {
   useEffect(() => {
     fetchCategorizedShops()
       .then(data => {
-        console.log("🔥 실제 응답:", data); // 이거 찍어봐
         setCategorizedShops(data);
       })
       .catch(error => console.error('가게 데이터 불러오기 실패:', error));
@@ -125,29 +146,33 @@ export default function MainPage() {
                 </div>
                 <div className="card-slide-wrap">
                   <ul className="slide-card-list">
-                    {shops.map((shop) => (
-                      <li className="slide-card-item" key={shop.id}>
-                        <a href={`/shopDetails/${shop.id}`}>
-                          <img src={shop.imgUrl} alt="" loading="lazy" />
-                          <p className="card-rest-name">{shop.name}</p>
-                        </a>
-                        <div className="image-btn-container">
-                          <div className="like-section">
-                            <form action="/toggleLike" method="POST">
-                              <input type="hidden" name="shopId" value={shop.id} />
-                              <button type="submit" className="like-btn">
+                    {shops.map((shop) => {
+                      return (
+                        <li className="slide-card-item" key={shop.id}>
+                          <a href={`/shopDetails/${shop.id}`}>
+                            <img src={shop.imgUrl} alt="" loading="lazy" />
+                            <p className="card-rest-name">{shop.name}</p>
+                          </a>
+                          <div className="image-btn-container">
+                            <div className="like-section">
+                              <button
+                                type="button"
+                                className="like-btn"
+                                onClick={() => handleLikeToggle(shop.id, category)}
+                              >
                                 <img
                                   className="like-icon"
                                   src="https://cdn-icons-png.flaticon.com/512/833/833472.png"
                                   alt="Heart Icon"
                                 />
                               </button>
-                            </form>
-                            <p className="like-count">{shop.likeCount}</p>
+                              <p className="like-count">{shop.likeCount}</p>
+                            </div>
                           </div>
-                        </div>
-                      </li>
-                    ))}
+                        </li>
+                      );
+                    })}
+
                   </ul>
                 </div>
               </div>

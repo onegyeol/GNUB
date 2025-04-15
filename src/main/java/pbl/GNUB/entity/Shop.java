@@ -2,6 +2,8 @@ package pbl.GNUB.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -74,6 +76,7 @@ public class Shop {
         joinColumns = @JoinColumn(name = "shop_id"),
         inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
+    @JsonIgnore
     @ToString.Exclude
     private List<ShopTag> shopTags; // ShopTag와의 다대다 관계
 

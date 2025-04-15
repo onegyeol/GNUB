@@ -1,181 +1,16 @@
-* {
-    margin: 0;
-    padding: 0;
-    font-family: 'Noto Sans KR', sans-serif;
-}
-
-.body {
-    padding-bottom: 80px; /* 푸터 높이만큼 여백을 추가하여 푸터가 겹치지 않도록 설정 */
-}
-
-body, html {
+body,
+html {
     background-color: #f0f0f0;
-    min-width: 1070px;
-    overflow: auto; /* 스크롤 가능하도록 설정 */
+    min-width: 320px;
+    /* 최소 너비 낮춰줌 */
+    overflow-x: hidden;
 }
 
 #root {
     width: 100%;
-    min-height: auto;
-    overflow-x: hidden;
-    padding-bottom: 70px; /* 푸터 높이만큼 패딩 추가 */
-}
-
-.header-content {
-    background-color: #f0f0f0;
-    height: 74px;
-    position: sticky;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 400;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.common-desk-header {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-}
-
-.header-wrap {
-    background-color: #41bbca;
-    width: 1070px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    max-width: 1070px;
     margin: 0 auto;
-    height: 100%;
-}
-
-.banner-box {
-    margin-top: 0;
-    width: 100%;
-    display: flex;
-    padding-top: 0;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    z-index: 1; 
-}
-
-.banner-wrap {
-    background-color: white;
-    width: 1070px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px 0;
-}
-
-.banner-content {
-    font-family: 'Arial', sans-serif;
-    font-size: 16px;
-    font-weight: bold;
-    color: #333;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-    line-height: 1.5;
-}
-
-.btn-search {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-
-.btn-search img {
-    width: 24px;
-    height: 20px;
-}
-
-.main-logo {
-    width: 135px;
-    height: 45px;
-}
-
-.main-logo img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
-.input-wrap {
-    position: relative;
-    display: inline-block;
-    width: 100%;
-}
-
-.input-wrap {
-    position: relative;
-    display: inline-block;
-    margin: 0 auto;
-    width: 500px;
-    max-width: 100%;
-    padding: 0 16px;
-    box-sizing: border-box;
-    font-family: Pretendard, "Apple SD Gothic Neo", sans-serif;
-    font-size: 15px;
-    line-height: 1.5;
-    color: #000;
-    border: none;
-    border-radius: 4px;
-    background-color: #fff;
-    height: calc(100% + 3px);
-}
-
-.btn-search {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-
-.btn-search img {
-    width: 24px;
-    height: 24px;
-}
-
-
-.main-logo {
-    flex: 1;
-}
-
-.input-wrap input {
-    width: 100%;
-    padding: 8px 32px 8px 12px;
-    border: none;
-    border-radius: 4px;
-    font-family: inherit;
-    font-size: inherit;
-    line-height: inherit;
-    color: inherit;
-    background-color: transparent;
-}
-.header-wrap {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: calc(100% + 3px);
-}
-
-.search-form {
-    flex-grow: 2;
-    display: flex;
-    justify-content: center;
-    margin-right: 10%;
+    padding-bottom: 70px;
 }
 
 .auth-box {
@@ -214,7 +49,8 @@ body, html {
 .like-section {
     display: inline-flex;
     align-items: center;
-    gap: 4px; /* 하트와 숫자 사이 간격 */
+    gap: 4px;
+    /* 하트와 숫자 사이 간격 */
     margin-top: 5px;
 }
 
@@ -231,15 +67,18 @@ body, html {
 .header-container {
     width: 100%;
     display: flex;
-    justify-content: center; /* 가운데 정렬 */
+    justify-content: center;
+    /* 가운데 정렬 */
     align-items: center;
-    margin: 30px 0; /* 위아래 여백 */
+    margin: 30px 0;
+    /* 위아래 여백 */
 }
 
 .header-container .h1 {
-    font-size: 32px;
+    font-size: 28px;
     font-weight: bold;
     text-align: center;
+    margin-top: 20%;
 }
 
 
@@ -250,8 +89,10 @@ body, html {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    padding: 0 16px;  /* Header, Footer와 패딩 통일 */
-    padding-bottom: 80px;  /* Footer 높이만큼 하단 여백 추가 */
+    padding: 0 16px;
+    /* Header, Footer와 패딩 통일 */
+    padding-bottom: 80px;
+    /* Footer 높이만큼 하단 여백 추가 */
 }
 
 /* 각 가게 스타일 */
@@ -279,8 +120,10 @@ a {
     font-weight: bold;
     margin-bottom: 5px;
     display: block;
-    color: #333; /* 검정색 */
-    text-decoration: none; /* 밑줄 제거 */
+    color: #333;
+    /* 검정색 */
+    text-decoration: none;
+    /* 밑줄 제거 */
 }
 
 .restaurant_tags {
@@ -316,24 +159,6 @@ a {
     object-fit: cover;
     border-radius: 8px;
 }
-
-/* 반응형 - 모바일 화면 */
-@media (max-width: 600px) {
-    .restaurant_item {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .restaurant_image {
-        margin-top: 10px;
-    }
-
-    .restaurant_image img {
-        width: 100%;
-        height: auto;
-    }
-}
-
 
 
 .like-section {
@@ -401,11 +226,6 @@ a {
     margin-bottom: 4px;
 }
 
-@media screen and (max-width: 1070px) {
-.bottom-nav {
-        width: 100%;
-}
-}
 
 .nav-container {
     background-color: white;
@@ -418,16 +238,17 @@ a {
     padding: 0 16px;
     border-top: 1px solid rgba(138, 138, 138, 0.1);
 }
+
 .nav-container .menu-items {
     display: flex;
     align-items: center;
 }
 
 .nav-container .menu-item {
-    margin: 0 15px; 
+    margin: 0 15px;
 }
 
-.nav-container  {
+.nav-container {
     margin-left: auto;
 }
 
@@ -442,8 +263,46 @@ a {
 }
 
 @media screen and (max-width: 768px) {
-    .restaurant-card {
-        width: 95%;
-        padding: 20px;
+    .header-wrap {
+        flex-direction: column;
+        align-items: center;
+        height: auto;
+        padding: 10px 16px;
+    }
+
+    .main-logo {
+        margin-bottom: 10px;
+    }
+
+    .search-form {
+        width: 100%;
+        margin-right: 0;
+    }
+
+    .input-wrap {
+        width: 100%;
+    }
+}
+
+
+@media screen and (max-width: 768px) {
+    .banner-wrap {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+    }
+
+    .restaurant_list {
+        padding: 0 8px;
+    }
+
+    .restaurant_item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .restaurant_image img {
+        width: 100%;
+        height: auto;
     }
 }

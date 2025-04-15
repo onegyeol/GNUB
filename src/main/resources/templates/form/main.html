@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <title>GNU BOB</title>
     <link rel="icon" type="image/png" href="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144">
+    <link rel="stylesheet" th:href="@{/css/bottom.css}">
     <style>
         * {
             margin: 0;
@@ -664,7 +665,8 @@
             </div>
             <div class="tag-list">
                 <th:block th:each="entry : ${taggedShops}">
-                    <button class="tag-item" th:text="${entry.key}" th:data-count="${#lists.size(entry.value)}" onclick="toggleTag(this)"></button>
+                    <!-- entry 뒤에 물음표 추가 -->
+                    <button class="tag-item" th:text="${entry?.key}" th:data-count="${#lists.size(entry?.value)}" onclick="toggleTag(this)"></button> 
                 </th:block>
             </div>
         </div>
@@ -857,6 +859,6 @@
             window.addEventListener('resize', adjustLayout);
         });
     </script>
-    
+    <th:block th:replace="~{form/bottom :: body}"></th:block>
 </body>
 </html>

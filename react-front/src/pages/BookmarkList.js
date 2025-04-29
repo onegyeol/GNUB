@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { fetchBookmarks } from '../service/MypageApi';
+import { deleteFolder } from '../service/BookmarkApi'; 
 import './css/BookmarkList.css';
 
 export default function BookmarkList() {
@@ -15,6 +16,27 @@ export default function BookmarkList() {
         console.error("❌ fetchBookmarks 에러:", err);
       });
   }, []);
+  
+  const handleDeleteFolder = (folderName) => {
+    if (!window.confirm(`'${folderName}' 폴더를 정말 삭제할까요?`)) {
+      return;
+    }
+  
+    deleteFolder(folderName)
+      .then(() => {
+        alert('폴더 삭제 완료!');
+        setGroupedBookmarks(prev => {
+          const updated = { ...prev };
+          delete updated[folderName];
+          return updated;
+        });
+        
+      })
+      .catch(err => {
+        console.error('❌ 폴더 삭제 실패:', err);
+        alert('폴더 삭제에 실패했습니다.');
+      });
+  };
   
 
   const renderBookmarkCards = (bookmarks) => (
@@ -40,7 +62,7 @@ export default function BookmarkList() {
       ))}
     </ul>
   );
-  
+
 
   return (
     <div id="root">
@@ -75,10 +97,9 @@ export default function BookmarkList() {
                     {folder === 'null' ? '저장한 음식점들' : `${folder} (${bookmarks.length})`}
                   </h2>
                   {folder !== 'null' && (
-                    <form action="/bookmarks/folder/delete" method="post" style={{ marginLeft: '10px' }}>
-                      <input type="hidden" name="folderName" value={folder} />
-                      <button type="submit" className="toggle-btn">삭제</button>
-                    </form>
+                    <button className="toggle-btn" style={{ marginLeft: '10px' }} onClick={() => handleDeleteFolder(folder)} >
+                      삭제
+                    </button>
                   )}
                 </div>
                 <div className="card-slide-wrap">

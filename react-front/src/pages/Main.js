@@ -40,13 +40,21 @@ export default function MainPage() {
   };
 
   useEffect(() => {
-    fetchCategorizedShops()
-      .then(data => {
-        setCategorizedShops(data);
+    fetchCategorizedShops({ credentials: 'include' }) // 세션 쿠키도 같이 보내기
+      .then(res => {
+        // 만약 HTML이 응답됐다면 로그인 페이지일 가능성
+        if (typeof res === 'string' && res.includes('<!DOCTYPE html>')) {
+          window.location.href = '/member/login';
+          return;
+        }
+  
+        setCategorizedShops(res);
       })
-      .catch(error => console.error('가게 데이터 불러오기 실패:', error));
+      .catch(error => {
+        console.error('가게 데이터 불러오기 실패:', error);
+      });
   }, []);
-
+  
   useEffect(() => {
     const adjustLayout = () => {
       const header = document.querySelector('.header-content');

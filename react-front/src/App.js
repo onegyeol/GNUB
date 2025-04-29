@@ -8,6 +8,7 @@ import Main from './pages/Main';
 import MapPage from './pages/Map'; 
 import BookmarkList from './pages/BookmarkList';
 import LikeList from './pages/LikeList';
+import FoodDetailsPage from './pages/FoodDetails';
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <Route path="/member/login" element={<Login />} />
         <Route path="/myPage" element={<Mypage />} />
         <Route path="/main" element={<Main />} />
+        <Route path="/shopDetails/:id" element={<FoodDetailsPage />} />
         <Route path="/map" element={<MapPage />} />
         <Route path="/myPage/bookmarkList" element={<BookmarkList />} />
         <Route path="/myPage/likeList" element={<LikeList />} />

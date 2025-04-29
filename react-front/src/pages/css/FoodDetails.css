@@ -1,0 +1,375 @@
+.map-container {
+  width: 100%;
+  max-width: 1000px;
+  height: 350px;
+  margin: 20px auto;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background-color: #eaeaea; 
+}
+
+
+.restaurant-card.first-card {
+  margin-top: 15%;
+}
+
+.map {
+  width: 100%;
+  height: 100%;
+}
+
+.restaurant-card {
+  width: 90%;
+  max-width: 1000px;
+  background-color: white;
+  border-radius: 40px;
+  padding: 30px;
+  margin: 20px auto;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.restaurant-name {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.save-button {
+  cursor: pointer;
+}
+
+.restaurant-card img {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+.like-section {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+.like-container {
+  display: flex;
+  align-items: center;
+}
+
+.like-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.heart-icon {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  margin-left: 5px;
+}
+
+.business-hours {
+  margin: 20px 0;
+  padding: 10px 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  line-height: 1.8;
+}
+
+.business-hours div {
+  margin: 4px 0;
+}
+
+.business-hours b {
+  display: inline-block;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  font-size: 1.6rem;
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+.section-title img {
+  margin-right: 8px;
+  width: 24px;
+  height: 24px;
+}
+
+.menu-section {
+  margin-top: 16px;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 10px 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  font-size: 15px;
+  font-weight: 500;
+  border: 1px solid #ddd;
+}
+
+.menu-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.menu-price {
+  font-weight: bold;
+}
+
+.more-menu-btn {
+  text-align: right;
+  margin-top: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #444;
+}
+
+.dots {
+  flex-grow: 1;
+  border-bottom: 1px dotted #ccc;
+  margin: 0 8px;
+}
+
+/* 반응형 처리 */
+@media (max-width: 768px) {
+  .restaurant-card {
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  .menu-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-title {
+    font-size: 1.2rem;
+  }
+
+  .menu-item {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .image-gallery {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .menu-image img {
+    height: 120px;
+  }
+}
+
+/* 이하 기존 코드 유지 */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 999;
+}
+
+.modal-sheet {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  padding: 20px;
+  max-width: 1030px;
+  margin: 0 auto;
+  box-shadow: 0 -8px 16px rgba(0, 0, 0, 0.1);
+  transform: translateY(100%);
+  transition: transform 0.3s ease-in-out;
+  z-index: 1000;
+}
+
+.modal-sheet.show {
+  transform: translateY(0%);
+}
+
+.modal-handle {
+  width: 40px;
+  height: 4px;
+  background-color: #ccc;
+  border-radius: 2px;
+  margin: 0 auto 16px;
+}
+
+.modal-title {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bookmark-default {
+  padding: 12px;
+  font-size: 15px;
+  border-radius: 8px;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  text-align: left;
+  cursor: pointer;
+}
+
+.bookmark-default:hover {
+  background-color: #eaeaea;
+}
+
+.folder-list button {
+  width: 100%;
+  padding: 12px;
+  font-size: 15px;
+  text-align: left;
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.folder-list button:hover {
+  background-color: #e0e0e0;
+}
+
+.folder-create {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.folder-create input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.create-folder-btn {
+  padding: 10px 14px;
+  background-color: #41bbca;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.create-folder-btn:hover {
+  background-color: #38a4b2;
+}
+
+.modal-footer {
+  margin-top: 20px;
+  text-align: right;
+}
+
+.modal-footer button {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.folder-create {
+  display: flex;
+  margin-top: 15px;
+  gap: 8px;
+}
+
+.folder-create input {
+  flex: 1;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.menu-link {
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.menu-link:hover {
+  color: #007BFF;
+}
+
+.image-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);  
+  gap: 16px;
+  padding: 16px;
+}
+
+
+.menu-image {
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  background-color: #f5f5f5;
+  padding: 10px;
+  transition: transform 0.3s ease;
+  text-align: center;
+}
+
+.menu-image img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.menu-image p {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.menu-image:hover {
+  transform: scale(1.05);
+}
+
+.more-menu-btn {
+  cursor: pointer;
+  color: #555;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.more-menu-btn span {
+  margin-left: 5px;
+}

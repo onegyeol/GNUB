@@ -22,3 +22,9 @@ export const createFolder = (name) =>
     params: { name },
     withCredentials: true,
   });
+
+export const deleteFolder = (name) =>
+  axios.delete(`${BASE}/folders`, {
+    params: { name },
+    withCredentials: true,
+  });

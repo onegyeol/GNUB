@@ -41,10 +41,10 @@ public class ShopApiController {
         List<ShopMenu> menus = shopService.getMenusByShopName(shop.getName());
 
         boolean isBookmarked = false;
-        boolean isLoggedIn = false; // ✅ 추가
+        boolean isLoggedIn = false;
 
         if (principal != null) {
-            isLoggedIn = true; // ✅ 로그인 상태 true
+            isLoggedIn = true; 
             String email = principal.getName();
             Member member = memberRepository.findByEmail(email)
                     .orElseThrow(() -> new RuntimeException("회원 정보를 찾을 수 없음"));
@@ -55,7 +55,7 @@ public class ShopApiController {
                 "shop", shop,
                 "menus", menus,
                 "isBookmarked", isBookmarked,
-                "isLoggedIn", isLoggedIn // ✅ 추가
+                "isLoggedIn", isLoggedIn 
         );
 
         return ResponseEntity.ok(response);

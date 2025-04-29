@@ -14,6 +14,7 @@ import pbl.GNUB.entity.Shop;
 import pbl.GNUB.service.BookmarkService;
 import pbl.GNUB.service.LikeService;
 import pbl.GNUB.service.MemberService;
+import pbl.GNUB.service.ShopService;
 
 import java.security.Principal;
 import java.util.HashMap;
@@ -28,6 +29,7 @@ public class MypageApiController {
     private final LikeService likeService;
     private final MemberService memberService;
     private final BookmarkService bookmarkService;
+    private final ShopService shopService;
 
     @GetMapping("/info")
     public ResponseEntity<?> getMyInfo(Principal principal) {

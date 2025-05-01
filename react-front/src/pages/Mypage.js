@@ -1,17 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { fetchMyInfo } from '../service/MypageApi';
 import './css/Mypage.css'; // 스타일은 기존 CSS를 기반으로 따로 분리해서 여기에 import
-import { useNavigate } from 'react-router-dom'; // 추가
+import { useNavigate } from 'react-router-dom'; 
 
 export default function MyPage() {
-  const navigate = useNavigate(); // 추가
+  const navigate = useNavigate(); 
+  const [searchQuery, setSearchQuery] = useState(''); 
   const [info, setInfo] = useState(null);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
+
+   // 검색 제출 함수
+   const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+    navigate(`/search?query=${encodeURIComponent(searchQuery.trim())}`);
+    }
+};
 
   useEffect(() => {
     fetchMyInfo()
       .then(data => {
-        console.log("✅ 받은 회원 정보:", data); 
+        console.log("✅ 받은 회원 정보:", data);
         setInfo(data);
       })
       .catch(err => {
@@ -33,15 +42,26 @@ export default function MyPage() {
         <div className="common-desk-header">
           <div className="header-wrap">
             <div className="search-form">
-              <form action="/search" method="get">
+              <form onSubmit={handleSearchSubmit}>
                 <div className="input-wrap">
-                  <input className="search-input" type="search" name="query" placeholder="지역, 음식 또는 식당명 입력" maxLength="255" autoComplete="off" />
+                  <input
+                    className="search-input"
+                    type="search"
+                    id="query"
+                    name="query"
+                    placeholder="지역, 음식 또는 식당명 입력"
+                    maxLength={255}
+                    autoComplete="off"
+                    value={searchQuery} // ✅ 상태 바인딩
+                    onChange={(e) => setSearchQuery(e.target.value)} // ✅ 입력 반영
+                  />
                   <button type="submit" className="btn-search">
                     <img src="https://github.com/user-attachments/assets/19865e59-1076-4b33-ae6a-9cfbd7b5bbb2" alt="검색버튼" />
                   </button>
                 </div>
               </form>
             </div>
+            <div className="auth-Box"></div>
           </div>
         </div>
       </header>
@@ -82,11 +102,11 @@ export default function MyPage() {
           <div className="activity-grid">
             <div className="activity-card">
               <div className="activity-text">🏠 내가 저장한 가게</div>
-              <button className="go-btn" onClick={() => window.location.href='/mypage/bookmarkList'}>바로가기</button>
+              <button className="go-btn" onClick={() => window.location.href = '/mypage/bookmarkList'}>바로가기</button>
             </div>
             <div className="activity-card">
               <div className="activity-text">👍 내가 좋아요한 가게</div>
-              <button className="go-btn" onClick={() => window.location.href='/mypage/likeList'}>바로가기</button>
+              <button className="go-btn" onClick={() => window.location.href = '/mypage/likeList'}>바로가기</button>
             </div>
           </div>
         </div>

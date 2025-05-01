@@ -1,10 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { fetchBookmarks } from '../service/MypageApi';
-import { deleteFolder } from '../service/BookmarkApi'; 
+import { deleteFolder } from '../service/BookmarkApi';
+import { useNavigate } from 'react-router-dom';
 import './css/BookmarkList.css';
 
 export default function BookmarkList() {
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState('');
   const [groupedBookmarks, setGroupedBookmarks] = useState({});
+
+  // 검색 제출 함수
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/search?query=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
 
   useEffect(() => {
     fetchBookmarks()
@@ -16,12 +27,12 @@ export default function BookmarkList() {
         console.error("❌ fetchBookmarks 에러:", err);
       });
   }, []);
-  
+
   const handleDeleteFolder = (folderName) => {
     if (!window.confirm(`'${folderName}' 폴더를 정말 삭제할까요?`)) {
       return;
     }
-  
+
     deleteFolder(folderName)
       .then(() => {
         alert('폴더 삭제 완료!');
@@ -30,14 +41,14 @@ export default function BookmarkList() {
           delete updated[folderName];
           return updated;
         });
-        
+
       })
       .catch(err => {
         console.error('❌ 폴더 삭제 실패:', err);
         alert('폴더 삭제에 실패했습니다.');
       });
   };
-  
+
 
   const renderBookmarkCards = (bookmarks) => (
     <ul className="slide-card-list">
@@ -70,15 +81,26 @@ export default function BookmarkList() {
         <div className="common-desk-header">
           <div className="header-wrap">
             <div className="search-form">
-              <form action="/search" method="get">
+              <form onSubmit={handleSearchSubmit}>
                 <div className="input-wrap">
-                  <input className="search-input" type="search" name="query" placeholder="지역, 음식 또는 식당명 입력" maxLength="255" autoComplete="off" />
+                  <input
+                    className="search-input"
+                    type="search"
+                    id="query"
+                    name="query"
+                    placeholder="지역, 음식 또는 식당명 입력"
+                    maxLength={255}
+                    autoComplete="off"
+                    value={searchQuery} // ✅ 상태 바인딩
+                    onChange={(e) => setSearchQuery(e.target.value)} // ✅ 입력 반영
+                  />
                   <button type="submit" className="btn-search">
                     <img src="https://github.com/user-attachments/assets/19865e59-1076-4b33-ae6a-9cfbd7b5bbb2" alt="검색버튼" />
                   </button>
                 </div>
               </form>
             </div>
+            <div className="auth-Box"></div>
           </div>
         </div>
       </header>

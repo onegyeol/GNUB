@@ -1,12 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { fetchCategorizedShops } from '../service/MainApi';
+import { useNavigate } from 'react-router-dom'; //
 import { toggleLike } from '../service/LikeApi';
 import './css/Main.css';
 
 export default function MainPage() {
+  const navigate = useNavigate(); // ✅ 추가
+  const [searchQuery, setSearchQuery] = useState(''); // ✅ 추가
   const [showCampusImages, setShowCampusImages] = useState(false);
   const [tagSearch, setTagSearch] = useState('');
   const [categorizedShops, setCategorizedShops] = useState({});
+
+  // 🔍 검색 제출 함수
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/search?query=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
 
   const handleLikeToggle = async (shopId, category) => {
     console.log("📍 shopId 확인:", shopId);
@@ -78,7 +89,7 @@ export default function MainPage() {
         <div className="common-desk-header">
           <div className="header-wrap">
             <div className="search-form">
-              <form action="/search" method="get">
+              <form onSubmit={handleSearchSubmit}>
                 <div className="input-wrap">
                   <input
                     className="search-input"
@@ -88,6 +99,8 @@ export default function MainPage() {
                     placeholder="지역, 음식 또는 식당명 입력"
                     maxLength={255}
                     autoComplete="off"
+                    value={searchQuery} // ✅ 상태 바인딩
+                    onChange={(e) => setSearchQuery(e.target.value)} // ✅ 입력 반영
                   />
                   <button type="submit" className="btn-search">
                     <img src="https://github.com/user-attachments/assets/19865e59-1076-4b33-ae6a-9cfbd7b5bbb2" alt="검색버튼" />

@@ -1,9 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { fetchLikes } from '../service/MypageApi';
 import './css/LikeList.css';
+import { useNavigate } from 'react-router-dom';
+
 
 export default function LikeList() {
   const [likedShops, setLikedShops] = useState([]);
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // 검색 제출 함수
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/search?query=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
+
 
   useEffect(() => {
     fetchLikes()
@@ -19,19 +32,30 @@ export default function LikeList() {
 
   return (
     <div id="root">
-      <header className="header-content">
+       <header className="header-content">
         <div className="common-desk-header">
           <div className="header-wrap">
             <div className="search-form">
-              <form action="/search" method="get">
+              <form onSubmit={handleSearchSubmit}>
                 <div className="input-wrap">
-                  <input className="search-input" type="search" name="query" placeholder="지역, 음식 또는 식당명 입력" maxLength="255" autoComplete="off" />
+                  <input
+                    className="search-input"
+                    type="search"
+                    id="query"
+                    name="query"
+                    placeholder="지역, 음식 또는 식당명 입력"
+                    maxLength={255}
+                    autoComplete="off"
+                    value={searchQuery} // ✅ 상태 바인딩
+                    onChange={(e) => setSearchQuery(e.target.value)} // ✅ 입력 반영
+                  />
                   <button type="submit" className="btn-search">
                     <img src="https://github.com/user-attachments/assets/19865e59-1076-4b33-ae6a-9cfbd7b5bbb2" alt="검색버튼" />
                   </button>
                 </div>
               </form>
             </div>
+            <div className="auth-Box"></div>
           </div>
         </div>
       </header>

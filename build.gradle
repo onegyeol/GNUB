@@ -33,12 +33,12 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
-	implementation 'org.springframework.security:spring-security-data'
+	implementation 'org.springframework.security:spring-security-data:6.1.5'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.modelmapper:modelmapper:3.0.0'
 	implementation 'io.swagger:swagger-annotations:1.6.11'
 	implementation 'io.micrometer:micrometer-core'
-    implementation 'io.micrometer:micrometer-registry-prometheus' // Prometheus 레지스트리를 사용하고 싶다면 추가
+  implementation 'io.micrometer:micrometer-registry-prometheus' // Prometheus 레지스트리를 사용하고 싶다면 추가
 	implementation 'org.springframework.security:spring-security-taglibs'
 	implementation 'org.jsoup:jsoup:1.14.3'
 

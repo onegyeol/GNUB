@@ -12,9 +12,11 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "LIKES")
-@Getter @Setter
+@Getter
+@Setter
 public class Like {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     // Shop과의 다대일 관계 설정
@@ -24,8 +26,8 @@ public class Like {
 
     @ManyToOne
     @JoinColumn(name = "member_id")
-    private Member member;  // 누가 좋아요를 눌렀는지
+    private Member member; // 누가 좋아요를 눌렀는지
 
     private String email; // 회원 email
-    
+
 }

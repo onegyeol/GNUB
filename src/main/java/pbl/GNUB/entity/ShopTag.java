@@ -22,7 +22,7 @@ import lombok.*;
 @Table(name = "SHOPTAG")
 @Builder
 public class ShopTag {
-    @Id 
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

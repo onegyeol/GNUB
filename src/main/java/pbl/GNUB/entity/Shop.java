@@ -13,6 +13,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -31,7 +32,7 @@ import lombok.ToString;
 @ToString
 @Table(name = "SHOP")
 public class Shop {
-    @Id 
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // id
 
@@ -43,9 +44,9 @@ public class Shop {
     private String addressInfo;
     private String number; // 전화번호
     private String site; // 해당 사이트
-    private String info; 
+    private String info;
 
-    @Column(length = 1024)  // 이미지 URL 길이를 1024자로 제한
+    @Column(length = 1024) // 이미지 URL 길이를 1024자로 제한
     private String imgUrl; // 이미지 Url
 
     private String mon;
@@ -54,7 +55,7 @@ public class Shop {
     private String thu;
     private String fri;
     private String sat;
-    private String sun; 
+    private String sun;
 
     private Double lat; // 위도
     private Double lng; // 경도
@@ -69,12 +70,9 @@ public class Shop {
     private List<ShopMenu> shopMenus;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "shop_shoptag",
-        joinColumns = @JoinColumn(name = "shop_id"),
-        inverseJoinColumns = @JoinColumn(name = "tag_id")
-    )
-    @ToString.Exclude
+    @JoinTable(name = "shop_shoptag", joinColumns = @JoinColumn(name = "shop_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
+
+    // @OneToOne(mappedBy = "shop", cascade = CascadeType.ALL) 방금 지워봄
     private List<ShopTag> shopTags; // ShopTag와의 다대다 관계
 
     // likeCount setter

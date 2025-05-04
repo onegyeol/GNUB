@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html xmlns="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html xmlns="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GNUB - 음식점 상세페이지</title>
-    <link rel="icon" type="image/png" href="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144">
-    
+    <link rel="icon" type="image/png"
+        href="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144">
+
     <style>
         * {
             margin: 0;
@@ -15,20 +16,24 @@
         }
 
         .body {
-            padding-bottom: 80px; /* 푸터 높이만큼 여백을 추가하여 푸터가 겹치지 않도록 설정 */
+            padding-bottom: 80px;
+            /* 푸터 높이만큼 여백을 추가하여 푸터가 겹치지 않도록 설정 */
         }
 
-        body, html {
+        body,
+        html {
             background-color: #f0f0f0;
             min-width: 1070px;
-            overflow: auto; /* 스크롤 가능하도록 설정 */
+            overflow: auto;
+            /* 스크롤 가능하도록 설정 */
         }
 
         #root {
             width: 100%;
             min-height: auto;
             overflow-x: hidden;
-            padding-bottom: 70px; /* 푸터 높이만큼 패딩 추가 */
+            padding-bottom: 70px;
+            /* 푸터 높이만큼 패딩 추가 */
         }
 
         .header-content {
@@ -43,6 +48,7 @@
             justify-content: center;
             align-items: center;
         }
+
         .hidden {
             display: none;
         }
@@ -72,7 +78,7 @@
             justify-content: center;
             align-items: center;
             position: relative;
-            z-index: 1; 
+            z-index: 1;
         }
 
         .banner-wrap {
@@ -160,7 +166,7 @@
             width: 24px;
             height: 24px;
         }
-        
+
 
         .main-logo {
             flex: 1;
@@ -177,6 +183,7 @@
             color: inherit;
             background-color: transparent;
         }
+
         .header-wrap {
             display: flex;
             justify-content: space-between;
@@ -227,10 +234,14 @@
         .map-container {
             width: 100%;
             max-width: 1070px;
-            height: 400px; /* 지도 높이 설정 */
-            margin: 20px auto; /* 지도 위치 조정 */
-            border-radius: 20px; /* 지도 테두리 둥글게 */
-            overflow: hidden; /* 둥근 효과 유지 */
+            height: 400px;
+            /* 지도 높이 설정 */
+            margin: 20px auto;
+            /* 지도 위치 조정 */
+            border-radius: 20px;
+            /* 지도 테두리 둥글게 */
+            overflow: hidden;
+            /* 둥근 효과 유지 */
         }
 
         .map {
@@ -239,24 +250,29 @@
         }
 
         .restaurant-card {
+            flex-direction: column;
+            /* 세로 방향 정렬 */
+            align-items: flex-start;
+            /* 왼쪽 정렬 */
             width: 90%;
             max-width: 1000px;
             background-color: white;
             border-radius: 40px;
             padding: 30px;
-            margin: 20px auto; /* 지도 아래 위치 */
+            margin: 20px auto;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        } 
+        }
 
         .restaurant-name {
             font-size: 28px;
             font-weight: bold;
             margin-bottom: 10px;
         }
+
         .restaurant-name-container {
-            display: flex;
             justify-content: space-between;
             align-items: center;
+            width: 100%;
         }
 
         .save-button {
@@ -264,11 +280,14 @@
         }
 
         .restaurant-card img {
-            width: 20px; /* 아이콘 크기 조절 */
+            width: 20px;
+            /* 아이콘 크기 조절 */
             height: 20px;
             display: inline-block;
-            vertical-align: middle; /* 텍스트와 정렬 */
-            margin-right: 10px; /* 텍스트와 간격 */
+            vertical-align: middle;
+            /* 텍스트와 정렬 */
+            margin-right: 10px;
+            /* 텍스트와 간격 */
         }
 
 
@@ -276,7 +295,8 @@
             display: flex;
             align-items: center;
             margin-top: 10px;
-            font-size: 18px; /* 숫자 크기 */
+            font-size: 18px;
+            /* 숫자 크기 */
         }
 
         .like-container {
@@ -294,14 +314,18 @@
         }
 
         .heart-icon {
-            width: 20px; /* 하트 크기 */
+            width: 20px;
+            /* 하트 크기 */
             height: 20px;
-            display: inline-block; /* 크기 고정 */
-            margin-left: 5px; /* 숫자와 하트 간격 조정 */
+            display: inline-block;
+            /* 크기 고정 */
+            margin-left: 5px;
+            /* 숫자와 하트 간격 조정 */
         }
 
         .business-hours div {
-            margin-bottom: 10px; /* 각 항목마다 간격 */
+            margin-bottom: 10px;
+            /* 각 항목마다 간격 */
             font-size: 1rem;
             line-height: 1.5;
         }
@@ -316,7 +340,8 @@
 
         .menu-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);  /* 한 줄에 3개 고정 */
+            grid-template-columns: repeat(3, 1fr);
+            /* 한 줄에 3개 고정 */
             gap: 12px;
             padding: 0;
             list-style: none;
@@ -333,7 +358,8 @@
             font-size: 14px;
         }
 
-        .menu-name, .menu-price {
+        .menu-name,
+        .menu-price {
             white-space: nowrap;
         }
 
@@ -361,7 +387,8 @@
             padding: 20px;
             max-width: 1030px;
             margin: 0 auto;
-            box-shadow: 0 -8px 16px rgba(0, 0, 0, 0.1); /* 윗부분 그림자 */
+            box-shadow: 0 -8px 16px rgba(0, 0, 0, 0.1);
+            /* 윗부분 그림자 */
             transform: translateY(100%);
             transition: transform 0.3s ease-in-out;
             z-index: 1000;
@@ -575,9 +602,9 @@
         }
 
         @media screen and (max-width: 1070px) {
-        .bottom-nav {
+            .bottom-nav {
                 width: 100%;
-        }
+            }
         }
 
         .nav-container {
@@ -591,16 +618,17 @@
             padding: 0 16px;
             border-top: 1px solid rgba(138, 138, 138, 0.1);
         }
+
         .nav-container .menu-items {
             display: flex;
             align-items: center;
         }
 
         .nav-container .menu-item {
-            margin: 0 15px; 
+            margin: 0 15px;
         }
 
-        .nav-container  {
+        .nav-container {
             margin-left: auto;
         }
 
@@ -622,6 +650,7 @@
         }
     </style>
 </head>
+
 <body>
     <div id="root">
         <header class="header-content">
@@ -629,17 +658,22 @@
                 <div class="header-wrap">
                     <div class="main-logo">
                         <a href="/main">
-                            <img class="logo" src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo">
+                            <img class="logo"
+                                src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144"
+                                alt="Logo">
                         </a>
                     </div>
 
-                    
+
                     <div class="search-form">
                         <form action="/search" method="get">
                             <div class="input-wrap">
-                                <input class="search-input" type="search" id="query" name="query" placeholder="지역, 음식 또는 식당명 입력" th:value="${searchTerm}" maxlength="255" autocomplete="off">
+                                <input class="search-input" type="search" id="query" name="query"
+                                    placeholder="지역, 음식 또는 식당명 입력" th:value="${searchTerm}" maxlength="255"
+                                    autocomplete="off">
                                 <button type="submit" class="btn-search">
-                                        <img src="https://github.com/user-attachments/assets/19865e59-1076-4b33-ae6a-9cfbd7b5bbb2" alt="검색버튼">
+                                    <img src="https://github.com/user-attachments/assets/19865e59-1076-4b33-ae6a-9cfbd7b5bbb2"
+                                        alt="검색버튼">
                                 </button>
                             </div>
                         </form>
@@ -654,437 +688,423 @@
             <div class="restaurant-card">
                 <div class="restaurant-name-container">
                     <h1 class="restaurant-name" th:text="${shop.name}"></h1>
-                <!-- 저장 버튼 영역 -->
-                <div class="save-button" onclick="toggleBookmark()">
-                    <svg id="bookmarkIcon" class="save-icon" width="24" height="24" viewBox="0 0 24 24">
-                        <polygon id="bookmarkIconPolygon"
-                            th:attr="fill=${isBookmarked} ? 'black' : 'none'"
-                            points="20 21 12 13.44 4 21 4 3 20 3 20 21"
-                            stroke="black"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2" />
-                    </svg>
-                </div>
-
-                <!-- Dimmed Background -->
-                <div class="modal-overlay" id="modalOverlay" onclick="closeModal()" style="display: none;"></div>
-
-                <!-- Modal Bottom Sheet -->
-                <div class="modal-sheet" id="bookmarkModal" style="display: none;">
-                    <div class="modal-header">
-                        <div class="modal-handle"></div>
-                        <h3 class="modal-title">폴더에 저장</h3>
+                    <!-- 저장 버튼 영역 -->
+                    <div class="save-button" onclick="toggleBookmark()">
+                        <svg id="bookmarkIcon" class="save-icon" width="24" height="24" viewBox="0 0 24 24">
+                            <polygon id="bookmarkIconPolygon" th:attr="fill=${isBookmarked} ? 'black' : 'none'"
+                                points="20 21 12 13.44 4 21 4 3 20 3 20 21" stroke="black" stroke-linecap="round"
+                                stroke-linejoin="round" stroke-width="2" />
+                        </svg>
                     </div>
 
-                    <div class="modal-body">
-                        <button class="bookmark-default" onclick="saveBookmark(null)">⭐ 그냥 저장하기</button>
+                    <!-- Dimmed Background -->
+                    <div class="modal-overlay" id="modalOverlay" onclick="closeModal()" style="display: none;"></div>
 
-                        <div id="folderList" class="folder-list">
-                            <!-- 폴더 버튼들 동적으로 삽입됨 -->
+                    <!-- Modal Bottom Sheet -->
+                    <div class="modal-sheet" id="bookmarkModal" style="display: none;">
+                        <div class="modal-header">
+                            <div class="modal-handle"></div>
+                            <h3 class="modal-title">폴더에 저장</h3>
                         </div>
 
-                        <div class="folder-create">
-                            <input type="text" id="newFolderName" placeholder="새 폴더 이름">
-                            <button type="button" class="create-folder-btn" onclick="createFolder()">폴더 만들기</button>
+                        <div class="modal-body">
+                            <button class="bookmark-default" onclick="saveBookmark(null)">⭐ 그냥 저장하기</button>
+
+                            <div id="folderList" class="folder-list">
+                                <!-- 폴더 버튼들 동적으로 삽입됨 -->
+                            </div>
+
+                            <div class="folder-create">
+                                <input type="text" id="newFolderName" placeholder="새 폴더 이름">
+                                <button type="button" class="create-folder-btn" onclick="createFolder()">폴더 만들기</button>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" onclick="closeModal()">닫기</button>
                         </div>
                     </div>
 
-                    <div class="modal-footer">
-                        <button type="button" onclick="closeModal()">닫기</button>
+
+
+                    <!-- 지도 컨테이너 -->
+                    <div class="map-container">
+                        <div class="map"></div>
                     </div>
-                </div>
 
+                    <p class="restaurant-info">
+                        <img src="https://github.com/user-attachments/assets/35def7f7-a86e-43d0-905c-675c4212c54f"
+                            alt="주소 이모티콘">
+                        <span th:text="${shop.address}"></span>
+                    </p> <br>
 
+                    <p class="restaurant-info">
+                        <img src="https://github.com/user-attachments/assets/ed0707e8-ae3e-44ec-ab96-175a1c9d088b"
+                            alt="전화기 이모티콘">
+                        <span th:text="${shop.number}"></span>
+                    </p> <br>
 
-                <!-- 지도 컨테이너 -->
-                <div class="map-container">
-                    <div class="map"></div>
-                </div>
-
-                <p class="restaurant-info">
-                    <img src="https://github.com/user-attachments/assets/35def7f7-a86e-43d0-905c-675c4212c54f" alt="주소 이모티콘">
-                    <span th:text="${shop.address}"></span>
-                </p> <br>
-
-                <p class="restaurant-info">
-                    <img src="https://github.com/user-attachments/assets/ed0707e8-ae3e-44ec-ab96-175a1c9d088b" alt="전화기 이모티콘">
-                    <span th:text="${shop.number}"></span>
-                </p> <br>
-
-                <div class="like-section">
-                    <div class="like-container">
-                        <form th:action="@{/toggleLike}" method="POST">
-                            <input type="hidden" name="shopId" th:value="${shop.id}">
-                            <button type="submit" class="like-btn">
-                                <img class="heart-icon" src="https://cdn-icons-png.flaticon.com/512/833/833472.png" alt="Heart Icon">
-                            </button> 
-                        </form> &nbsp;
-                        <span id="likeCount" th:text="${shop.likeCount}"></span>
+                    <div class="like-section">
+                        <div class="like-container">
+                            <form th:action="@{/toggleLike}" method="POST">
+                                <input type="hidden" name="shopId" th:value="${shop.id}">
+                                <button type="submit" class="like-btn">
+                                    <img class="heart-icon" src="https://cdn-icons-png.flaticon.com/512/833/833472.png"
+                                        alt="Heart Icon">
+                                </button>
+                            </form> &nbsp;
+                            <span id="likeCount" th:text="${shop.likeCount}"></span>
+                        </div>
                     </div>
-                </div>                
-            
-            </div>
-        </div>
-        <div class="content hidden" id="tagContent">
-            <div class="restaurant-card">
-                <h2>
-                    맛도리 태그누르기기
-                </h2>
-                <div class="tag-container">
-                    <div class="tag-name">태그 들어갈 자리리</div>
+
                 </div>
             </div>
-        </div>
-
-        <div class="content">
-            <div class="restaurant-card">
-                <h2>
-                    <img src="https://github.com/user-attachments/assets/9b60d89e-c39c-4fca-ae68-78b49d267127" alt="영업시간 이모티콘">
-                    영업 시간
-                </h2><br>
-        
-                <div th:if="${#strings.isEmpty(shop.tue) and #strings.isEmpty(shop.wed) and #strings.isEmpty(shop.thu) and #strings.isEmpty(shop.fri) and #strings.isEmpty(shop.sat) and #strings.isEmpty(shop.sun)}">
-                    <span th:text="${shop.mon}"></span>
-                </div>
-        
-                <div class="business-hours" th:if="${!#strings.isEmpty(shop.tue) or !#strings.isEmpty(shop.wed) or !#strings.isEmpty(shop.thu) or !#strings.isEmpty(shop.fri) or !#strings.isEmpty(shop.sat) or !#strings.isEmpty(shop.sun)}">
-                    <div>
-                        <b>월요일 :</b> <span th:text="${!#strings.isEmpty(shop.mon) ? shop.mon : '휴무'}"></span>
-                    </div>
-                    <div>
-                        <b>화요일 :</b> <span th:text="${!#strings.isEmpty(shop.tue) ? shop.tue : (!#strings.isEmpty(shop.mon) ? shop.mon : '휴무')}"></span>
-                    </div>
-                    <div>
-                        <b>수요일 :</b> <span th:text="${!#strings.isEmpty(shop.wed) ? shop.wed : (!#strings.isEmpty(shop.mon) ? shop.mon : '휴무')}"></span>
-                    </div>
-                    <div>
-                        <b>목요일 :</b> <span th:text="${!#strings.isEmpty(shop.thu) ? shop.thu : (!#strings.isEmpty(shop.mon) ? shop.mon : '휴무')}"></span>
-                    </div>
-                    <div>
-                        <b>금요일 :</b> <span th:text="${!#strings.isEmpty(shop.fri) ? shop.fri : (!#strings.isEmpty(shop.mon) ? shop.mon : '휴무')}"></span>
-                    </div>
-                    <div>
-                        <b>토요일 :</b> <span th:text="${!#strings.isEmpty(shop.sat) ? shop.sat : (!#strings.isEmpty(shop.mon) ? shop.mon : '휴무')}"></span>
-                    </div>
-                    <div>
-                        <b>일요일 :</b> <span th:text="${!#strings.isEmpty(shop.sun) ? shop.sun : (!#strings.isEmpty(shop.mon) ? shop.mon : '휴무')}"></span>
+            <div class="content hidden" id="tagContent">
+                <div class="restaurant-card">
+                    <h2>
+                        맛도리 태그누르기기
+                    </h2>
+                    <div class="tag-container">
+                        <div class="tag-name">태그 들어갈 자리리</div>
                     </div>
                 </div>
-        
-                <br>
-        
-                <h2>
-                    <img src="https://github.com/user-attachments/assets/7d9701cc-3c84-4f7d-9404-0af56f2afc16" alt="메뉴 이코티콘">
-                    메뉴
-                </h2><br>
-        
-                <div class="menu-section">
-                    <ul id="menuList" class="menu-grid">
-                        <li th:each="menu, iterStat : ${shopMenus}" th:if="${iterStat.index < 4}" class="menu-item">
-                            <span th:text="${menu.menuName}"
-                                  th:attr="data-imgurl=${menu.imgUrl}"
-                                  class="menu-name menu-link">
-                            </span>
-                            <span class="dots"></span>
-                            <span class="menu-price" th:text="${menu.price}"></span>
-                        </li>
-        
-                        <li th:each="menu, iterStat : ${shopMenus}" th:if="${iterStat.index >= 4}" class="menu-item hidden-menu" style="display: none;">
-                            <span th:text="${menu.menuName}"
-                                  th:attr="data-imgurl=${menu.imgUrl}"
-                                  class="menu-name menu-link">
-                            </span>
-                            <span class="dots"></span>
-                            <span class="menu-price" th:text="${menu.price}"></span>
-                        </li>
-                    </ul>
-        
-                    <div th:if="${#lists.size(shopMenus) > 4}" id="moreMenuButton" class="more-menu-btn">
-                        <span id="moreMenuText">더보기</span>
-                        <span id="arrowIcon">▼</span>
+            </div>
+
+            <div class="content">
+                <div class="restaurant-card">
+                    <h2>
+                        <img src="https://github.com/user-attachments/assets/9b60d89e-c39c-4fca-ae68-78b49d267127"
+                            alt="영업시간 이모티콘">
+                        영업 시간
+                    </h2><br>
+
+                    <div
+                        th:if="${#strings.isEmpty(shop.tue) and #strings.isEmpty(shop.wed) and #strings.isEmpty(shop.thu) and #strings.isEmpty(shop.fri) and #strings.isEmpty(shop.sat) and #strings.isEmpty(shop.sun)}">
+                        <span th:text="${shop.mon}"></span>
                     </div>
-                </div>
+
+                    <div class="business-hours"
+                        th:if="${!#strings.isEmpty(shop.tue) or !#strings.isEmpty(shop.wed) or !#strings.isEmpty(shop.thu) or !#strings.isEmpty(shop.fri) or !#strings.isEmpty(shop.sat) or !#strings.isEmpty(shop.sun)}">
+                        <div>
+                            <b>월요일 :</b> <span th:text="${!#strings.isEmpty(shop.mon) ? shop.mon : '휴무'}"></span>
+                        </div>
+                        <div>
+                            <b>화요일 :</b> <span
+                                th:text="${!#strings.isEmpty(shop.tue) ? shop.tue : (!#strings.isEmpty(shop.mon) ? shop.mon : '휴무')}"></span>
+                        </div>
+                        <div>
+                            <b>수요일 :</b> <span
+                                th:text="${!#strings.isEmpty(shop.wed) ? shop.wed : (!#strings.isEmpty(shop.mon) ? shop.mon : '휴무')}"></span>
+                        </div>
+                        <div>
+                            <b>목요일 :</b> <span
+                                th:text="${!#strings.isEmpty(shop.thu) ? shop.thu : (!#strings.isEmpty(shop.mon) ? shop.mon : '휴무')}"></span>
+                        </div>
+                        <div>
+                            <b>금요일 :</b> <span
+                                th:text="${!#strings.isEmpty(shop.fri) ? shop.fri : (!#strings.isEmpty(shop.mon) ? shop.mon : '휴무')}"></span>
+                        </div>
+                        <div>
+                            <b>토요일 :</b> <span
+                                th:text="${!#strings.isEmpty(shop.sat) ? shop.sat : (!#strings.isEmpty(shop.mon) ? shop.mon : '휴무')}"></span>
+                        </div>
+                        <div>
+                            <b>일요일 :</b> <span
+                                th:text="${!#strings.isEmpty(shop.sun) ? shop.sun : (!#strings.isEmpty(shop.mon) ? shop.mon : '휴무')}"></span>
+                        </div>
+                    </div>
+
+                    <br>
+
+                    <h2>
+                        <img src="https://github.com/user-attachments/assets/7d9701cc-3c84-4f7d-9404-0af56f2afc16"
+                            alt="메뉴 이코티콘">
+                        메뉴
+                    </h2><br>
+
+                    <div class="menu-section">
+                        <ul id="menuList" class="menu-grid">
+                            <li th:each="menu, iterStat : ${shopMenus}" th:if="${iterStat.index < 4}" class="menu-item">
+                                <span th:text="${menu.menuName}" th:attr="data-imgurl=${menu.imgUrl}"
+                                    class="menu-name menu-link">
+                                </span>
+                                <span class="dots"></span>
+                                <span class="menu-price" th:text="${menu.price}"></span>
+                            </li>
+
+                            <li th:each="menu, iterStat : ${shopMenus}" th:if="${iterStat.index >= 4}"
+                                class="menu-item hidden-menu" style="display: none;">
+                                <span th:text="${menu.menuName}" th:attr="data-imgurl=${menu.imgUrl}"
+                                    class="menu-name menu-link">
+                                </span>
+                                <span class="dots"></span>
+                                <span class="menu-price" th:text="${menu.price}"></span>
+                            </li>
+                        </ul>
+
+                        <div th:if="${#lists.size(shopMenus) > 4}" id="moreMenuButton" class="more-menu-btn">
+                            <span id="moreMenuText">더보기</span>
+                            <span id="arrowIcon">▼</span>
+                        </div>
+                    </div>
 
 
-                <script>
-                    document.addEventListener('DOMContentLoaded', () => {
-                        const moreButton = document.getElementById('moreMenuButton');
-                        const hiddenMenus = document.querySelectorAll('.hidden-menu');
-                        const moreMenuText = document.getElementById('moreMenuText');
-                        const arrowIcon = document.getElementById('arrowIcon');
-                        let isExpanded = false;
+                    <script>
+                        document.addEventListener('DOMContentLoaded', () => {
+                            const moreButton = document.getElementById('moreMenuButton');
+                            const hiddenMenus = document.querySelectorAll('.hidden-menu');
+                            const moreMenuText = document.getElementById('moreMenuText');
+                            const arrowIcon = document.getElementById('arrowIcon');
+                            let isExpanded = false;
 
-                        if (moreButton) {
-                            moreButton.addEventListener('click', () => {
-                                isExpanded = !isExpanded;
-                                hiddenMenus.forEach(menu => {
-                                    menu.style.display = isExpanded ? 'flex' : 'none';
+                            if (moreButton) {
+                                moreButton.addEventListener('click', () => {
+                                    isExpanded = !isExpanded;
+                                    hiddenMenus.forEach(menu => {
+                                        menu.style.display = isExpanded ? 'flex' : 'none';
+                                    });
+                                    moreMenuText.textContent = isExpanded ? '접기' : '더보기';
+                                    arrowIcon.textContent = isExpanded ? '▲' : '▼';
                                 });
-                                moreMenuText.textContent = isExpanded ? '접기' : '더보기';
-                                arrowIcon.textContent = isExpanded ? '▲' : '▼';
-                            });
-                        }
-
-                        // 메뉴 클릭 시 모달 열기
-                        document.querySelectorAll('.menu-link').forEach(menu => {
-                            menu.addEventListener('click', () => {
-                                const imgUrl = menu.getAttribute('data-imgurl');
-                                const modal = document.getElementById('imageModal');
-                                const modalImg = document.getElementById('modalImage');
-                                modal.style.display = 'block';
-                                modalImg.src = imgUrl;
-                            });
-                        });
-
-                        // 모달 닫기
-                        window.onclick = function(event) {
-                            const modal = document.getElementById('imageModal');
-                            if (event.target === modal) {
-                                modal.style.display = 'none';
                             }
-                        };
-                    });
 
-                    // 모달 닫기 함수
-                    function closeModal() {
-                        document.getElementById('imageModal').style.display = 'none';
-                    }
-                </script>
+                            // 메뉴 클릭 시 모달 열기
+                            document.querySelectorAll('.menu-link').forEach(menu => {
+                                menu.addEventListener('click', () => {
+                                    const imgUrl = menu.getAttribute('data-imgurl');
+                                    const modal = document.getElementById('imageModal');
+                                    const modalImg = document.getElementById('modalImage');
+                                    modal.style.display = 'block';
+                                    modalImg.src = imgUrl;
+                                });
+                            });
+
+                            // 모달 닫기
+                            window.onclick = function (event) {
+                                const modal = document.getElementById('imageModal');
+                                if (event.target === modal) {
+                                    modal.style.display = 'none';
+                                }
+                            };
+                        });
+
+                        // 모달 닫기 함수
+                        function closeModal() {
+                            document.getElementById('imageModal').style.display = 'none';
+                        }
+                    </script>
+                </div>
             </div>
-        </div>
 
-        <div class = "content">
-            <div class = "restaurant-card">
-                <h2>음식 사진 </h2>
-                <div class="image-gallery">
-                    <div th:each="menu : ${shopMenus}" class="menu-image">
-                        <img th:src="${menu.imgUrl}" th:alt="${menu.menuName}" />
-                        <p th:text="${menu.menuName}"></p>
+            <div class="content">
+                <div class="restaurant-card">
+                    <h2>음식 사진 </h2>
+                    <div class="image-gallery">
+                        <div th:each="menu : ${shopMenus}" class="menu-image">
+                            <img th:src="${menu.imgUrl}" th:alt="${menu.menuName}" />
+                            <p th:text="${menu.menuName}"></p>
+                        </div>
                     </div>
-                </div>
 
+                </div>
             </div>
+
+
+
+
+            <div class="bottom-nav-wrapper">
+                <nav class="bottom-nav">
+                    <div class="nav-container">
+
+                        <a th:href="@{/board/main}" class="nav-item">
+                            <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path
+                                    d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M3 9H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M9 21V9" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                            <span>매거진</span>
+                        </a>
+
+                        <a th:href="@{/main}" class="nav-item">
+                            <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M3 9.5L12 3l9 6.5V21a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-5H10v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z" />
+                            </svg>
+                            <span>홈</span>
+                        </a>
+
+
+                        <a th:href="@{/map}" class="nav-item">
+                            <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21 3 6"></polygon>
+                                <line x1="9" y1="3" x2="9" y2="18"></line>
+                                <line x1="15" y1="6" x2="15" y2="21"></line>
+                            </svg>
+                            <span>지도</span>
+                        </a>
+
+                        <a th:href="${#authorization.expression('isAuthenticated()')} ? @{/myPage} : @{/member/login}"
+                            class="nav-item">
+                            <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <span>마이</span>
+                        </a>
+                    </div>
+                </nav>
+            </div>
+
         </div>
-        
 
+        <script th:inline="javascript">
+            function initMap() {
+                const latitude = parseFloat('[[${shop.lat}]]');
+                const longitude = parseFloat('[[${shop.lng}]]');
+                const shopLocation = { lat: latitude, lng: longitude };
 
-
-        <div class="bottom-nav-wrapper">
-            <nav class="bottom-nav">
-                <div class="nav-container">
-
-                    <a th:href="@{/board/main}" class="nav-item">
-                        <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M3 9H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M9 21V9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        <span>매거진</span>
-                    </a>
-                    
-                    <a th:href="@{/main}" class="nav-item">
-                        <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M3 9.5L12 3l9 6.5V21a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-5H10v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z" />
-                        </svg>
-                        <span>홈</span>
-                    </a>
-                    
-                    
-                    <a th:href="@{/map}" class="nav-item">
-                        <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21 3 6"></polygon>
-                            <line x1="9" y1="3" x2="9" y2="18"></line>
-                            <line x1="15" y1="6" x2="15" y2="21"></line>
-                        </svg>
-                        <span>지도</span>
-                    </a>
-                    
-                    <a th:href="${#authorization.expression('isAuthenticated()')} ? @{/myPage} : @{/member/login}" class="nav-item">
-                        <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        <span>마이</span>
-                    </a>
-                </div>
-            </nav>
-        </div>
-    
-    </div>
-
-    <script th:inline="javascript">
-
-        
-        function initMap() {
-            var latitude = /*[[${shop.lat}]]*/ 0; // 실제 lat 값으로 대체
-            var longitude = /*[[${shop.lng}]]*/ 0; // 실제 lng 값으로 대체됩
-            var shopLocation = {lat: latitude, lng: longitude};
-    
-            // 지도를 생성합니다
-            var map = new google.maps.Map(document.querySelector(".map"), {
-                zoom: 18, // 지도의 확대 수준
-                center: shopLocation // 지도의 중심을 식당 위치로 설정
-        // 지도 초기화 함수는 window 객체에 등록해 전역 노출시켜야 Google API에서 callback 가능
-        window.initMap = function () {
-            const latitude = parseFloat('[[${shop.lat}]]');
-            const longitude = parseFloat('[[${shop.lng}]]');
-
-            const shopLocation = { lat: latitude, lng: longitude };
-
-            console.log("Latitude:", latitude);
-            console.log("Longitude:", longitude);
-
-    
-            const map = new google.maps.Map(document.querySelector(".map"), {
-                zoom: 18,
-                center: shopLocation
-            });
-    
-            const customIcon = {
-                url: "https://github.com/user-attachments/assets/e17ed7d7-903e-495c-9f1e-83f144adfdff",
-                scaledSize: new google.maps.Size(50, 50),
-                origin: new google.maps.Point(0, 0),
-                anchor: new google.maps.Point(15, 30),
-            };
-    
-            new google.maps.Marker({
-                position: shopLocation,
-                map: map,
-                icon: customIcon
-            });
-        }
-
-        };
-    
-        // 북마크 관련 스크립트
-        document.addEventListener("DOMContentLoaded", () => {
-            const isLoggedIn = [[${isLoggedIn}]]; // true 또는 false (boolean)
-            const memberId = isLoggedIn ? [[${memberId}]] : null;
-            const shopId = Number('[[${shop.id}]]'); // 숫자로 변환하니까 이건 문자열 감싸도 OK
-
-            let isBookmarked = [[${isBookmarked}]];
-    
-            window.toggleBookmark = function () {
-                if (!memberId) {
-                    alert("로그인 후 이용 가능합니다.");
-                    window.location.href = "/member/login";
-                    return;
-                }
-    
-                if (isBookmarked) {
-                    fetch(`/bookmarks?memberId=${memberId}&shopId=${shopId}`, { method: 'DELETE' })
-                        .then(() => {
-                            isBookmarked = false;
-                            updateBookmarkIcon();
-                        });
-                } else {
-                    openModal();
-                }
-            };
-    
-            window.saveBookmark = function (folderId) {
-                fetch(`/bookmarks?memberId=${memberId}&shopId=${shopId}${folderId ? `&folderId=${folderId}` : ''}`, {
-                    method: 'POST'
-                }).then(() => {
-                    isBookmarked = true;
-                    updateBookmarkIcon();
-                    closeModal();
+                const map = new google.maps.Map(document.querySelector(".map"), {
+                    zoom: 18,
+                    center: shopLocation
                 });
-            };
-    
-            function updateBookmarkIcon() {
-                const polygon = document.getElementById("bookmarkIconPolygon");
-                if (polygon) polygon.setAttribute("fill", isBookmarked ? "black" : "none");
+
+                const customIcon = {
+                    url: "https://github.com/user-attachments/assets/e17ed7d7-903e-495c-9f1e-83f144adfdff",
+                    scaledSize: new google.maps.Size(50, 50),
+                    origin: new google.maps.Point(0, 0),
+                    anchor: new google.maps.Point(15, 30),
+                };
+
+                new google.maps.Marker({
+                    position: shopLocation,
+                    map: map,
+                    icon: customIcon
+                });
             }
-    
-            updateBookmarkIcon();
 
-            window.openModal = function () {
-                const modal = document.getElementById("bookmarkModal");
-                const overlay = document.getElementById("modalOverlay");
+            // 반드시 전역에 등록
+            window.initMap = initMap;
 
-                modal.style.display = "block";
-                overlay.style.display = "block";
+            document.addEventListener("DOMContentLoaded", () => {
+                // ✅ Google Maps API가 로드되었는지 확인 후 initMap 실행
+                const interval = setInterval(() => {
+                    if (typeof google !== 'undefined' && google.maps) {
+                        clearInterval(interval);
+                        initMap();
+                    }
+                }, 100);
 
-                // 강제로 리플로우 시켜서 transition 작동하게 함
-                void modal.offsetWidth;
-                modal.classList.add("show");
+                // ✅ 북마크 관련 코드
+                const isLoggedIn = [[${ isLoggedIn }]];
+                const memberId = isLoggedIn ? [[${ memberId }]] : null;
+                const shopId = Number('[[${shop.id}]]');
+                let isBookmarked = [[${ isBookmarked }]];
 
-                fetch(`/bookmarks/folders?memberId=${memberId}`)
-                    .then(res => res.json())
-                    .then(folders => {
-                        console.log("폴더 목록:", folders);
-                        const list = document.getElementById("folderList");
-                        list.innerHTML = '';
-                        folders.forEach(folder => {
-                            const btn = document.createElement("button");
-                            btn.innerText = folder.name;
-                            btn.onclick = () => saveBookmark(folder.id);
-                            list.appendChild(btn);
-                        });
+                window.toggleBookmark = function () {
+                    if (!memberId) {
+                        alert("로그인 후 이용 가능합니다.");
+                        window.location.href = "/member/login";
+                        return;
+                    }
+
+                    if (isBookmarked) {
+                        fetch(`/bookmarks?memberId=${memberId}&shopId=${shopId}`, { method: 'DELETE' })
+                            .then(() => {
+                                isBookmarked = false;
+                                updateBookmarkIcon();
+                            });
+                    } else {
+                        openModal();
+                    }
+                };
+
+                window.saveBookmark = function (folderId) {
+                    fetch(`/bookmarks?memberId=${memberId}&shopId=${shopId}${folderId ? `&folderId=${folderId}` : ''}`, {
+                        method: 'POST'
+                    }).then(() => {
+                        isBookmarked = true;
+                        updateBookmarkIcon();
+                        closeModal();
                     });
-            };
+                };
 
-            window.closeModal = function () {
-                const modal = document.getElementById("bookmarkModal");
-                const overlay = document.getElementById("modalOverlay");
-
-                modal.classList.remove("show");
-                overlay.style.display = "none";
-
-                // 애니메이션 완료 후 완전히 숨김
-                setTimeout(() => {
-                    modal.style.display = "none";
-                }, 300); // transition 시간과 동일
-            };
-
-
-            // 스와이프 감지
-            let startY = 0;
-            let endY = 0;
-
-            const modal = document.getElementById("bookmarkModal");
-
-            modal.addEventListener("touchstart", (e) => {
-                startY = e.touches[0].clientY;
-            }, { passive: true });
-
-            modal.addEventListener("touchmove", (e) => {
-                endY = e.touches[0].clientY;
-            }, { passive: true });
-
-            modal.addEventListener("touchend", () => {
-                const distance = endY - startY;
-                if (distance > 70) { // 아래로 스와이프
-                    closeModal();
+                function updateBookmarkIcon() {
+                    const polygon = document.getElementById("bookmarkIconPolygon");
+                    if (polygon) polygon.setAttribute("fill", isBookmarked ? "black" : "none");
                 }
-            });
-    
-            window.createFolder = function () {
-                const name = document.getElementById("newFolderName").value.trim();
-                if (!name) return;
 
-                fetch(`/bookmarks/folders?memberId=${memberId}&name=${encodeURIComponent(name)}`, {
-                    method: 'POST'
-                })
-                .then(res => res.json())
-                .then(folder => {
-                    console.log("✅ 폴더 생성:", folder);
-                    saveBookmark(folder.id);  // 자동 저장
-                    closeModal();             // 모달 닫기
-                }).catch(err => {
-                    console.error("❌ 폴더 생성 실패:", err);
+                updateBookmarkIcon();
+
+                window.openModal = function () {
+                    const modal = document.getElementById("bookmarkModal");
+                    const overlay = document.getElementById("modalOverlay");
+                    modal.style.display = "block";
+                    overlay.style.display = "block";
+                    void modal.offsetWidth;
+                    modal.classList.add("show");
+
+                    fetch(`/bookmarks/folders?memberId=${memberId}`)
+                        .then(res => res.json())
+                        .then(folders => {
+                            const list = document.getElementById("folderList");
+                            list.innerHTML = '';
+                            folders.forEach(folder => {
+                                const btn = document.createElement("button");
+                                btn.innerText = folder.name;
+                                btn.onclick = () => saveBookmark(folder.id);
+                                list.appendChild(btn);
+                            });
+                        });
+                };
+
+                window.closeModal = function () {
+                    const modal = document.getElementById("bookmarkModal");
+                    const overlay = document.getElementById("modalOverlay");
+                    modal.classList.remove("show");
+                    overlay.style.display = "none";
+                    setTimeout(() => {
+                        modal.style.display = "none";
+                    }, 300);
+                };
+
+                // 터치 스와이프
+                let startY = 0, endY = 0;
+                const modal = document.getElementById("bookmarkModal");
+                modal.addEventListener("touchstart", (e) => startY = e.touches[0].clientY, { passive: true });
+                modal.addEventListener("touchmove", (e) => endY = e.touches[0].clientY, { passive: true });
+                modal.addEventListener("touchend", () => {
+                    if (endY - startY > 70) closeModal();
                 });
-            };       
-        });
-    </script>
-    
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALc92CwPRZXE1Amxh53NyxniBJOHTuka4&callback=initMap" async defer></script>
 
-    
-    
+                window.createFolder = function () {
+                    const name = document.getElementById("newFolderName").value.trim();
+                    if (!name) return;
+
+                    fetch(`/bookmarks/folders?memberId=${memberId}&name=${encodeURIComponent(name)}`, {
+                        method: 'POST'
+                    })
+                        .then(res => res.json())
+                        .then(folder => {
+                            saveBookmark(folder.id);
+                            closeModal();
+                        }).catch(err => console.error("❌ 폴더 생성 실패:", err));
+                };
+            });
+        </script>
+
+        <!-- Google Maps API 로딩 -->
+        <script th:src="'https://maps.googleapis.com/maps/api/js?key=' + ${googleMapsApiKey} + '&loading=async'"
+        async></script>
+
 </body>
+
 </html>

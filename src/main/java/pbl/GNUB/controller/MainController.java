@@ -17,6 +17,7 @@ import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.DigestUtils;
@@ -35,6 +36,9 @@ import pbl.GNUB.service.TagService;
 @Slf4j
 @Controller
 public class MainController {
+
+    @Value("${google.maps.api.key}")
+    private String googleMapsApiKey;
 
     private final JobLauncher jobLauncher;
     private final Job csvShopJob;
@@ -179,6 +183,7 @@ public class MainController {
 
         model.addAttribute("shop", shop);
         model.addAttribute("shopMenus", shopMenus);
+        model.addAttribute("googleMapsApiKey", googleMapsApiKey);
 
         boolean isBookmarked = false;
 

@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import pbl.GNUB.entity.Shop;
-import pbl.GNUB.entity.ShopTag;
 import pbl.GNUB.service.ShopService;
 import pbl.GNUB.service.TagMappingService;
 
@@ -27,18 +26,10 @@ public class SearchApiController {
         
         List<Shop> shops = shopService.searchShops(query);
 
-        // 각 음식점에 대한 태그를 추출 (프론트엔드에서 태그도 함께 쓰고 싶을 경우)
-       /*  Map<Long, List<String>> shopTagsMap = shops.stream()
-                .collect(Collectors.toMap(
-                        Shop::getId,
-                        shop -> shop.getShopTags().stream()
-                                    .map(ShopTag::getName)
-                                    .collect(Collectors.toList())
-                ));*/
-
         return Map.of(
             "shops", shops,
             "query", query
         );
     }
 }
+

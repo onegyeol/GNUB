@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { fetchMyInfo } from '../service/MypageApi';
 import './css/Mypage.css'; // 스타일은 기존 CSS를 기반으로 따로 분리해서 여기에 import
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 
 export default function MyPage() {
-  const navigate = useNavigate(); 
-  const [searchQuery, setSearchQuery] = useState(''); 
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState('');
   const [info, setInfo] = useState(null);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
 
-   // 검색 제출 함수
-   const handleSearchSubmit = (e) => {
+  // 검색 제출 함수
+  const handleSearchSubmit = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-    navigate(`/search?query=${encodeURIComponent(searchQuery.trim())}`);
+      navigate(`/search?query=${encodeURIComponent(searchQuery.trim())}`);
     }
-};
+  };
 
   useEffect(() => {
     fetchMyInfo()

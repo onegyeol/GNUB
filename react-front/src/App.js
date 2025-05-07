@@ -10,7 +10,8 @@ import BookmarkList from './pages/BookmarkList';
 import LikeList from './pages/LikeList';
 import FoodDetailsPage from './pages/FoodDetails';
 import SearchPage from './pages/Search';
-
+import BoardMain from './pages/BoardMain';
+import BoardDetails from './pages/BoardDetails';
 
 function App() {
   return (
@@ -25,6 +26,8 @@ function App() {
         <Route path="/myPage/bookmarkList" element={<BookmarkList />} />
         <Route path="/myPage/likeList" element={<LikeList />} />
         <Route path="/search" element={<SearchPage />} />
+        <Route path="/board/main" element={<BoardMain />}/>
+        <Route path="/board/:id" element={<BoardDetails />}/>
       </Routes>
     </Router>
   );

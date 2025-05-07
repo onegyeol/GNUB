@@ -1,0 +1,88 @@
+/* 전체 레이아웃 */
+body, html {
+    background-color: #f0f0f0;
+    min-width: 1070px;
+    overflow: auto;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .board-details {
+    width: 1070px;
+    margin: 0 auto;
+    padding: 30px;
+    border-radius: 10px;
+    background-color: white;
+  }
+  
+  .post-header {
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .post-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .post-meta {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+  }
+  
+  .content {
+    white-space: normal;
+    word-break: break-word;
+    font-size: 16px;
+    color: #333;
+    line-height: 1.7;
+    margin-top: 20px;
+    margin-bottom: 100px;
+  }
+  
+  /* 버튼 스타일 (원한다면 향후 추가) */
+  .board-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  .board-actions button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .btn-list {
+    background-color: #41bbca;
+    color: white;
+  }
+  
+  .btn-edit {
+    background-color: #f0ad4e;
+    color: white;
+  }
+  
+  .btn-delete {
+    background-color: #d9534f;
+    color: white;
+  }
+  
+  .board-actions button:hover {
+    opacity: 0.85;
+  }
+  
+  /* 반응형 */
+  @media screen and (max-width: 1070px) {
+    .board-details {
+      width: 95%;
+      padding: 20px;
+    }
+  }  

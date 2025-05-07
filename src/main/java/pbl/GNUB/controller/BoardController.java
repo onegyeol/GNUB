@@ -33,31 +33,30 @@ public class BoardController {
     private final String uploadDir = "uploads/";
 
     @GetMapping("/main")
-public String BoardMain(
-        Model model,
-        @RequestParam(value = "page", defaultValue = "1") int page,
-        @RequestParam(value = "sort", defaultValue = "created") String sort,
-        @RequestParam(value = "query", required = false) String query
-) {
-    int pageSize = 10;
-    Page<BoardDto> boardPage;
+    public String BoardMain(
+            Model model,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "sort", defaultValue = "created") String sort,
+            @RequestParam(value = "query", required = false) String query) {
+        int pageSize = 10;
+        Page<BoardDto> boardPage;
 
-    if (query != null && !query.isEmpty()) {
-        boardPage = boardService.searchBoards(query, page, pageSize);
-        model.addAttribute("searchTerm", query);
-        model.addAttribute("isSearch", true);
-    } else {
-        boardPage = boardService.findPaginatedWithSort(page, pageSize, sort);
-        model.addAttribute("sortOption", sort);
-        model.addAttribute("isSearch", false);
+        if (query != null && !query.isEmpty()) {
+            boardPage = boardService.searchBoards(query, page, pageSize);
+            model.addAttribute("searchTerm", query);
+            model.addAttribute("isSearch", true);
+        } else {
+            boardPage = boardService.findPaginatedWithSort(page, pageSize, sort);
+            model.addAttribute("sortOption", sort);
+            model.addAttribute("isSearch", false);
+        }
+
+        model.addAttribute("boardList", boardPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", boardPage.getTotalPages());
+
+        return "form/board";
     }
-
-    model.addAttribute("boardList", boardPage.getContent());
-    model.addAttribute("currentPage", page);
-    model.addAttribute("totalPages", boardPage.getTotalPages());
-
-    return "form/board";
-}
 
     @PostMapping("/uploadImage")
     @ResponseBody
@@ -78,7 +77,7 @@ public String BoardMain(
                     }
                 }
                 response.put("imageUrls", imageUrls);
-                return ResponseEntity.ok(response);  // JSON 응답 반환
+                return ResponseEntity.ok(response); // JSON 응답 반환
             } catch (IOException e) {
                 e.printStackTrace();
                 response.put("error", "파일 업로드 실패");
@@ -89,7 +88,6 @@ public String BoardMain(
             return ResponseEntity.badRequest().body(response);
         }
     }
-    
 
     // 게시글 로딩
     @GetMapping("/load")
@@ -114,12 +112,12 @@ public String BoardMain(
         if (email != null) {
             // 이메일로 회원 정보 가져오기
             Member author = memberRepository.findByEmail(email)
-                                .orElseThrow(() -> new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
+                    .orElseThrow(() -> new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
 
             boardService.save(boardDTO, author);
 
-            System.out.println("BoardDTO: " + boardDTO);  // DTO 내용 확인
-            System.out.println("Author: " + author);  // 작성자 정보 확인
+            System.out.println("BoardDTO: " + boardDTO); // DTO 내용 확인
+            System.out.println("Author: " + author); // 작성자 정보 확인
         } else {
             System.out.println("인증되지 않은 사용자입니다.");
         }
@@ -138,7 +136,7 @@ public String BoardMain(
 
         model.addAttribute("board", boardDto);
 
-        return "form/post";  // 상세 페이지 템플릿
+        return "form/post"; // 상세 페이지 템플릿
     }
 
     // 게시글 수정 화면 접근
@@ -153,19 +151,19 @@ public String BoardMain(
     // 게시글 수정 요청 처리
     @PostMapping("/edit/{id}")
     public String updateBoard(@PathVariable("id") Long id, @ModelAttribute BoardDto boardDTO) {
-        
+
         // HTML 변환 제거 (그대로 저장)
         boardService.updateBoard(id, boardDTO);
 
-        System.out.println("BoardDTO: " + boardDTO);  // DTO 내용 확인
+        System.out.println("BoardDTO: " + boardDTO); // DTO 내용 확인
 
-        return "redirect:/board/" + id;  // 수정 후 상세 페이지로 이동
+        return "redirect:/board/" + id; // 수정 후 상세 페이지로 이동
     }
 
     // 게시글 삭제 요청 처리
     @PostMapping("/delete/{id}")
     public String deleteBoard(@PathVariable("id") Long id) {
         boardService.deleteBoard(id);
-        return "redirect:/board/main";  // 삭제 후 메인 페이지로 이동
+        return "redirect:/board/main"; // 삭제 후 메인 페이지로 이동
     }
 }

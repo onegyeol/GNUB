@@ -1,7 +1,6 @@
 /* 전체 레이아웃 */
 body, html {
     background-color: #f0f0f0;
-    min-width: 1070px;
     overflow: auto;
     margin: 0;
     padding: 0;

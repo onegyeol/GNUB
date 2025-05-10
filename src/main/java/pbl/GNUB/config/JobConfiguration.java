@@ -28,8 +28,8 @@ public class JobConfiguration {
     @Bean
     public Job csvShopJob() {
         return new JobBuilder("csvShopJob", jobRepository)
-            .start(csvShopReaderStep())
-            .next(csvShopTagReaderStep())
+            //.start(csvShopReaderStep())
+            .start(csvShopTagReaderStep())
             //.next(csvShopMenuReaderStep())
             .build();
     }

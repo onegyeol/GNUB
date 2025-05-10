@@ -67,12 +67,14 @@ public class MainController {
     @GetMapping("/main")
     public String showMainPage(Model model, Principal principal) {
 
+        mappingService.mapShopAndShopTagsByName();
+
         if (principal != null) {
             System.out.println("✅ 로그인된 사용자: " + principal.getName());
         } else {
             System.out.println("❌ 비로그인 상태");
         }
-
+    
         // 카테고리 분류
         List<Shop> shops = shopService.getAllShops();
         Map<String, List<Shop>> categorizedShops = new HashMap<>();
@@ -142,7 +144,7 @@ public class MainController {
      * 
      */
 
-    @GetMapping("/springBatch")
+    //@GetMapping("/springBatch")
     public String startBatchJob() {
         try {
             JobParameters params = new JobParametersBuilder()

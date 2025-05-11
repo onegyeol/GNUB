@@ -29,6 +29,10 @@ public interface ShopRepository extends JpaRepository<Shop, Long> {
              "WHERE LOWER(s.name) LIKE LOWER(CONCAT('%', :query, '%')) OR " +
              "LOWER(m.menuName) LIKE LOWER(CONCAT('%', :query, '%'))")
       List<Shop> searchShops(@Param("query") String query);
+
+      @Query("SELECT s FROM Shop s")
+        @EntityGraph(attributePaths = "shopTags")
+        List<Shop> findAllWithTags();
   
       /* 
       @Query("SELECT DISTINCT s FROM Shop s " +

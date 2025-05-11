@@ -38,7 +38,7 @@ public class TagService {
     }
 
     public Map<String, List<Shop>> getAllTaggedShopsTop100() {
-        List<Shop> shops = shopRepository.findAll();
+        List<Shop> shops = shopRepository.findAllWithTags();
         Map<String, Integer> tagTotals = new HashMap<>();
         Map<String, Set<Shop>> tagToShops = new HashMap<>();
 

@@ -1,6 +1,5 @@
 import os
 from dotenv import load_dotenv
-import openai
 
 load_dotenv()  # .env 파일에서 환경 변수 로드
 openai.api_key = os.getenv("OPENAI_API_KEY")  # API 키 설정
@@ -25,7 +24,6 @@ def generate_response(user_query, restaurant_results):
         model="gpt-4",  # 또는 필요에 따라 'gpt-4-32k'
         messages=[{"role": "user", "content": prompt}],
         max_tokens=300,
-        temperature=0.6
     )
     generated_text = response.choices[0].message.content.strip()
     return generated_text

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -105,10 +106,9 @@ public class BoardController {
 
     // 게시글 작성
     @PostMapping("/write")
-    public String Write(@ModelAttribute BoardDto boardDTO, HttpSession session) {
-        String email = (String) session.getAttribute("loginEmail");
-        System.out.println("세션에서 꺼낸 email: " + email);
-
+    public String Write(@ModelAttribute BoardDto boardDTO, Principal principal) {
+        String email = principal.getName(); // 로그인된 사용자의 username(email)
+        System.out.println("로그인된 사용자 이메일: " + email);
 
         if ("author@email.com".equals(email)) {
             Member author = memberRepository.findByEmail(email)

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { fetchMyInfo } from '../service/MypageApi';
+import { logout } from '../service/MemberApi';
 import './css/Mypage.css'; // 스타일은 기존 CSS를 기반으로 따로 분리해서 여기에 import
 import { useNavigate } from 'react-router-dom';
 
@@ -35,6 +36,14 @@ export default function MyPage() {
 
   const handleOpenModal = () => setShowPasswordModal(true);
   const handleCloseModal = () => setShowPasswordModal(false);
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/'); // 혹은 메인 페이지로 리디렉션
+    } catch (error) {
+      console.error('❌ 로그아웃 실패:', error);
+    }
+  };
 
   return (
     <div id="root">
@@ -112,10 +121,11 @@ export default function MyPage() {
         </div>
 
         <div style={{ marginTop: '40px', textAlign: 'center' }}>
-          <form action="/member/logout" method="post">
-            <button type="submit" className="go-btn" style={{ backgroundColor: '#e74c3c', marginTop: '20px' }}>로그아웃</button>
-          </form>
+          <button type="button" className="go-btn" style={{ backgroundColor: '#e74c3c', marginTop: '20px' }} onClick={handleLogout}>
+            로그아웃
+          </button>
         </div>
+
       </div>
 
       <div className="bottom-nav-wrapper">

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import pbl.GNUB.dto.BoardDto;
 import pbl.GNUB.dto.MemberFormDto;
 import pbl.GNUB.entity.Bookmark;
@@ -25,7 +24,6 @@ import pbl.GNUB.service.MemberService;
 
 @Controller
 @RequiredArgsConstructor
-@Slf4j
 public class MypageController {
 
     private final LikeService likeService;
@@ -34,11 +32,7 @@ public class MypageController {
 
     @GetMapping("/myPage")
     public String showMyPage(Principal principal, Model model) {
-
-        if(principal == null) {
-            System.out.println("🔴로그인 안됨 !!!!!");
-            return "redirect:/member/login";
-        }
+        if(principal == null) return "redirect:/member/login";
 
         if (principal != null) {
             System.out.println("📍 로그인됨 : "+principal.getName());

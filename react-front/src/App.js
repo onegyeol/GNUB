@@ -12,6 +12,7 @@ import FoodDetailsPage from './pages/FoodDetails';
 import SearchPage from './pages/Search';
 import BoardMain from './pages/BoardMain';
 import BoardDetails from './pages/BoardDetails';
+import ASKAI from './pages/AskAI'
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path="/search" element={<SearchPage />} />
         <Route path="/board/main" element={<BoardMain />}/>
         <Route path="/board/:id" element={<BoardDetails />}/>
+        <Route path="/ask" element={<ASKAI />}/>
       </Routes>
     </Router>
   );

@@ -141,11 +141,18 @@ public class BoardController {
 
     // 게시글 수정 화면 접근
     @GetMapping("/edit/{id}")
-    public String BoardEdit(@PathVariable("id") Long id, Model model) {
-        BoardDto boardDto = boardService.getBoardById(id);
+    public String BoardEdit(@PathVariable("id") Long id, Model model, Principal principal) {
+        String email = principal.getName(); // 로그인된 사용자의 username(email)
+        System.out.println("로그인된 사용자 이메일: " + email);
 
-        model.addAttribute("board", boardDto);
-        return "form/edit";
+        if ("author@email.com".equals(email)) {
+            BoardDto boardDto = boardService.getBoardById(id);
+            model.addAttribute("board", boardDto);
+            return "form/edit";
+        }
+
+        return "redirect:/board/main";
+        
     }
 
     // 게시글 수정 요청 처리
@@ -162,8 +169,13 @@ public class BoardController {
 
     // 게시글 삭제 요청 처리
     @PostMapping("/delete/{id}")
-    public String deleteBoard(@PathVariable("id") Long id) {
+    public String deleteBoard(@PathVariable("id") Long id, Principal principal) {
+        if (principal == null || !"author@email.com".equals(principal.getName())) {
+            return "redirect:/board/" + id;
+        }
         boardService.deleteBoard(id);
-        return "redirect:/board/main"; // 삭제 후 메인 페이지로 이동
+        return "redirect:/board/main";
     }
+
+
 }

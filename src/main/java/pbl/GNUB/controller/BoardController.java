@@ -106,11 +106,11 @@ public class BoardController {
     // 게시글 작성
     @PostMapping("/write")
     public String Write(@ModelAttribute BoardDto boardDTO, HttpSession session) {
+        // 세션에서 loginEmail 가져오기
         String email = (String) session.getAttribute("loginEmail");
-        System.out.println("세션에서 꺼낸 email: " + email);
 
-
-        if ("author@email.com".equals(email)) {
+        if (email != null) {
+            // 이메일로 회원 정보 가져오기
             Member author = memberRepository.findByEmail(email)
                     .orElseThrow(() -> new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
 

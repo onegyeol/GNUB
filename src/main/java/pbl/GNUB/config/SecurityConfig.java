@@ -2,9 +2,6 @@ package pbl.GNUB.config;
 
 import java.util.List;
 
-import org.apache.tomcat.util.http.Rfc6265CookieProcessor;
-import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
-import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -30,12 +27,13 @@ public class SecurityConfig {
     @Order(1)
     public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-                .securityMatcher("/api/**") // ✅ api 경로만 매칭
-                .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll())
-                .csrf(csrf -> csrf.disable())
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .formLogin(form -> form.disable()); // ❌ formLogin 미사용
+            .securityMatcher("/api/**") // ✅ api 경로만 매칭
+            .authorizeHttpRequests(auth -> auth
+                .anyRequest().permitAll()
+            )
+            .csrf(csrf -> csrf.disable())
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            .formLogin(form -> form.disable()); // ❌ formLogin 미사용
 
         return http.build();
     }
@@ -45,33 +43,39 @@ public class SecurityConfig {
     @Order(2)
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("springBatch/**", "/member/**", "/main", "/css/**", "/js/**", "/img/**",
-                                "/Terms/**", "/shopDetails/**", "/search/**", "/map/**", "/board/**")
-                        .permitAll()
-                        .anyRequest().authenticated())
-                .formLogin(form -> form
-                        .loginPage("/member/login")
-                        .loginProcessingUrl("/member/login")
-                        .usernameParameter("email")
-                        .passwordParameter("password")
-                        .defaultSuccessUrl("/main", true)
-                        .failureUrl("/member/login?error=true")
-                        .permitAll())
-                .logout(logout -> logout
-                        .logoutUrl("/member/logout")
-                        .logoutSuccessUrl("/main")
-                        .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID")
-                        .permitAll())
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
-                .csrf(csrf -> csrf
-                        .disable() // 일단 문제 파악용으로 꺼도 됨. 나중에 다시 켜야 함
-                )
-                .cors(cors -> cors
-                        .configurationSource(corsConfigurationSource()) // ✅ CORS 설정 적용
-                );
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("springBatch/**", "/member/**", "/main", "/css/**", "/js/**", "/img/**",
+                                 "/Terms/**", "/shopDetails/**", "/search/**", "/map/**", "/board/**")
+                .permitAll()
+                .anyRequest().authenticated()
+            )
+            .formLogin(form -> form
+                .loginPage("/member/login")
+                .loginProcessingUrl("/member/login")
+                .usernameParameter("email")
+                .passwordParameter("password")
+                .defaultSuccessUrl("/main", true)
+                .failureUrl("/member/login?error=true")
+                .permitAll()
+            )
+            .logout(logout -> logout
+                .logoutUrl("/member/logout")
+                .logoutSuccessUrl("/main")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+                .permitAll()
+            )
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+            )
+            .csrf(csrf -> csrf
+                .disable() // 일단 문제 파악용으로 꺼도 됨. 나중에 다시 켜야 함
+            )
+            .cors(cors -> cors
+            .configurationSource(corsConfigurationSource()) // ✅ CORS 설정 적용
+        );
+
+            
 
         return http.build();
     }
@@ -90,8 +94,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder,
-            UserDetailsService userDetailsService) throws Exception {
+    public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder, UserDetailsService userDetailsService) throws Exception {
         return http.getSharedObject(AuthenticationManagerBuilder.class)
                 .userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder)
@@ -99,20 +102,9 @@ public class SecurityConfig {
                 .build();
     }
 
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-    @Bean
-    public ServletWebServerFactory servletContainer() {
-        TomcatServletWebServerFactory factory = new TomcatServletWebServerFactory();
-        factory.addContextCustomizers(context -> {
-            Rfc6265CookieProcessor cookieProcessor = new Rfc6265CookieProcessor();
-            cookieProcessor.setSameSiteCookies("Strict"); // ✅ 이걸로 React에 쿠키 전달 막기
-            context.setCookieProcessor(cookieProcessor);
-        });
-        return factory;
-    }
-
 }

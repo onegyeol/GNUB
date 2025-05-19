@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { fetchShopDetails } from '../service/ShopApi';
+import { fetchShopDetails } from '../service/FoodDetailsApi';
 import BookmarkButton from '../components/BookmarkButton';
 import LikeButton from '../components/LikeButton';
 import GoogleMapView from '../components/GoogleMapView';
@@ -27,14 +27,23 @@ const FoodDetailsPage = () => {
   };
 
   useEffect(() => {
-    fetchShopDetails(id).then(data => {
-      console.log('📦 API 응답:', data);
-      setShop(data.shop);
-      setShopMenus(data.menus);
-      setIsBookmarked(data.isBookmarked);
-      setIsLoggedIn(data.isLoggedIn);
-    });
+    fetchShopDetails(id)
+      .then(data => {
+        if (!data || !data.shop) {
+          console.error("⚠️ 가게 데이터가 비어있습니다:", data);
+          return;
+        }
+  
+        setShop(data.shop);
+        setShopMenus(data.shopMenus || []); 
+        setIsBookmarked(data.isBookmarked);
+        setIsLoggedIn(data.isLoggedIn);
+      })
+      .catch(err => {
+        console.error("API 오류:", err);
+      });
   }, [id]);
+  
 
   if (!shop) return <div>로딩 중...</div>;
 
@@ -96,7 +105,6 @@ const FoodDetailsPage = () => {
           <LikeButton shopId={shop.id} />
         </div>
 
-        <div className="container">
           <div className="restaurant-card">
             <h2>
               <img src="https://github.com/user-attachments/assets/9b60d89e-c39c-4fca-ae68-78b49d267127" alt="영업시간 이모티콘" />
@@ -143,7 +151,7 @@ const FoodDetailsPage = () => {
               )}
             </div>
           </div>
-        </div>
+        
 
         <div className="restaurant-card">
           <h2>음식 사진 </h2>

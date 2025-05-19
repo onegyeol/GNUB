@@ -21,7 +21,7 @@ export default function LoginPage() {
     try {
       const response = await login({ email, password });
       console.log('로그인 성공:', response.data);
-      navigate('/main');
+      navigate('/');
     } catch (error) {
       console.error('로그인 실패:', error);
       window.location.href = '/member/login?error=true';

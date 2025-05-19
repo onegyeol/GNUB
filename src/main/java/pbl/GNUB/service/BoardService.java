@@ -70,15 +70,16 @@ public class BoardService {
 
 
     public Page<BoardDto> findPaginatedMyPosts(int page, int pageSize, String email) {
-    Pageable pageable = PageRequest.of(page - 1, pageSize);
-    Page<Board> boardPage = boardRepository.findByAuthorEmailPaged(email, pageable);
+        Pageable pageable = PageRequest.of(page - 1, pageSize);
+        Page<Board> boardPage = boardRepository.findByAuthorEmailPaged(email, pageable);
 
-    return boardPage.map(board -> {
-        String summary = extractSummary(board.getContent());
-        String thumbnail = extractThumbnail(board.getContent());
-        return BoardDto.toBoardDTO(board, summary, thumbnail);
-        });
+        return boardPage.map(board -> {
+            String summary = extractSummary(board.getContent());
+            String thumbnail = extractThumbnail(board.getContent());
+            return BoardDto.toBoardDTO(board, summary, thumbnail);
+            });
     }
+    
     public List<BoardDto> findAllBoardDto() {
         List<Board> boardList = boardRepository.findAll();
         List<BoardDto> boardDTOList = new ArrayList<>();
@@ -91,20 +92,20 @@ public class BoardService {
     }
 
     @Transactional
-public BoardDto getBoardById(Long id) {
-    Board board = boardRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Invalid board Id: " + id));
-    increaseBoardHits(board);
+    public BoardDto getBoardById(Long id) {
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid board Id: " + id));
+        increaseBoardHits(board);
 
-    String unescapedContent = HtmlUtils.htmlUnescape(board.getContent());
+        String unescapedContent = HtmlUtils.htmlUnescape(board.getContent());
 
-    String summary = extractSummary(board.getContent());
-    String thumbnail = extractThumbnail(board.getContent());
+        String summary = extractSummary(board.getContent());
+        String thumbnail = extractThumbnail(board.getContent());
 
-    BoardDto boardDto = BoardDto.toBoardDTO(board, summary, thumbnail);
-    boardDto.setContent(unescapedContent); // HTML 그대로 적용
+        BoardDto boardDto = BoardDto.toBoardDTO(board, summary, thumbnail);
+        boardDto.setContent(unescapedContent); // HTML 그대로 적용
 
-    return boardDto;
+        return boardDto;
     }
     
     private String extractSummary(String content) {

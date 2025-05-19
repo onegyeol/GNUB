@@ -43,39 +43,33 @@ public class SecurityConfig {
     @Order(2)
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("springBatch/**", "/member/**", "/main", "/css/**", "/js/**", "/img/**",
-                                 "/Terms/**", "/shopDetails/**", "/search/**", "/map/**", "/board/**")
-                .permitAll()
-                .anyRequest().authenticated()
-            )
-            .formLogin(form -> form
-                .loginPage("/member/login")
-                .loginProcessingUrl("/member/login")
-                .usernameParameter("email")
-                .passwordParameter("password")
-                .defaultSuccessUrl("/main", true)
-                .failureUrl("/member/login?error=true")
-                .permitAll()
-            )
-            .logout(logout -> logout
-                .logoutUrl("/member/logout")
-                .logoutSuccessUrl("/main")
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
-                .permitAll()
-            )
-            .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-            )
-            .csrf(csrf -> csrf
-                .disable() // 일단 문제 파악용으로 꺼도 됨. 나중에 다시 켜야 함
-            )
-            .cors(cors -> cors
-            .configurationSource(corsConfigurationSource()) // ✅ CORS 설정 적용
-        );
-
-            
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/springBatch/**", "/member/**", "/main", "/css/**", "/js/**", "/img/**",
+                                "/Terms/**", "/shopDetails/**", "/search/**", "/map/**", "/board/**", "/uploads/**", "/image/**")
+                        .permitAll()
+                        .anyRequest().authenticated())
+                .formLogin(form -> form
+                        .loginPage("/member/login")
+                        .loginProcessingUrl("/member/login")
+                        .usernameParameter("email")
+                        .passwordParameter("password")
+                        .defaultSuccessUrl("/main", true)
+                        .failureUrl("/member/login?error=true")
+                        .permitAll())
+                .logout(logout -> logout
+                        .logoutUrl("/member/logout")
+                        .logoutSuccessUrl("/main")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .permitAll())
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+                .csrf(csrf -> csrf
+                        .disable() // 일단 문제 파악용으로 꺼도 됨. 나중에 다시 켜야 함
+                )
+                .cors(cors -> cors
+                        .configurationSource(corsConfigurationSource()) // ✅ CORS 설정 적용
+                );
 
         return http.build();
     }

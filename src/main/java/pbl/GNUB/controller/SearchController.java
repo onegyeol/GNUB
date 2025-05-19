@@ -1,7 +1,10 @@
 package pbl.GNUB.controller;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,17 +29,17 @@ public class SearchController {
 
     @GetMapping("/search")
     public String searchPage(@RequestParam(value = "query", required = false) String query, Model model) {
-        //태그 컨트롤러로 매핑하는거 추가함
-        //Map<String, List<String>> tags = tagController.getShopTagsMap();
-        
-        // 검색어가 있을 경우
-        List<Shop> shops = shopService.searchShops(query);
-        
+        List<Shop> shops;
+
+        if (query != null && !query.trim().isEmpty()) {
+            shops = shopService.searchShops(query); // 메뉴명 + 가게명 둘 다 검색됨
+        } else {
+            shops = shopService.getAllShops(); 
+        }
+
         model.addAttribute("shops", shops);
         model.addAttribute("query", query);
-        //model.addAttribute("tags", tags); //이것도 추가함
-        
-        return "form/search";  // 결과를 보여줄 뷰 반환
+        return "form/search";
     }
 
     /* 

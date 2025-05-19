@@ -1,5 +1,6 @@
 package pbl.GNUB.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -68,41 +69,6 @@ public class MemberController {
     @GetMapping("/login")
     public String Login(){
         return "form/login"; // 로그인 폼 뷰를 반환
-    }
-
-    @PostMapping("/login")
-    public String PostLogin(@ModelAttribute MemberFormDto memberFormDto, HttpSession session) {
-        System.out.println("이메일: " + memberFormDto.getEmail());
-        MemberFormDto loginResult = memberService.login(memberFormDto);
-        if (loginResult != null) {
-            // 로그인 성공
-            session.setAttribute("loginEmail", loginResult.getEmail());
-
-            // 사용자 인증 정보 생성 (ROLE_USER 권한 부여)
-            List<GrantedAuthority> authorities = new ArrayList<>();
-            authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-
-            Authentication authentication = new UsernamePasswordAuthenticationToken(
-                loginResult.getEmail(),
-                null, // 비밀번호는 필요 없으므로 null
-                authorities
-            );
-
-            // SecurityContext에 Authentication 객체 설정
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            // 확인용 출력
-            Authentication authenticatio = SecurityContextHolder.getContext().getAuthentication();
-            System.out.println("Authentication: " + authenticatio);
-            System.out.println("Principal: " + authenticatio.getPrincipal());
-
-            return "redirect:/main";
-        } else {
-            // 로그인 실패
-            System.out.println("로그인 실패");
-            return "redirect:/member/login?error=true";
-        }
-    }
-  
+    }  
 
 }

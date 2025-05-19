@@ -543,10 +543,14 @@
                     }
                 },
                 toolbar: [
+                    ['style', ['style']], // 글자 스타일
                     ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+                    ['fontsize', ['fontsize']], // 글자 크기
+                    ['color', ['color']],       // 글자 색상
                     ['insert', ['picture', 'link', 'table']],
                     ['view', ['fullscreen', 'codeview']]
-                ]
+                ],
+                fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '24', '36', '48' ]
             });
         });
 
@@ -567,7 +571,10 @@
                 success: function(response) {
                     if (response.imageUrls) {
                         response.imageUrls.forEach(url => {
-                            $('#summernote').summernote('insertImage', url);
+                            $('#summernote').summernote('insertImage', url, function ($image) {
+                                $image.css('max-width', '400px'); // 고정 너비
+                                $image.css('height', 'auto');    // 비율 유지
+                            });
                         });
                     } else {
                         alert("이미지 업로드 실패! 다시 시도해주세요.");

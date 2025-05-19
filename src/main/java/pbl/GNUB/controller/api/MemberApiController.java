@@ -51,7 +51,6 @@ public class MemberApiController {
         }
     }
 
-
     @PostMapping("/new")
     public ResponseEntity<?> signup(@RequestBody MemberFormDto memberFormDto) {
         memberService.save(memberFormDto);
@@ -63,5 +62,14 @@ public class MemberApiController {
         boolean exists = memberService.isEmailDuplicate(email);
         return ResponseEntity.ok(Map.of("exists", exists));
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpSession session) {
+        session.invalidate(); // 세션 제거
+        SecurityContextHolder.clearContext(); // SecurityContext 초기화
+
+        return ResponseEntity.ok(Map.of("message", "로그아웃 성공"));
+    }
+
 }
 

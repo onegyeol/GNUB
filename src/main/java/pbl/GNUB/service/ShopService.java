@@ -1,17 +1,12 @@
 package pbl.GNUB.service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import pbl.GNUB.dto.ShopDto;
 import pbl.GNUB.entity.Shop;
 import pbl.GNUB.entity.ShopMenu;
-import pbl.GNUB.entity.TagMapping;
 import pbl.GNUB.repository.ShopMenuRepository;
 import pbl.GNUB.repository.ShopRepository;
 
@@ -25,17 +20,18 @@ public class ShopService {
         this.shopRepository = shopRepository;
         this.shopMenuRepository = shopMenuRepository;
     }
-    
-    // 좋아요 순으로 상위 28개 음식점 가져오기
+
+    // 1. 좋아요 순으로 상위 28개 음식점
     public List<Shop> getTop28ShopsByLikes() {
         return shopRepository.findTop28ByOrderByLikeCountDesc();
     }
 
-    
+    // 2. 전체 음식점
     public List<Shop> getAllShops() {
         return shopRepository.findAll();
-    }    
+    }
 
+    // 3. 지도 범위 내 음식점
     public List<Map<String, Object>> getShopsByBounds(Double neLat, Double neLng, Double swLat, Double swLng){
         List<Shop> shops = shopRepository.findShopsByBounds(swLat, neLat, swLng, neLng);
 
@@ -50,26 +46,40 @@ public class ShopService {
         }).collect(Collectors.toList());
     }
 
+    // 4. ID로 음식점 조회
     public Shop findShopById(Long id){
         return shopRepository.findById(id).orElse(null);
     }
 
+    // 5. 음식점 이름 기반 검색
     public List<Shop> searchShops(String query) {
         if (query == null || query.trim().isEmpty()) {
-            return shopRepository.findAll();  // 검색어가 없으면 전체 목록 반환
+            return shopRepository.findAll();  // 검색어 없으면 전체
         }
-        
-        // 음식점명, 주메뉴, 태그 이름으로 검색
-        return shopRepository.searchShops(query);  // 동일한 값으로 세 가지 필드 검색
+        return shopRepository.searchShops(query); // 이름, 주소, 주메뉴 등에 대해 검색
     }
 
-    /*
-    public List<Shop> getShopsByTagField(String tag, String query) {
-        return shopRepository.findShopsByDynamicTag(tag, query);
+    // 6. 메뉴명으로 음식점 검색
+    public List<Shop> findShopsByMenuName(String keyword) {
+        List<ShopMenu> menus = shopMenuRepository.findByMenuNameContainingIgnoreCase(keyword);
+        Set<String> restaurantNames = menus.stream()
+            .map(ShopMenu::getRestName) // rest_name 필드
+            .collect(Collectors.toSet());
+    
+        // rest_name → Shop.name 으로 매핑
+        return shopRepository.findByNameIn(restaurantNames);
     }
-    */
+    
+    // 7. 음식점 + 메뉴 통합 검색
+    public List<Shop> searchShopsIncludingMenu(String keyword) {
+        Set<Shop> result = new HashSet<>();
+        result.addAll(searchShops(keyword));              // 음식점 이름, 주소, 주메뉴 등
+        result.addAll(findShopsByMenuName(keyword));      // 메뉴명으로 검색한 음식점
+        return new ArrayList<>(result);
+    }
 
     public List<ShopMenu> getMenusByShopName(String shopName) {
         return shopMenuRepository.findByRestName(shopName);
     }
+    
 }

@@ -228,7 +228,7 @@ export default function Signup() {
   
       if (res.ok) {
         alert('회원가입이 완료되었습니다!');
-        window.location.href = '/main'; // 리디렉션 등 원하는 동작
+        window.location.href = '/'; // 리디렉션 등 원하는 동작
       } else {
         const err = await res.json();
         alert(`회원가입 실패: ${err.message}`);

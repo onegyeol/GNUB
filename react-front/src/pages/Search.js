@@ -87,11 +87,14 @@ const SearchPage = () => {
                                     </div>
                                     <div>{shop.address}</div>
                                 </div>
-                                <div className="restaurant_image">
-                                    <a href={`/shopDetails/${shop.id}`}>
+                                <div className="search-result">
+                                    <div className="restaurant_image">
+                                        <a href={`/shopDetails/${shop.id}`}>
                                         <img src={shop.imgUrl} alt="가게 이미지" />
-                                    </a>
+                                        </a>
+                                    </div>
                                 </div>
+
                             </div>
                         ))
                     ) : (

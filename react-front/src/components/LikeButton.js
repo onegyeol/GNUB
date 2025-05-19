@@ -1,18 +1,31 @@
 import React, { useState, useEffect } from 'react';
+import { getLikeCount, toggleLike } from '../service/LikeApi';
 
 const LikeButton = ({ shopId }) => {
   const [likeCount, setLikeCount] = useState(0);
 
   useEffect(() => {
-    fetch(`/api/likes/count?shopId=${shopId}`)
-      .then(res => res.json())
-      .then(data => setLikeCount(data.count));
+    if (!shopId) return;
+    getLikeCount(shopId)
+      .then(data => {
+        console.log("❤️ 좋아요 수:", data.count);
+        setLikeCount(data.count);
+      })
+      .catch(err => console.error("좋아요 수 가져오기 실패:", err));
   }, [shopId]);
 
   const handleClick = () => {
-    fetch(`/api/likes?shopId=${shopId}`, { method: 'POST' })
-      .then(res => res.json())
-      .then(data => setLikeCount(data.newCount));
+    toggleLike(shopId)
+      .then(data => {
+        setLikeCount(data.likeCount);
+      })
+      .catch(err => {
+        if (err.response?.status === 401) {
+          alert("로그인이 필요합니다.");
+        } else {
+          console.error("좋아요 토글 실패:", err);
+        }
+      });
   };
 
   return (
@@ -24,7 +37,7 @@ const LikeButton = ({ shopId }) => {
           alt="Heart Icon"
         />
       </button>
-      <span>{likeCount}</span>
+      <span className="heart-icon-text">{likeCount}</span>
     </div>
   );
 };

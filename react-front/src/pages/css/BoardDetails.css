@@ -33,7 +33,7 @@ body, html {
     line-height: 1.6;
   }
   
-  .content {
+  .board-content {
     white-space: normal;
     word-break: break-word;
     font-size: 16px;
@@ -81,7 +81,7 @@ body, html {
   /* 반응형 */
   @media screen and (max-width: 1070px) {
     .board-details {
-      width: 95%;
+      width: 80%;
       padding: 20px;
     }
   }  

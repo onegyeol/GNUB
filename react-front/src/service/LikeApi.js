@@ -7,3 +7,6 @@ axios.defaults.withCredentials = true;
 
 export const toggleLike = (shopId) =>
   axios.post(`${BASE}/like/toggle`, { shopId }).then(res => res.data);
+
+export const getLikeCount = (shopId) =>
+  axios.get(`${BASE}/like/count`, { params: { shopId } }).then(res => res.data);

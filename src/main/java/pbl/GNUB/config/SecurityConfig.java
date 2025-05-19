@@ -46,8 +46,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("springBatch/**", "/member/**", "/main", "/css/**", "/js/**", "/img/**",
-                                "/Terms/**", "/shopDetails/**", "/search/**", "/map/**", "/board/**")
+                        .requestMatchers("/springBatch/**", "/member/**", "/main", "/css/**", "/js/**", "/img/**",
+                                "/Terms/**", "/shopDetails/**", "/search/**", "/map/**", "/board/**", "/uploads/**", "/image/**")
                         .permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form

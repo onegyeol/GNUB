@@ -1,5 +1,7 @@
 package pbl.GNUB.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,6 +24,7 @@ public class ShopMenu {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shop_id")
+    @JsonIgnore
     private Shop shop;
 
     private String price;

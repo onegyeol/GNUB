@@ -1,12 +1,12 @@
-// src/api/AskAIApi.js
 import axios from 'axios';
+
+
+const BASE = 'http://localhost:8080';
 
 
 export const askQuestion = async (query) => {
   try {
-    const response = await axios.post('/ask', null, {
-      params: { query },
-    });
+    const response = await axios.post(`${BASE}/ask`, { query });
 
     const contentType = response.headers['content-type'];
     if (contentType && contentType.includes('text/html')) {

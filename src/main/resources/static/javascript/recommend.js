@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
       appendMessage(query, "question");
       userInput.value = "";
   
-      fetch("/chat", {
+      fetch("/ask", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

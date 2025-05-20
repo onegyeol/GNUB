@@ -1,5 +1,7 @@
 package pbl.GNUB.dto;
 
+import java.util.List;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import jakarta.persistence.Column;
@@ -9,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pbl.GNUB.entity.Shop;
+import pbl.GNUB.entity.ShopMenu;
 
 @Builder
 @Getter @Setter
@@ -83,6 +86,8 @@ public class ShopDto {
     private String restId;
 
     private int likeCount;
+
+    private List<ShopMenuDto> shopMenus;  // ← 메뉴 DTO 리스트 추가
     
     public Shop toEntity(){ //Shop 엔티티 반환
         return Shop.builder()

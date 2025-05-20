@@ -31,4 +31,5 @@ public class ShopMenuDto {
             .imgUrl(this.imgUrl)
             .build();
     }
+    
 }

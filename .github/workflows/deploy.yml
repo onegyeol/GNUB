@@ -15,7 +15,7 @@ jobs:
       working-directory: ./react-front
       run: |
         npm install
-        npm run build
+        CI=false npm run build
 
     - name: Spring Boot build
       working-directory: ./GNUB

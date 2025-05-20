@@ -18,7 +18,6 @@ jobs:
         CI=false npm run build
 
     - name: Spring Boot build
-      working-directory: ./GNUB
       run: |
         chmod +x ./gradlew
         ./gradlew clean build -x test

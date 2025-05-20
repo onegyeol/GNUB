@@ -45,7 +45,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/springBatch/**", "/member/**", "/main", "/css/**", "/js/**", "/img/**",
-                                "/Terms/**", "/shopDetails/**", "/search/**", "/map/**", "/board/**", "/uploads/**", "/image/**")
+                                "/Terms/**", "/shopDetails/**", "/search/**", "/map/**", "/board/**", "/uploads/**", "/image/**", "/mobile/**")
                         .permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form
@@ -77,7 +77,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000")); // 정확한 출처 지정
+        configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://3.39.233.211:8080")); // 정확한 출처 지정
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowCredentials(true);
         configuration.setAllowedHeaders(List.of("*"));

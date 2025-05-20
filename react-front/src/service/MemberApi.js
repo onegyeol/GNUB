@@ -1,7 +1,7 @@
 // service/MemberApi.js
 import axios from 'axios';
 
-const BASE = 'http://localhost:8080';
+const BASE = 'http://3.39.233.211:8080';
 
 export const login = (form) =>
   axios.post(`${BASE}/api/member/login`, form, { withCredentials: true });

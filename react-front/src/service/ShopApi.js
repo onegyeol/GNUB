@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE = 'http://localhost:8080/api';
+const BASE = 'http://3.39.233.211:8080/api';
 
 export const fetchShopDetails = (id) =>
   axios.get(`${BASE}/shop/${id}`, { withCredentials: true }).then(res => res.data);

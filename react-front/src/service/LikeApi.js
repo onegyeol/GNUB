@@ -1,7 +1,7 @@
 // service/LikeApi.js
 import axios from 'axios';
 
-const BASE = 'http://localhost:8080/api';
+const BASE = 'http://3.39.233.211:8080/api';
 
 axios.defaults.withCredentials = true;
 

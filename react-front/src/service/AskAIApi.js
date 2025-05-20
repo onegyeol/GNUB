@@ -1,6 +1,8 @@
 import axios from 'axios';
 
+
 const BASE = 'http://localhost:8080';
+
 
 export const askQuestion = async (query) => {
   try {

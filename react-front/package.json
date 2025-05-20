@@ -2,6 +2,7 @@
   "name": "react-front",
   "version": "0.1.0",
   "private": true,
+  "homepage": "/mobile",
   "dependencies": {
     "@googlemaps/react-wrapper": "^1.2.0",
     "@react-google-maps/api": "^2.20.6",
@@ -40,6 +41,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "proxy": "http://localhost:8080"
+  }
 }

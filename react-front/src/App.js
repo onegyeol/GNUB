@@ -16,7 +16,7 @@ import ASKAI from './pages/AskAI'
 
 function App() {
   return (
-    <Router>
+    <Router basename='/mobile'>
       <Routes>
         <Route path="/member/new" element={<Signup />} />
         <Route path="/member/login" element={<Login />} />

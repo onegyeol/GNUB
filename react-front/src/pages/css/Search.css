@@ -4,4 +4,13 @@
     text-align: center;
     margin: 70px 0 20px 0;  /* 위/아래 여백 */
 }
+
+/* 검색 결과에서 이미지 크기 조절 */
+.search-result .restaurant_image img {
+    width: 70%;
+    max-width: 500px;
+    height: auto;
+    border-radius: 16px;
+    object-fit: cover;
+  }
   

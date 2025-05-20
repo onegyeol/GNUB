@@ -8,3 +8,6 @@ export const login = (form) =>
 
 export const signup = (form) =>
   axios.post(`${BASE}/api/member/new`, form, { withCredentials: true });
+
+export const logout = () =>
+  axios.post(`${BASE}/member/logout`, {}, { withCredentials: true });

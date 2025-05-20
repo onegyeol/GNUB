@@ -25,7 +25,7 @@ jobs:
     - name: Save EC2 PEM key
       run: |
         echo "${{ secrets.EC2_KEY }}" | base64 -d > gnub2.pem
-        chmod 600 gnub.pem
+        chmod 600 gnub2.pem
 
     - name: Copy files to EC2
       run: |

@@ -1,6 +1,7 @@
 // src/api/AskAIApi.js
 import axios from 'axios';
 
+
 export const askQuestion = async (query) => {
   try {
     const response = await axios.post('/ask', null, {

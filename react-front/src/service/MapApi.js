@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:8080/api';
+const BASE_URL = 'http://3.39.233.211:8080/api';
 
 // 👉 백엔드에서 Google Maps API 키 받아오기
 export const fetchGoogleMapsKey = async () => {

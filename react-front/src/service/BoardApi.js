@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE = 'http://localhost:8080/api/boards';
+const BASE = 'http://3.39.233.211:8080/api/boards';
 
 export const fetchBoardList = ({ query = '', sort = 'created', page = 1 }) =>
   axios

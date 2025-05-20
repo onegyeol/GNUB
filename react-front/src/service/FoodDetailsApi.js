@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:8080/api/foodDetails'; // 백엔드 API 경로
+const BASE_URL = 'http://3.39.233.211:8080/api/foodDetails'; // 백엔드 API 경로
 
 export const fetchShopDetails = async (id) => {
   try {

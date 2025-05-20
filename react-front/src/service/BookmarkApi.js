@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE = 'http://localhost:8080/api/bookmarks';
+const BASE = 'http://3.39.233.211:8080/api/bookmarks';
 
 export const fetchFolders = () =>
   axios.get(`${BASE}/folders`, { withCredentials: true }).then(res => res.data);

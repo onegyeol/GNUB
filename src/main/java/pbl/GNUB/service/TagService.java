@@ -12,6 +12,7 @@ import pbl.GNUB.entity.Shop;
 import pbl.GNUB.entity.ShopTag;
 import pbl.GNUB.repository.ShopRepository;
 import pbl.GNUB.repository.ShopTagRepository;
+import pbl.GNUB.repository.ShopTagVoteRepository;
 
 @Service
 public class TagService {
@@ -38,7 +39,7 @@ public class TagService {
     }
 
     public Map<String, List<Shop>> getAllTaggedShopsTop100() {
-        List<Shop> shops = shopRepository.findAll();
+        List<Shop> shops = shopRepository.findAllWithTags();
         Map<String, Integer> tagTotals = new HashMap<>();
         Map<String, Set<Shop>> tagToShops = new HashMap<>();
 
@@ -82,4 +83,58 @@ public class TagService {
                         LinkedHashMap::new));
 
     }
+
+    public List<Shop> getTop100ShopsByTag(String tagName) {
+        Function<ShopTag, Integer> scoreFunc = TAG_SCORE_GETTERS.get(tagName);
+        if (scoreFunc == null)
+            return List.of();
+
+        List<Shop> shops = shopRepository.findShopsByTagNameWithMenus(tagName);
+        List<Long> shopIds = shops.stream().map(Shop::getId).toList();
+
+        List<Object[]> rawTags = shopRepository.findShopTagsByShopIds(shopIds);
+        Map<Long, List<ShopTag>> tagMap = rawTags.stream()
+                .collect(Collectors.groupingBy(
+                        row -> (Long) row[0],
+                        Collectors.mapping(row -> (ShopTag) row[1], Collectors.toList())));
+
+        for (Shop shop : shops) {
+            shop.setShopTags(tagMap.getOrDefault(shop.getId(), List.of()));
+        }
+
+        return shops.stream()
+                .filter(shop -> shop.getShopTags().stream().anyMatch(tag -> scoreFunc.apply(tag) > 0))
+                .sorted((s1, s2) -> {
+                    int score1 = s1.getShopTags().stream().map(scoreFunc).findFirst().orElse(0);
+                    int score2 = s2.getShopTags().stream().map(scoreFunc).findFirst().orElse(0);
+                    return Integer.compare(score2, score1); // 내림차순
+                })
+                .limit(100)
+                .collect(Collectors.toList());
+    }
+
+    @Autowired
+    private ShopTagVoteRepository shopTagVoteRepository;
+
+    public Map<String, Integer> getRadarChartData(Shop shop) {
+        ShopTag tag = shop.getShopTags().stream()
+                .filter(t -> t.getRestId().equals(shop.getRestId()))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("No tag"));
+
+        Map<String, Integer> result = new LinkedHashMap<>();
+        result.put("맛있어요", tag.getDelicious() + (int) shopTagVoteRepository.countByShopAndTagName(shop, "맛있어요"));
+        result.put("신선해요", tag.getFresh() + (int) shopTagVoteRepository.countByShopAndTagName(shop, "신선해요"));
+        result.put("가성비 좋아요", tag.getGoodValue() + (int) shopTagVoteRepository.countByShopAndTagName(shop, "가성비 좋아요"));
+        result.put("청결해요", tag.getHygiene() + (int) shopTagVoteRepository.countByShopAndTagName(shop, "청결해요"));
+        result.put("친절해요", tag.getKindness() + (int) shopTagVoteRepository.countByShopAndTagName(shop, "친절해요"));
+        result.put("분위기 좋아요", tag.getMood() + (int) shopTagVoteRepository.countByShopAndTagName(shop, "분위기 좋아요"));
+        result.put("혼밥하기 좋아요", tag.getAlone() + (int) shopTagVoteRepository.countByShopAndTagName(shop, "혼밥하기 좋아요"));
+        result.put("데이트하기 좋아요", tag.getDate() + (int) shopTagVoteRepository.countByShopAndTagName(shop, "데이트하기 좋아요"));
+        result.put("단체로 가기 좋아요", tag.getMany() + (int) shopTagVoteRepository.countByShopAndTagName(shop, "단체로 가기 좋아요"));
+        result.put("주차가 가능해요", tag.getParking() + (int) shopTagVoteRepository.countByShopAndTagName(shop, "주차가 가능해요"));
+        result.put("아쉬워요", tag.getRecent() + (int) shopTagVoteRepository.countByShopAndTagName(shop, "아쉬워요"));
+        return result;
+    }
+
 }

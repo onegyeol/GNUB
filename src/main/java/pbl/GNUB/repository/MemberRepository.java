@@ -9,6 +9,6 @@ import org.springframework.data.repository.query.Param;
 import pbl.GNUB.entity.Like;
 import pbl.GNUB.entity.Member;
 
-public interface MemberRepository extends JpaRepository<Member, Long>{
-    Optional<Member> findByEmail(String email); //이메일로 중복여부 판단
+public interface MemberRepository extends JpaRepository<Member, Long> {
+    Optional<Member> findByEmail(String email); // 이메일로 중복여부 판단
 }

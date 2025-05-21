@@ -1,0 +1,92 @@
+/* Login.css */
+
+body {
+    margin: 0;
+    font-family: 'Malgun Gothic', sans-serif;
+    background-color: #f1f1f1;
+}
+
+.login-wrapper {
+    width: 100vw;
+    height: 100vh;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-container {
+    width: 100vw;
+    height: 100vh;
+    max-width: 420px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    box-sizing: border-box;
+}
+
+.login-logo {
+    max-width: 120px;
+    height: auto;
+    margin-bottom: 20px;
+    margin-top: 40%;
+}
+
+.login-title {
+    margin: 0 0 20px 0;
+    font-size: 20px;
+}
+
+.login-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-input {
+    width: 90%;
+    max-width: 360px;
+    margin: 8px 0;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.login-button {
+    width: 90%;
+    max-width: 360px;
+    padding: 12px;
+    font-size: 16px;
+    background-color: #41bbca;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.login-footer-links {
+    margin-top: 14px;
+    font-size: 14px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.login-footer-links a {
+    color: #000000;
+    /* 검정 글씨 */
+    text-decoration: none;
+    /* 밑줄 제거 */
+}
+
+.login-footer-links a:hover {
+    text-decoration: underline;
+    /* 마우스 호버 시 밑줄 (선택사항) */
+}

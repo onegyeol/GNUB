@@ -1,0 +1,308 @@
+body,
+html {
+    background-color: #f0f0f0;
+    min-width: 320px;
+    /* 최소 너비 낮춰줌 */
+    overflow-x: hidden;
+}
+
+#root {
+    width: 100%;
+    max-width: 1070px;
+    margin: 0 auto;
+    padding-bottom: 70px;
+}
+
+.auth-box {
+    flex: 1;
+}
+
+.input-wrap input:focus {
+    outline: none;
+}
+
+.input-wrap button {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.search-input {
+    width: 340px;
+    height: 40px;
+    padding: 0 40px 0 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 20px;
+}
+
+.search {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.like-section {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    /* 하트와 숫자 사이 간격 */
+    margin-top: 5px;
+}
+
+.heart-icon {
+    width: 16px;
+    height: 16px;
+}
+
+.restaurant_like {
+    font-size: 14px;
+    color: #666;
+}
+
+.header-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    /* 가운데 정렬 */
+    align-items: center;
+    margin: 30px 0;
+    /* 위아래 여백 */
+}
+
+.header-container .h1 {
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20%;
+}
+
+
+/* 전체 리스트 스타일 */
+.restaurant_list {
+    max-width: 1070px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 0 16px;
+    /* Header, Footer와 패딩 통일 */
+    padding-bottom: 80px;
+    /* Footer 높이만큼 하단 여백 추가 */
+}
+
+/* 각 가게 스타일 */
+.restaurant_item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* 가게 정보 (왼쪽) */
+.restaurant_info {
+    flex: 1;
+}
+
+/* a 태그의 기본 스타일 제거 */
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.restaurant_name {
+    font-size: 200%;
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    color: #333;
+    /* 검정색 */
+    text-decoration: none;
+    /* 밑줄 제거 */
+}
+
+.restaurant_tags {
+    margin-top: 5px;
+}
+
+.restaurant_tag {
+    display: inline-block;
+    margin-right: 8px;
+    padding: 4px 8px;
+    background-color: #e0f7fa;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    color: #00796b;
+    text-decoration: none;
+}
+
+.restaurant_tag:hover {
+    background-color: #b2ebf2;
+}
+
+/* 가게 이미지 (오른쪽) */
+.restaurant_image button {
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.restaurant_image img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+
+.like-section {
+    display: flex;
+    align-items: center;
+}
+
+#likeCount {
+    font-size: 14px;
+    color: #666;
+    margin-right: 5px;
+}
+
+.like-btn {
+    width: 25px;
+    height: 25px;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.like-icon {
+    width: 25px !important;
+    height: 25px !important;
+    max-width: 25px !important;
+    max-height: 25px !important;
+    object-fit: contain;
+}
+
+
+.bottom-nav-wrapper {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background-color: #f0f0f0;
+    border-top: none;
+}
+
+.bottom-nav {
+    width: 1070px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+.bottom-nav a {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 0;
+    color: #666;
+    text-decoration: none;
+    font-size: 12px;
+}
+
+.bottom-nav a svg {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 4px;
+}
+
+
+.nav-container {
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1070px;
+    margin: 0 auto;
+    padding: 0 16px;
+    border-top: 1px solid rgba(138, 138, 138, 0.1);
+}
+
+.nav-container .menu-items {
+    display: flex;
+    align-items: center;
+}
+
+.nav-container .menu-item {
+    margin: 0 15px;
+}
+
+.nav-container {
+    margin-left: auto;
+}
+
+.fixed-button img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.bottom-nav-wrapper {
+    z-index: 400;
+}
+
+@media screen and (max-width: 768px) {
+    .header-wrap {
+        flex-direction: column;
+        align-items: center;
+        height: auto;
+        padding: 10px 16px;
+    }
+
+    .main-logo {
+        margin-bottom: 10px;
+    }
+
+    .search-form {
+        width: 100%;
+        margin-right: 0;
+    }
+
+    .input-wrap {
+        width: 100%;
+    }
+}
+
+
+@media screen and (max-width: 768px) {
+    .banner-wrap {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+    }
+
+    .restaurant_list {
+        padding: 0 8px;
+    }
+
+    .restaurant_item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .restaurant_image img {
+        width: 100%;
+        height: auto;
+    }
+}

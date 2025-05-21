@@ -17,24 +17,33 @@ import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import lombok.extern.slf4j.Slf4j;
 import pbl.GNUB.entity.Member;
 import pbl.GNUB.entity.Shop;
 import pbl.GNUB.entity.ShopMenu;
+import pbl.GNUB.entity.ShopTag;
 import pbl.GNUB.repository.MemberRepository;
 import pbl.GNUB.service.BookmarkService;
 import pbl.GNUB.service.ShopService;
 import pbl.GNUB.service.ShopTagMappingService;
 import pbl.GNUB.service.TagService;
+import pbl.GNUB.repository.ShopMenuRepository;
+import pbl.GNUB.repository.ShopTagVoteRepository;
 
 @Slf4j
 @Controller
 public class MainController {
+
+    @Value("${google.maps.api.key}")
+    private String googleMapsApiKey;
 
     private final JobLauncher jobLauncher;
     private final Job csvShopJob;
@@ -44,12 +53,14 @@ public class MainController {
     private final MemberRepository memberRepository;
     private final BookmarkService bookmarkService;
     private final TagService tagService;
+    private final ShopTagVoteRepository shopTagVoteRepository;
 
     @Autowired
     public MainController(JobLauncher jobLauncher, Job csvShopJob,
             JobRepository jobRepository, ShopService shopService,
             TagController tagController, ShopTagMappingService mappingService,
-            MemberRepository memberRepository, BookmarkService bookmarkService, TagService tagService) {
+            MemberRepository memberRepository, BookmarkService bookmarkService,
+            TagService tagService, ShopTagVoteRepository shopTagVoteRepository) {
         this.jobLauncher = jobLauncher;
         this.csvShopJob = csvShopJob;
         this.shopService = shopService;
@@ -58,6 +69,7 @@ public class MainController {
         this.memberRepository = memberRepository;
         this.bookmarkService = bookmarkService;
         this.tagService = tagService;
+        this.shopTagVoteRepository = shopTagVoteRepository;
     }
 
     @GetMapping("/main")
@@ -176,9 +188,9 @@ public class MainController {
         }
 
         List<ShopMenu> shopMenus = shopService.getMenusByShopName(shop.getName());
-
         model.addAttribute("shop", shop);
         model.addAttribute("shopMenus", shopMenus);
+        model.addAttribute("googleMapsApiKey", googleMapsApiKey);
 
         boolean isBookmarked = false;
 
@@ -188,7 +200,6 @@ public class MainController {
             Member member = memberRepository.findByEmail(email)
                     .orElseThrow(() -> new RuntimeException("로그인 사용자 정보를 찾을 수 없음: " + email));
             isBookmarked = bookmarkService.isBookmarked(member, shop);
-
             model.addAttribute("isLoggedIn", true);
             model.addAttribute("memberId", member.getId());
             model.addAttribute("memberName", member.getName());
@@ -197,6 +208,30 @@ public class MainController {
         }
 
         model.addAttribute("isBookmarked", isBookmarked);
+
+        // 태그 관련 투표
+        Map<String, Integer> tagCounts = new HashMap<>();
+        ShopTag tag = shop.getShopTags().stream().findFirst().orElse(null);
+        if (tag != null) {
+            Map<String, Integer> baseScores = new HashMap<>();
+            baseScores.put("맛있어요", tag.getDelicious());
+            baseScores.put("청결해요", tag.getHygiene());
+            baseScores.put("친절해요", tag.getKindness());
+            baseScores.put("신선해요", tag.getFresh());
+            baseScores.put("혼밥하기 좋아요", tag.getAlone());
+            baseScores.put("데이트하기 좋아요", tag.getDate());
+            baseScores.put("가성비 좋아요", tag.getGoodValue());
+            baseScores.put("단체로 가기 좋아요", tag.getMany());
+            baseScores.put("분위기 좋아요", tag.getMood());
+            baseScores.put("주차가 가능해요", tag.getParking());
+            baseScores.put("아쉬워요", tag.getRecent());
+
+            for (String tagName : baseScores.keySet()) {
+                long voteCount = shopTagVoteRepository.countByShopAndTagName(shop, tagName);
+                tagCounts.put(tagName, baseScores.get(tagName) + (int) voteCount);
+            }
+        }
+        model.addAttribute("tagCounts", tagCounts);
 
         return "form/foodDetails";
     }

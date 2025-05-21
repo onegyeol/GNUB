@@ -49,6 +49,10 @@ public class ShopService {
         }).collect(Collectors.toList());
     }
 
+    public List<Shop> searchShopsByMenuKeyword(String keyword) {
+        return shopMenuRepository.searchShopsWithMenus(keyword);
+    }
+
     public Shop findShopById(Long id) {
         return shopRepository.findById(id).orElse(null);
     }
@@ -63,7 +67,7 @@ public class ShopService {
     }
 
     /*
-     * public List<Shop> getShopsByTagField(String tag, String query) {
+     * pubXMGUDic List<Shop> getShopsByTagField(String tag, String query) {
      * return shopRepository.findShopsByDynamicTag(tag, query);
      * }
      */
@@ -71,4 +75,21 @@ public class ShopService {
     public List<ShopMenu> getMenusByShopName(String shopName) {
         return shopMenuRepository.findByRestName(shopName);
     }
+
+    public List<Shop> getMenusForShops() {
+        return shopRepository.findAllWithMenus();
+    }
+
+    public Map<Long, List<ShopMenu>> getMenusForShops(List<Shop> shops) {
+        List<Long> shopIds = shops.stream()
+                .map(Shop::getId)
+                .collect(Collectors.toList());
+
+        List<ShopMenu> allMenus = shopMenuRepository.findMenusByShopIds(shopIds);
+
+        // shopId → List<ShopMenu>로 매핑
+        return allMenus.stream()
+                .collect(Collectors.groupingBy(m -> m.getShop().getId()));
+    }
+
 }

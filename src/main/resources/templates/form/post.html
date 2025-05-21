@@ -283,6 +283,12 @@
             opacity: 0.8;
         }
 
+        .post-body {
+            white-space: normal;
+            word-break: break-word;
+            margin-bottom: 10%;
+        }
+
         .bottom-nav-wrapper {
             width: 100%;
             display: flex;
@@ -404,6 +410,7 @@
     
         <div class="post-body" th:utext="${board.content}"></div>
 
+        <!--
         <div class="post-actions">
             <button class="btn-list" type="button" onclick="window.location.href='/board/main';">목록으로</button>
             
@@ -415,6 +422,7 @@
                 <button class="btn-delete" type="submit">삭제</button>
             </form>
         </div>
+        -->
     </div>
     
 

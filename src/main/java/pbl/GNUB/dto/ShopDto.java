@@ -17,6 +17,8 @@ import pbl.GNUB.entity.Shop;
 @ApiModel(value = "음식점정보")
 public class ShopDto {
 
+    @ApiModelProperty(name = "id")
+    private Long id; 
 
     @ApiModelProperty(name = "rest")
     private String name; // 업소명 
@@ -80,6 +82,8 @@ public class ShopDto {
     @ApiModelProperty(name = "Rest_id")
     private String restId;
 
+    private int likeCount;
+    
     public Shop toEntity(){ //Shop 엔티티 반환
         return Shop.builder()
             .name(this.name)
@@ -104,4 +108,31 @@ public class ShopDto {
             .restId(this.restId)
             .build();
     }
+
+    public ShopDto(Shop shop) {
+        this.id = shop.getId(); 
+        this.name = shop.getName();
+        this.category = shop.getCategory();
+        this.address = shop.getAddress();
+        this.location = shop.getLocation();
+        this.campus = shop.getCampus();
+        this.addressInfo = shop.getAddressInfo();
+        this.number = shop.getNumber();
+        this.site = shop.getSite();
+        this.info = shop.getInfo();
+        this.imgUrl = shop.getImgUrl();
+        this.mon = shop.getMon();
+        this.tue = shop.getTue();
+        this.wed = shop.getWed();
+        this.thu = shop.getThu();
+        this.fri = shop.getFri();
+        this.sat = shop.getSat();
+        this.sun = shop.getSun();
+        this.lat = shop.getLat();
+        this.lng = shop.getLng();
+        this.restId = shop.getRestId();
+        this.likeCount = shop.getLikeCount();
+    }
+    
+
 }

@@ -2,6 +2,8 @@ package pbl.GNUB.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,7 +15,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -71,8 +72,8 @@ public class Shop {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "shop_shoptag", joinColumns = @JoinColumn(name = "shop_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
-
-    // @OneToOne(mappedBy = "shop", cascade = CascadeType.ALL) 방금 지워봄
+    @JsonIgnore
+    @ToString.Exclude
     private List<ShopTag> shopTags; // ShopTag와의 다대다 관계
 
     // likeCount setter

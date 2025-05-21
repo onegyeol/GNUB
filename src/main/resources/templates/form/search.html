@@ -413,6 +413,176 @@
             padding: 0 16px;
             border-top: 1px solid rgba(138, 138, 138, 0.1);
         }
+
+        .top-nav-key-visual {
+            width: 100%;
+            position: relative;
+        }
+
+        .top-nav-init-img {
+            width: 100%;
+            height: auto;
+        }
+
+        .image-container {
+            display: flex;
+            width: 1070px;
+            height: 240px;
+            margin: 0 auto;
+        }
+
+        .image-wrapper {
+            position: relative;
+            width: 50%; /* 원하는 크기로 설정 */
+            height: 100%;
+            overflow: hidden;
+            cursor: pointer;
+            transition: filter 0.3s ease;
+        }
+
+        .image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: filter 0.3s ease; /* 흐려지는 효과 부드럽게 전환 */
+        }
+
+        .image-wrapper:hover img {
+            filter: blur(5px); /* 마우스 올렸을 때 흐리게 만드는 효과 */
+        }
+
+        .campus-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .blurred {
+            filter: blur(2px);
+            opacity: 0.5;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        img.blurred {
+            filter: blur(2px);
+            opacity: 0.5;
+            transition: all 0.3s ease;
+        }
+
+        .banner-content-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            position: relative;
+            z-index: 1; /* 배너와 이미지 겹침 방지 */
+        }
+
+        .campus-toggle-bar {
+            width: 98%;
+            max-width: 1070px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            box-sizing: border-box;
+        }
+
+        .banner-wrap {
+            background-color: white;
+            width: 1070px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 0;
+        }
+
+        .banner-content {
+            font-family: 'Arial', sans-serif;
+            background-color: white;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            line-height: 1.5;
+        }
+
+        .tag-container {
+            width: 100%;
+            max-width: 1070px;
+            margin: 20px auto;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .tag-search {
+            margin-bottom: 10px;
+        }
+
+        .tag-search-input {
+            width: 98%;
+            padding: 10px;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+        }
+
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tag-item {
+            background-color: #e0e0e0;
+            border: none;
+            border-radius: 20px;
+            padding: 5px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .tag-item:hover {
+            background-color: #d0d0d0;
+        }
+
+        .tag-item.active {
+            background-color: white;
+            font-weight: bold;
+        }
+        .edit-btn {
+            width: 6%;
+            padding: 1%;
+            background-color: #41bbca;
+            color: white;
+            border: none;
+            border-radius: 100px;
+            cursor: pointer;
+            text-align: center;
+            margin-left: 1%;
+            margin-top: 1%;
+            margin-bottom: 1%;
+        }
+
         .nav-container .menu-items {
             display: flex;
             align-items: center;
@@ -420,6 +590,11 @@
 
         .nav-container .menu-item {
             margin: 0 15px; 
+        }
+        .restaurant-menu {
+            font-size: 14px;
+            color: #555;
+            margin-top: 5px;
         }
 
         .nav-container .login-logout {
@@ -455,6 +630,34 @@
         .bottom-nav-wrapper {
             z-index: 400;
         }
+
+        .restaurant-menu.collapsible {
+            display: inline-block;
+            max-width: 240px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            vertical-align: bottom;
+        }
+
+        .expand-menu-btn {
+            background: none;
+            border: none;         
+            cursor: pointer;
+            font-weight: bold;    
+            color: black;        
+            margin-left: 10px;   
+            font-size: 14px;      
+        }
+
+        .restaurant-menu.expanded {
+            white-space: normal;
+            overflow: visible;
+            text-overflow: unset;
+        }
+        .hidden-menu {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -484,9 +687,47 @@
             </div>
         </header>
 
+
+        <div class="banner-content-wrap">
+            <!-- 캠퍼스 이미지 영역 -->
+            <div class="top-nav-content" id="campusImages" style="display: block;">
+                <div class="top-nav-key-visual">
+                    <div class="image-container">
+                        <div class="image-wrapper left-image" data-campus-toggle="gajwa">
+                            <img src="https://www.gnu.ac.kr/upload/main/na/bbs_1047/ntt_2258160/img_796b61c4-e42a-44bc-8dff-4887eaa1c37f1730876309843.jpg" alt="가좌캠퍼스">
+                            <p class="campus-text">가좌캠퍼스</p>
+                        </div>
+                        <div class="image-wrapper right-image" data-campus-toggle="chilam">
+                            <img src="https://www.gnu.ac.kr/common/nttEditorImgView.do?imgKey=96b1e7e4b113c43914996108683bca1b" alt="칠암캠퍼스">
+                            <p class="campus-text">칠암캠퍼스</p>
+                        </div>
+                    </div>                
+                </div>
+            </div>
+            <div class="campus-toggle-bar" id="campusToggleBar">
+                <p id="bannerText">
+                    원하지 않는 캠퍼스를 숨길 수 있어요
+                    <span id="bannerIcon">▲</span>
+                </p>
+            </div>
+        </div>
+
+        
         <p class="search-result-text" 
             th:text="${query != null && !query.isEmpty() ? '&#34;' + query + '&#34; 검색결과' : '&#34;#' + selectedTag + '&#34; 검색결과'}">
+            <button class="edit-btn" onclick="filterMenuByKeyword()">검색</button>
         </p>
+
+        <div class="tag-container">
+            <form id="menuFilterForm" th:action="@{'/search/' + ${query}}" method="get">
+                <input type="text" id="menuFilterInput" name="menu" placeholder="메뉴명을 입력하세요 (예: 국밥)" class="tag-search-input" th:value="${selectedMenu}">
+                <button class="edit-btn" type="submit">검색</button>
+            </form>
+        </div>
+        <th:block th:if="${selectedMenu != null}">
+            <button class="tag-item active" onclick="window.location.href='/search/'+[[${query}]]">초기화</button>
+        </th:block>
+        
 
         <!--
         <div class="wrap">
@@ -515,7 +756,10 @@
         <!-- 음식점 리스트 -->
         <main class="search_menu">
             <div class="restaurant_list">
-                <div th:each="shop : ${shops}" class="restaurant_item">
+                <div th:each="shop : ${shops}"
+                    th:data-campus="${shop.restId.startsWith('C')} ? 'chilam' : 'gajwa'"
+                    class="restaurant_item">
+
                     
                     <!-- 가게 정보 (왼쪽) -->
                     <div class="restaurant_info">
@@ -528,9 +772,13 @@
                         </div>                        
                         <span class="restaurant_address" th:text="${shop.address}"></span> <br>
                         <span class="restaurant_addressinfo" th:text="${shop.addressInfo}"></span>
+                        <div class="restaurant-menu-list">
+                            <span th:each="menu, iterStat : ${shop.shopMenus}"
+                                th:class="${iterStat.index > 0} ? 'restaurant-menu hidden-menu' : 'restaurant-menu'"
+                                th:text="${menu.menuName}"></span>
+                            <button class="expand-menu-btn" onclick="toggleMenu(this)" data-expanded="false">더보기</button>
+                        </div>
                         
-                        <!---
-                        태그 목록 
                         <div class="restaurant_tags">
                             <th:block th:if="${tags != null}">
                                 <th:block th:if="${tags.containsKey(shop.name)}">
@@ -541,7 +789,7 @@
                                 </th:block>
                             </th:block>
                         </div>
-                    </div> -->
+                    </div> 
         
                     <!-- 가게 이미지 (오른쪽) -->
                     <div class="restaurant_image">
@@ -549,7 +797,6 @@
                             <img th:src="${shop.imgUrl}" alt="가게이미지">
                         </button>
                     </div>
-        
                 </div>
             </div>
         </main>
@@ -561,13 +808,13 @@
             <nav class="bottom-nav">
                 <div class="nav-container">
 
-                    <a th:href="${session.loginEmail != null} ? @{/board/main} : @{/member/login}" class="nav-item">
+                    <a th:href="@{/board/main}" class="nav-item">
                         <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
                             <path d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M3 9H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M9 21V9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
-                        <span>게시판</span>
+                        <span>매거진</span>
                     </a>
                     
                     <a th:href="@{/main}" class="nav-item">
@@ -601,5 +848,93 @@
         </div>
         
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggleBanner = document.getElementById('campusToggleBar');
+            const campusImages = document.getElementById('campusImages');
+            const bannerText = document.getElementById('bannerText');
+            const bannerIcon = document.getElementById('bannerIcon');
+
+            toggleBanner.addEventListener('click', () => {
+                const isOpen = campusImages.style.display === 'block';
+                campusImages.style.display = isOpen ? 'none' : 'block';
+                bannerIcon.textContent = isOpen ? '▼' : '▲';
+                bannerText.childNodes[0].nodeValue = isOpen 
+                    ? '캠퍼스를 다시 보고 싶다면 여기를 클릭하세요 ' 
+                    : '원하지 않는 캠퍼스를 숨길 수 있어요 ';
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuInput = document.getElementById('menuFilterInput');
+            const cards = document.querySelectorAll('.restaurant_item');
+
+            menuInput.addEventListener('input', function () {
+                const keyword = this.value.trim().toLowerCase();
+
+                cards.forEach(card => {
+                    const menus = Array.from(card.querySelectorAll('.restaurant-menu'))
+                        .map(el => el.textContent.toLowerCase());
+
+                    const isMatch = keyword === "" || menus.some(menu => menu.includes(keyword));
+                    card.style.display = isMatch ? "" : "none";
+                });
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+        const filterState = {
+            gajwa: true,
+            chilam: true
+        };
+
+        // 초기 가시성 설정
+        updateShopVisibility();
+
+        // 캠퍼스 이미지 클릭 이벤트
+        document.querySelectorAll('[data-campus-toggle]').forEach(wrapper => {
+            wrapper.addEventListener('click', () => {
+                const campus = wrapper.getAttribute('data-campus-toggle');
+                filterState[campus] = !filterState[campus];
+
+                // 음식점 가시성 반영
+                updateShopVisibility();
+
+                // 이미지 blur 처리
+                const img = wrapper.querySelector('img');
+                if (img) {
+                    img.classList.toggle('blurred', !filterState[campus]);
+                }
+            });
+        });
+
+        function updateShopVisibility() {
+            document.querySelectorAll('.restaurant_item').forEach(item => {
+                const campus = item.getAttribute('data-campus');
+                if (!campus || filterState[campus]) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+    });
+
+        function toggleMenu(button) {
+            const container = button.parentElement; // .restaurant-menu-list
+            const menus = container.querySelectorAll('.restaurant-menu');
+            const isExpanded = button.getAttribute('data-expanded') === 'true';
+
+            menus.forEach((menu, index) => {
+                if (index > 0) {
+                    menu.style.display = isExpanded ? 'none' : 'inline-block';
+                }
+            });
+
+            button.textContent = isExpanded ? '더보기' : '접기';
+            button.setAttribute('data-expanded', (!isExpanded).toString());
+        }
+        
+    </script>
 </body>
 </html>

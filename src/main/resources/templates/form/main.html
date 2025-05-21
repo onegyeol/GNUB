@@ -61,15 +61,33 @@
             height: 100%;
         }
 
-        .banner-box {
-            margin-top: 0;
-            width: 100%;
+        .banner-content-wrap {
             display: flex;
-            padding-top: 3%;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            position: relative;
+            z-index: 1; /* 배너와 이미지 겹침 방지 */
+        }
+
+        .campus-toggle-bar {
+            width: 98%;
+            max-width: 1070px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            display: flex;
             justify-content: center;
             align-items: center;
-            position: relative;
-            z-index: 1; 
+            gap: 10px;
+            box-sizing: border-box;
         }
 
         .banner-wrap {
@@ -84,6 +102,7 @@
 
         .banner-content {
             font-family: 'Arial', sans-serif;
+            background-color: white;
             font-size: 16px;
             font-weight: bold;
             color: #333;
@@ -227,6 +246,7 @@
         .top-nav-content {
             display: none;
             margin-top: 0;
+            transition: all 0.3s ease;  /* 부드러운 토글 */
             position: relative;
             width: 100%;
             display: flex;
@@ -361,11 +381,28 @@
             min-height: 300px;
         }
 
+        .slide-prev-btn, .slide-next-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(255, 255, 255, 0.7);
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 10;
+            padding: 10px;
+            border-radius: 50%;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+
+        .slide-prev-btn { left: 0; }
+        .slide-next-btn { right: 0; }
+
         .slide-card-list {
             display: flex;
             flex-wrap: nowrap;
-            padding: 10px 0;
-            min-height: 320px;
+            transition: transform 0.3s ease; /* 슬라이드 애니메이션 추가할 경우 */
+            will-change: transform;
         }
 
         .card-section-title-box {
@@ -382,22 +419,19 @@
             margin-left: 1%;
         }
 
-        .card-section-rest-cnt {
-            font-size: 18px;
-            color: #666;
-        }
-
         .card-slide-wrap {
             width: 100%;
-            overflow-x: auto;
+            overflow-x: auto;  /* ✅ 가로 스크롤 활성화 */
             overflow-y: hidden;
-            -webkit-overflow-scrolling: touch;
+            -webkit-overflow-scrolling: touch;  /* ✅ 모바일 부드러운 스크롤 */
+            
+        
         }
 
         .slide-card-item {
-            flex: 0 0 auto;
+            flex: 0 0 auto; 
             width: 238px;
-            height: 238px;
+            height: auto;
             margin-right: 20px;
             display: flex;
             flex-direction: column;
@@ -645,29 +679,31 @@
             </div>
         </header>
 
+        <div class="banner-content-wrap">
+            <!-- 캠퍼스 이미지 영역 -->
+            <div class="top-nav-content" id="campusImages" style="display: block;">
+                <div class="top-nav-key-visual">
+                    <div class="image-container">
+                        <div class="image-wrapper left-image" data-campus-toggle="gajwa">
+                            <img src="https://www.gnu.ac.kr/upload/main/na/bbs_1047/ntt_2258160/img_796b61c4-e42a-44bc-8dff-4887eaa1c37f1730876309843.jpg" alt="가좌캠퍼스">
+                            <p class="campus-text">가좌캠퍼스</p>
+                        </div>
+                        <div class="image-wrapper right-image" data-campus-toggle="chilam">
+                            <img src="https://www.gnu.ac.kr/common/nttEditorImgView.do?imgKey=96b1e7e4b113c43914996108683bca1b" alt="칠암캠퍼스">
+                            <p class="campus-text">칠암캠퍼스</p>
+                        </div>
+                    </div>                
+                </div>
+            </div>
+            <div class="campus-toggle-bar" id="campusToggleBar">
+                <p id="bannerText">
+                    원하지 않는 캠퍼스를 숨길 수 있어요
+                    <span id="bannerIcon">▲</span>
+                </p>
+            </div>
+        </div>
 
-        <div class="banner-box" id="toggleBanner">
-            <div class="Banner-Wrap">
-                <p class="Banner-Content" id="bannerText" onclick="toggleCampusView()">클릭하면 원하는 캠퍼스를 선택할 수 있어용</p>
-                <div class="Banner-Selection"></div>
-            </div>
-        </div>
-        
-        <!-- 캠퍼스 이미지 영역 -->
-        <div class="top-nav-content" id="campusImages" style="display: block;">
-            <div class="top-nav-key-visual">
-                <div class="image-container">
-                    <div class="image-wrapper left-image" data-campus-toggle="gajwa">
-                        <img src="https://www.gnu.ac.kr/upload/main/na/bbs_1047/ntt_2258160/img_796b61c4-e42a-44bc-8dff-4887eaa1c37f1730876309843.jpg" alt="가좌캠퍼스">
-                        <p class="campus-text">가좌캠퍼스</p>
-                    </div>
-                    <div class="image-wrapper right-image" data-campus-toggle="chilam">
-                        <img src="https://www.gnu.ac.kr/common/nttEditorImgView.do?imgKey=96b1e7e4b113c43914996108683bca1b" alt="칠암캠퍼스">
-                        <p class="campus-text">칠암캠퍼스</p>
-                    </div>
-                </div>                
-            </div>
-        </div>
+
 
         <div class="tag-container">
             <div class="tag-search">
@@ -695,10 +731,9 @@
                             class="card-section">
                         <div class="card-section-wrap">
                             <div class="card-section-title-box">
-                                <h2 class="card-section-title" th:text="${entry.key}"></h2>
-                                <span class="card-section-rest-cnt">
-                                    <p>([[${uniqueShopCount}]])</p>
-                                </span>
+                                <h2 class="card-section-title">
+                                    <a th:href="@{'/search/' + ${entry.key}}" th:text="${entry.key}"></a>
+                                </h2>
                                 <!--/*
                                 <span class="card-section-rest-cnt" th:if="${entry.value.shops != null}">
                                     ([[${#lists.size(entry.value.shops)}]])
@@ -709,7 +744,7 @@
                                 <ul class="slide-card-list">
                                     <li th:each="shop, iterStat : ${entry.value.shops}" 
                                         th:data-campus="${shop.restId.startsWith('C')} ? 'chilam' : 'gajwa'"
-                                        th:classappend="${iterStat.index >= 50} ? ' hidden' : ''"
+                                        th:classappend="${iterStat.index  >= 50} ? ' hidden' : ''"
                                         class="slide-card-item">  
                                     <!-- /*<li th:each="shop : ${entry.value.shops}" class="slide-card-item">*/-->
                                         <a th:href="@{'/shopDetails/' + ${shop.id}}">
@@ -733,11 +768,6 @@
                         </div>
                     </section>
                 </th:block>
-
-
-
-
-
 
                 <!--/* shopTag.csv 완성 시 까지 주석 처리
                 <th:block th:each="entry : ${taggedShops}">
@@ -777,7 +807,6 @@
                 </a>
             </div>
         </main>
-    </div>
     <th:block th:replace="~{form/bottom :: body}"></th:block>
     <script src="/javascript/script.js" defer></script>
     
@@ -791,18 +820,9 @@
                         <path d="M3 9H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M9 21V9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
-                    <span>매거진</span>
+                    <span>게시판</span>
                 </a>
-                
-                <a th:href="@{/main}" class="nav-item">
-                    <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M3 9.5L12 3l9 6.5V21a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-5H10v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z" />
-                    </svg>
-                    <span>홈</span>
-                </a>
-                
-                
+
                 <a th:href="@{/map}" class="nav-item">
                     <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -812,6 +832,23 @@
                     </svg>
                     <span>지도</span>
                 </a>
+                
+                <a th:href="@{/main}" class="nav-item">
+                    <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 9.5L12 3l9 6.5V21a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-5H10v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z" />
+                    </svg>
+                    <span>홈</span>
+                </a>
+
+                <a th:href="${#authentication.authenticated} ? @{/myPage/bookmarkList} : @{/member/login}" 
+                    class="nav-item">
+                        <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 7h5l2 3h11v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/>
+                        </svg>
+                        <span>보관함</span>
+                    </a>
                 
                 <a th:href="@{/myPage}" class="nav-item">
                     <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -825,86 +862,91 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const toggleBanner = document.getElementById('toggleBanner');
-            const bannerText = document.getElementById('bannerText');
+            const toggleBanner = document.getElementById('campusToggleBar');
             const campusImages = document.getElementById('campusImages');
+            const bannerText = document.getElementById('bannerText');
+            const bannerIcon = document.getElementById('bannerIcon');
             const searchInput = document.getElementById('tagSearchInput');
             const tagItems = document.querySelectorAll('.tag-item');
-            const topNavContent = document.querySelector('.top-nav-content');
             const allBtn = document.getElementById("allTagsBtn");
             const tagButtons = document.querySelectorAll(".tag-item[data-tag]");
             const tagSections = document.querySelectorAll("section.card-section");
-            
-            window.addEventListener("scroll", () => {
-            const hiddenItems = document.querySelectorAll(".slide-card-item.hidden");
-            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
-                for (let i = 0; i < 50 && i < hiddenItems.length; i++) {
-                hiddenItems[i].classList.remove("hidden");
-                }
-            }
-            });
-            
-                let filterState = {
-                    gajwa: true,
-                    chilam: true
-                };
 
-                const toggleFilter = (campus) => {
+            let filterState = { gajwa: true, chilam: true };
+
+            // 캠퍼스 필터 클릭
+            document.querySelectorAll('[data-campus-toggle]').forEach(wrapper => {
+                wrapper.addEventListener('click', () => {
+                    const campus = wrapper.dataset.campusToggle;
                     filterState[campus] = !filterState[campus];
                     updateShopVisibility();
-
-                    const imageWrapper = document.querySelector(`[data-campus-toggle="${campus}"]`);
-                    imageWrapper.classList.toggle('blurred', !filterState[campus]);
-                };
-
-                const updateShopVisibility = () => {
-                    const shopCards = document.querySelectorAll('.slide-card-item');
-                    shopCards.forEach(card => {
-                        const campus = card.dataset.campus;
-                        card.style.display = filterState[campus] ? '' : 'none';
-                    });
-                };
-
-                document.querySelectorAll('[data-campus-toggle]').forEach(wrapper => {
-                    wrapper.addEventListener('click', () => {
-                        const campus = wrapper.dataset.campusToggle;
-                        toggleFilter(campus);
-                    });
+                    wrapper.classList.toggle('blurred', !filterState[campus]);
                 });
+            });
 
-                // 배너 클릭 시 캠퍼스 뷰 토글
-            toggleBanner.addEventListener('click', toggleCampusView);
-    
-            // 캠퍼스 뷰 토글 함수
-            function toggleCampusView() {
-                if (campusImages.style.display === "none" || campusImages.style.display === "") {
-                    campusImages.style.display = "block"; 
-                    bannerText.style.display = "none";
-                } else {
-                    campusImages.style.display = "none"; 
-                    bannerText.style.display = "block";
-                }
-                adjustLayout();
+            function updateShopVisibility() {
+                const shopCards = document.querySelectorAll('.slide-card-item');
+                shopCards.forEach(card => {
+                    const campus = card.dataset.campus;
+                    card.style.display = filterState[campus] ? '' : 'none';
+                });
             }
 
-            allBtn.addEventListener("click", () => {
-        allBtn.classList.add("active");
-        tagButtons.forEach(btn => btn.classList.remove("active"));
-        tagSections.forEach(section => section.style.display = "block");
-    });
+            // 캠퍼스 이미지 토글
+            toggleBanner.addEventListener('click', function toggleCampusView() {
+                const isOpen = campusImages.style.display === 'block';
+                campusImages.style.display = isOpen ? 'none' : 'block';
+                bannerIcon.textContent = isOpen ? '▼' : '▲';
+                bannerText.childNodes[0].nodeValue = isOpen
+                    ? '캠퍼스를 다시 보고 싶다면 여기를 클릭하세요 '
+                    : '원하지 않는 캠퍼스를 숨길 수 있어요 ';
+            });
 
-            // 개별 태그 버튼 클릭 시
+            // 가로 드래그
+            document.querySelectorAll('.card-slide-wrap').forEach(wrapper => {
+                let isDown = false, startX, scrollLeft;
+
+                wrapper.addEventListener('mousedown', (e) => {
+                    isDown = true;
+                    wrapper.classList.add('active');
+                    startX = e.pageX - wrapper.offsetLeft;
+                    scrollLeft = wrapper.scrollLeft;
+                });
+                wrapper.addEventListener('mouseleave', () => {
+                    isDown = false;
+                    wrapper.classList.remove('active');
+                });
+                wrapper.addEventListener('mouseup', () => {
+                    isDown = false;
+                    wrapper.classList.remove('active');
+                });
+                wrapper.addEventListener('mousemove', (e) => {
+                    if (!isDown) return;
+                    e.preventDefault();
+                    const x = e.pageX - wrapper.offsetLeft;
+                    const walk = (x - startX);
+                    wrapper.scrollLeft = scrollLeft - walk;
+                });
+            });
+
+            // 태그 전체 보기
+            allBtn.addEventListener("click", () => {
+                allBtn.classList.add("active");
+                tagButtons.forEach(btn => btn.classList.remove("active"));
+                tagSections.forEach(section => section.style.display = "block");
+            });
+
+            // 개별 태그 필터
             tagButtons.forEach(button => {
                 button.addEventListener("click", () => {
                     button.classList.toggle("active");
-                    allBtn.classList.remove("active"); // 개별 토글되면 "모두보기"는 비활성화
+                    allBtn.classList.remove("active");
 
                     const activeTags = Array.from(tagButtons)
                         .filter(btn => btn.classList.contains("active"))
                         .map(btn => btn.dataset.tag);
 
                     if (activeTags.length === 0) {
-                        // 아무 태그도 선택되지 않았으면 모두보기 상태로 복귀
                         allBtn.classList.add("active");
                         tagSections.forEach(section => section.style.display = "block");
                         return;
@@ -917,7 +959,7 @@
                 });
             });
 
-            // 태그 검색 필터링- 이거 이제 지워도 되는거 아닌가?
+            // 태그 검색
             searchInput.addEventListener('input', function () {
                 const searchTerm = this.value.toLowerCase();
                 tagItems.forEach(item => {
@@ -925,25 +967,6 @@
                     item.style.display = tagText.includes(searchTerm) ? '' : 'none';
                 });
             });
-
-            // 레이아웃 조정
-            function adjustLayout() {
-                const header = document.querySelector('.header-content');
-                const banner = document.querySelector('.banner-box');
-    
-                if (header && banner) {
-                    const headerHeight = header.offsetHeight;
-                    banner.style.marginTop = `${headerHeight}px`;
-    
-                    if (topNavContent) {
-                        topNavContent.style.marginTop = topNavContent.style.display === 'none' ? '0' : `-${banner.offsetHeight}px`;
-                    }
-                }
-            }
-            
-            adjustLayout();
-            // 창 크기 변경 시 레이아웃 다시 조정
-            window.addEventListener('resize', adjustLayout);
         });
     </script>
 </body>

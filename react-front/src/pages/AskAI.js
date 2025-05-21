@@ -1,6 +1,7 @@
 // src/pages/AskAI.js
 import React, { useState } from 'react';
 import { askQuestion } from '../service/AskAIApi';
+import { Link } from 'react-router-dom';
 import './css/AskAI.css';
 
 const AskAI = () => {

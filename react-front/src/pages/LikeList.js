@@ -72,9 +72,9 @@ export default function LikeList() {
             likedShops.map((shop, idx) => (
               <div className="restaurant_item" key={idx}>
                 <div className="restaurant_info">
-                <Link to={`/foodDetails/${shop.id}`}>
-                  <span className="restaurant_name">{shop.name}</span>
-                </Link>
+                  <Link to={`/foodDetails/${shop.id}`}>
+                    <span className="restaurant_name">{shop.name}</span>
+                  </Link>
                   <div className="like-section">
                     <img className="heart-icon" src="https://cdn-icons-png.flaticon.com/512/833/833472.png" alt="Heart Icon" />
                     <span className="restaurant_like">{shop.likeCount}</span>
@@ -83,9 +83,9 @@ export default function LikeList() {
                 </div>
 
                 <div className="restaurant_image">
-                  <a href={`/shopDetails/${shop.id}`}>
+                  <Link to={`/foodDetails/${shop.id}`}>
                     <img src={shop.imgUrl} alt="가게이미지" />
-                  </a>
+                  </Link>
                 </div>
               </div>
             ))

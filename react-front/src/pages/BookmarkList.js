@@ -54,7 +54,7 @@ export default function BookmarkList() {
     <ul className="slide-card-list">
       {bookmarks.map((bookmark, idx) => (
         <li className="slide-card-item" key={idx}>
-          <Link to={`/shopDetails/${bookmark.shopId}`}>
+          <Link to={`/foodDetails/${bookmark.shopId}`}>
             <img src={bookmark.shopImgUrl} alt={bookmark.shopName} loading="lazy" />
             <p className="card-rest-name">{bookmark.shopName}</p>
           </Link>

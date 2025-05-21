@@ -2,7 +2,7 @@ import axios from 'axios';
 
 axios.defaults.withCredentials = true;
 
-const BASE = 'http://3.39.233.211:8080';
+const BASE = process.env.REACT_APP_API_URL;
 
 export const fetchMyInfo = () =>
   axios.get(`${BASE}/api/myPage/info`, { withCredentials: true }).then(res => res.data);

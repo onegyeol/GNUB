@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 
-const BASE = 'http://localhost:8080';
+const BASE = process.env.REACT_APP_API_URL;
 
 
 export const askQuestion = async (query) => {

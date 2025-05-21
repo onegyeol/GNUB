@@ -54,10 +54,10 @@ export default function BookmarkList() {
     <ul className="slide-card-list">
       {bookmarks.map((bookmark, idx) => (
         <li className="slide-card-item" key={idx}>
-          <a href={`/shopDetails/${bookmark.shopId}`}>
+          <Link to={`/shopDetails/${bookmark.shopId}`}>
             <img src={bookmark.shopImgUrl} alt={bookmark.shopName} loading="lazy" />
             <p className="card-rest-name">{bookmark.shopName}</p>
-          </a>
+          </Link>
           <div className="image-btn-container">
             <div className="like-section">
               <form action="/toggleLike" method="POST">

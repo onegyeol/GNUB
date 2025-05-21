@@ -1,6 +1,7 @@
 package pbl.GNUB.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -25,8 +26,10 @@ public interface ShopTagRepository extends JpaRepository<ShopTag, Long> {
                         @Param("parking") int parking,
                         @Param("recent") int recent);
 
+        Optional<ShopTag> findByShopAndName(Shop shop, String name);
+
         ShopTag findByName(String name);
-        
+
         List<ShopTag> findByAlone(int value);
 
         List<ShopTag> findByDate(int value);
@@ -48,4 +51,5 @@ public interface ShopTagRepository extends JpaRepository<ShopTag, Long> {
         List<ShopTag> findByParking(int value);
 
         List<ShopTag> findByRecent(int value);
+
 }

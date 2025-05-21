@@ -22,7 +22,7 @@ import lombok.*;
 @Table(name = "SHOPTAG")
 @Builder
 public class ShopTag {
-    @Id 
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -43,7 +43,8 @@ public class ShopTag {
     private int parking;
     private int recent;
 
-    @ManyToMany(mappedBy = "shopTags")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shop_id")
     @ToString.Exclude
-    private List<Shop> shops;
+    private Shop shop;
 }

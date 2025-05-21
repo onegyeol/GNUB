@@ -57,7 +57,7 @@ function MapContent({ center, shops, onBoundsChanged }) {
       });
 
       marker.addListener('click', () => {
-        window.location.href = `/shopDetails/${shop.id}`;
+        window.location.href = `/foodDetails/${shop.id}`;
       });
 
       markersRef.current.push(marker);

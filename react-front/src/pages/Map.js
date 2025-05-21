@@ -10,7 +10,7 @@ const containerStyle = {
   height: 'calc(100vh - 74px)',
 };
 
-function MapContent({ center, shops, onBoundsChanged }) {
+function MapContent({ center, shops, onBoundsChanged, onMarkerClick }) {
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
   const markersRef = useRef([]);
@@ -58,7 +58,9 @@ function MapContent({ center, shops, onBoundsChanged }) {
       });
 
       marker.addListener('click', () => {
-        navigate(`/foodDetails/${shop.id}`);
+        if (onMarkerClick) {
+          onMarkerClick(shop.id); // ✅ navigate 대신 props 사용
+        }
       });
 
       markersRef.current.push(marker);
@@ -166,7 +168,12 @@ export default function MapPage() {
       </header>
 
       <Wrapper apiKey={apiKey} libraries={['places']}>
-        <MapContent center={currentLocation} shops={shops} onBoundsChanged={setMapBounds} />
+      <MapContent
+        center={currentLocation}
+        shops={shops}
+        onBoundsChanged={setMapBounds}
+        onMarkerClick={(shopId) => navigate(`/foodDetails/${shopId}`)} // ✅ 추가
+      />
       </Wrapper>
 
       <div

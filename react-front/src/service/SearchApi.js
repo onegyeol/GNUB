@@ -2,7 +2,7 @@ import axios from 'axios';
 
 axios.defaults.withCredentials = true;
 
-const BASE = 'http://localhost:8080';
+const BASE = process.env.REACT_APP_API_URL;
 
 export const fetchSearchResults = (query) =>
   axios.get(`${BASE}/api/search`, {

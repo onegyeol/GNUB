@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE = process.env.REACT_APP_API_URL;
+const BASE = `${process.env.REACT_APP_API_URL}/api/boards`;
 
 export const fetchBoardList = ({ query = '', sort = 'created', page = 1 }) =>
   axios
@@ -13,7 +13,7 @@ export const fetchBoardList = ({ query = '', sort = 'created', page = 1 }) =>
 
 export const fetchBoardById = async (id) => {
   try {
-    const response = await fetch(`${BASE}/api/${id}`);
+    const response = await fetch(`${BASE}/${id}`);
     if (!response.ok) {
       throw new Error('게시글을 불러오는 데 실패했습니다.');
     }

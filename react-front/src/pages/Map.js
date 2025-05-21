@@ -14,6 +14,7 @@ function MapContent({ center, shops, onBoundsChanged }) {
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
   const markersRef = useRef([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!mapRef.current || !window.google || !center) return;
@@ -57,7 +58,7 @@ function MapContent({ center, shops, onBoundsChanged }) {
       });
 
       marker.addListener('click', () => {
-        window.location.href = `/foodDetails/${shop.id}`;
+        navigate(`/foodDetails/${shop.id}`);
       });
 
       markersRef.current.push(marker);

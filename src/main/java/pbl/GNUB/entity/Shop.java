@@ -66,19 +66,15 @@ public class Shop {
     @Builder.Default
     private int likeCount = 0; // 좋아요 수 카운트
 
-    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @ToString.Exclude
+    @JsonIgnore
     private List<ShopMenu> shopMenus;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "shop_shoptag",
-        joinColumns = @JoinColumn(name = "shop_id"),
-        inverseJoinColumns = @JoinColumn(name = "tag_id")
-    )
-    @JsonIgnore
+    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @ToString.Exclude
-    private List<ShopTag> shopTags; // ShopTag와의 다대다 관계
+    @JsonIgnore
+    private List<ShopTag> shopTags; // ✅ ShopTag와의 일대다 관계로 수정
 
     // likeCount setter
     public void setLikeCount(int likeCount) {

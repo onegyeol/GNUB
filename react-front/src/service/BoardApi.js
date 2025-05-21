@@ -13,7 +13,7 @@ export const fetchBoardList = ({ query = '', sort = 'created', page = 1 }) =>
 
 export const fetchBoardById = async (id) => {
   try {
-    const response = await fetch(`${BASE}/${id}`);
+    const response = await fetch(`${BASE}/api/${id}`);
     if (!response.ok) {
       throw new Error('게시글을 불러오는 데 실패했습니다.');
     }

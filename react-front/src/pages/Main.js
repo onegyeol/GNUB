@@ -141,9 +141,9 @@ const Main = () => {
               </section>
             ))}
 
-          <a href="/ask" className="fixed-button">
+          <Link to="/ask" className="fixed-button">
             <img src="https://www.gnu.ac.kr/images/web/main/sub_cnt/bs03.png" alt="캐릭터 기본형" width="50" height="50" />
-          </a>
+          </Link>
         </div>
       </main>
 

@@ -12,6 +12,7 @@ import pbl.GNUB.entity.Shop;
 import pbl.GNUB.entity.ShopTag;
 import pbl.GNUB.repository.ShopRepository;
 import pbl.GNUB.repository.ShopTagRepository;
+import pbl.GNUB.repository.ShopTagVoteRepository;
 
 @Service
 public class TagService {
@@ -82,4 +83,34 @@ public class TagService {
                         LinkedHashMap::new));
 
     }
+
+    public List<Shop> getTop100ShopsByTag(String tagName) {
+        Function<ShopTag, Integer> scoreFunc = TAG_SCORE_GETTERS.get(tagName);
+        if (scoreFunc == null)
+            return List.of();
+
+        List<Shop> shops = shopRepository.findShopsByTagNameWithMenus(tagName);
+        List<Long> shopIds = shops.stream().map(Shop::getId).toList();
+
+        List<Object[]> rawTags = shopRepository.findShopTagsByShopIds(shopIds);
+        Map<Long, List<ShopTag>> tagMap = rawTags.stream()
+                .collect(Collectors.groupingBy(
+                        row -> (Long) row[0],
+                        Collectors.mapping(row -> (ShopTag) row[1], Collectors.toList())));
+
+        for (Shop shop : shops) {
+            shop.setShopTags(tagMap.getOrDefault(shop.getId(), List.of()));
+        }
+
+        return shops.stream()
+                .filter(shop -> shop.getShopTags().stream().anyMatch(tag -> scoreFunc.apply(tag) > 0))
+                .sorted((s1, s2) -> {
+                    int score1 = s1.getShopTags().stream().map(scoreFunc).findFirst().orElse(0);
+                    int score2 = s2.getShopTags().stream().map(scoreFunc).findFirst().orElse(0);
+                    return Integer.compare(score2, score1); // 내림차순
+                })
+                .limit(100)
+                .collect(Collectors.toList());
+    }
+
 }

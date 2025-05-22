@@ -16,15 +16,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.RequiredArgsConstructor;
 import pbl.GNUB.entity.Shop;
+import pbl.GNUB.entity.ShopMenu;
 import pbl.GNUB.entity.ShopTag;
 import pbl.GNUB.service.ShopService;
 import pbl.GNUB.service.TagMappingService;
+import pbl.GNUB.service.TagService;
 
 @Controller
 @RequiredArgsConstructor // final 필드에 대한 생성자를 자동으로 생성
 public class SearchController {
     private final TagController tagController;
     private final ShopService shopService;
+    private final TagService tagService;
     private final TagMappingService tagMappingService;
 
     @GetMapping("/search")
@@ -34,7 +37,7 @@ public class SearchController {
         if (query != null && !query.trim().isEmpty()) {
             shops = shopService.searchShops(query); // 메뉴명 + 가게명 둘 다 검색됨
         } else {
-            shops = shopService.getAllShops(); 
+            shops = shopService.getAllShops();
         }
 
         model.addAttribute("shops", shops);
@@ -42,39 +45,55 @@ public class SearchController {
         return "form/search";
     }
 
-    /* 
-    기존 태그들을 못써서 일단 주석
-    
     @GetMapping("/search/{tag}")
-    public String getShopsByTag(
-            @PathVariable("tag") String tag,
-            @RequestParam(value = "query", required = false, defaultValue = "") String query,
-            Model model) {
+    public String searchByTag(@PathVariable("tag") String tag, Model model) {
+        List<Shop> shops = tagService.getTop100ShopsByTag(tag);
 
-        // 태그를 영어로 변환
-        String englishTag = tagMappingService.toEnglish(tag);
-
-        // 태그와 검색어를 조합하여 필터링
-        List<Shop> shops = shopService.getShopsByTagField(englishTag, query);
-
-        //Map<String, List<String>> tags = tagController.getShopTagsMap();
-        Map<Long, List<String>> shopTagsMap = shops.stream()
-                .collect(Collectors.toMap(
-                        Shop::getId,
-                        shop -> shop.getShopTags().stream()
-                                    .map(ShopTag::getName)
-                                    .collect(Collectors.toList())
-                ));
+        Map<Long, List<ShopMenu>> menuMap = shopService.getMenusForShops(shops);
+        for (Shop shop : shops) {
+            shop.setShopMenus(menuMap.getOrDefault(shop.getId(), List.of()));
+        }
 
         model.addAttribute("shops", shops);
-        model.addAttribute("query", query);
-        model.addAttribute("shopTagsMap", shopTagsMap);
-        model.addAttribute("selectedTag", tag);
-        //model.addAttribute("tags", tags);
-
+        model.addAttribute("query", tag);
         return "form/search";
     }
-        */
-    
-    
+
+    /*
+     * 기존 태그들을 못써서 일단 주석
+     * 
+     * @GetMapping("/search/{tag}")
+     * public String getShopsByTag(
+     * 
+     * @PathVariable("tag") String tag,
+     * 
+     * @RequestParam(value = "query", required = false, defaultValue = "") String
+     * query,
+     * Model model) {
+     * 
+     * // 태그를 영어로 변환
+     * String englishTag = tagMappingService.toEnglish(tag);
+     * 
+     * // 태그와 검색어를 조합하여 필터링
+     * List<Shop> shops = shopService.getShopsByTagField(englishTag, query);
+     * 
+     * //Map<String, List<String>> tags = tagController.getShopTagsMap();
+     * Map<Long, List<String>> shopTagsMap = shops.stream()
+     * .collect(Collectors.toMap(
+     * Shop::getId,
+     * shop -> shop.getShopTags().stream()
+     * .map(ShopTag::getName)
+     * .collect(Collectors.toList())
+     * ));
+     * 
+     * model.addAttribute("shops", shops);
+     * model.addAttribute("query", query);
+     * model.addAttribute("shopTagsMap", shopTagsMap);
+     * model.addAttribute("selectedTag", tag);
+     * //model.addAttribute("tags", tags);
+     * 
+     * return "form/search";
+     * }
+     */
+
 }

@@ -4,7 +4,7 @@ import openai
 from dotenv import load_dotenv
 
 # 환경 변수 로드
-load_dotenv()
+load_dotenv(override=True) 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 USE_MOCK = os.getenv("USE_MOCK", "false").lower() == "true"
 
@@ -146,7 +146,7 @@ def generate_response(user_query: str, restaurant_results: list, weather_info: d
         messages=[system_msg] + few_shot + conversation_history,
         temperature=0.75,
         top_p=0.95,
-        max_tokens=200,
+        max_tokens=250,
     )
 
     answer = response.choices[0].message.content.strip()

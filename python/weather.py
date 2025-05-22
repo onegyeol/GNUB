@@ -3,6 +3,9 @@ import os
 import requests
 import datetime
 from urllib.parse import quote
+from dotenv import load_dotenv
+
+load_dotenv(override=True)
 
 def get_requested_forecast_datetime(user_query):
     """
@@ -66,7 +69,7 @@ def get_weather_forecast(nx="81", ny="76", forecast_datetime=None):
     raw_key = os.getenv("KOREA_WEATHER_API_KEY")
     if raw_key is None:
         raise Exception("KOREA_WEATHER_API_KEY 환경 변수가 설정되어 있지 않습니다.")
-    SERVICE_KEY = quote(raw_key.strip())
+    SERVICE_KEY = raw_key.strip()
    
     
     url = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst"
@@ -125,13 +128,3 @@ def get_weather_forecast(nx="81", ny="76", forecast_datetime=None):
     
     print("API 호출 결과:", result)
     return result
-
-# 테스트 실행 예제
-if __name__ == "__main__":
-    # 예를 들어, 사용자가 "저녁 추천해줘"라고 요청했다고 가정합니다.
-    user_query = "202504081600"
-    forecast_dt = get_requested_forecast_datetime(user_query)
-    print("계산된 예보 시각:", forecast_dt)
-    
-    forecast = get_weather_forecast(forecast_datetime=forecast_dt)
-    print("최종 날씨 예보 결과:", forecast)

@@ -76,3 +76,7 @@ tasks.withType(Test).configureEach {
         junitXml.required.set(false) // XML 리포트도 비활성화 (선택 사항)
     }
 }
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs += ['-parameters']
+}

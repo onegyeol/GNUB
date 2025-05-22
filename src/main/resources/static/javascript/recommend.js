@@ -29,8 +29,8 @@ document.addEventListener("DOMContentLoaded", function () {
       })
         .then(response => response.json())
         .then(data => {
-          if (data.response) {
-            appendMessage(data.response, "answer");
+          if (data.reply) {
+            appendMessage(data.reply, "answer");
           } else {
             appendMessage("서버에서 응답을 받지 못했습니다.", "answer");
           }

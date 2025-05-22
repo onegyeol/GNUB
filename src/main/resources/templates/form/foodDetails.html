@@ -642,6 +642,64 @@
             z-index: 400;
         }
 
+        .tag-vote-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .blurred {
+            filter: blur(5px); /* 흐릿하게 */
+            pointer-events: none; /* 클릭 막기 */
+            user-select: none;    /* 드래그 막기 */
+            }
+        /* 버튼 기본 스타일 */
+        .tag-vote-list button {
+            background-color: #e0e0e0;
+            border: none;
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 14px;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            outline: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        /* 호버 효과 */
+        .tag-vote-list button:hover {
+            background-color: #d0d0d0;
+        }
+
+        /* 클릭(활성화) 효과 */
+        .tag-vote-list button:active {
+            transform: scale(0.96);
+        }
+
+        /* 사용자가 투표한 상태 (voted 클래스가 붙었을 때) */
+        .tag-vote-list button.voted {
+            background-color: white;
+            font-weight: bold;
+            color: black;
+            border: 1px solid #ccc;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
+        }
+
+
+        .tag-chart-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px 0;
+        }
+
+        .tag-chart-wrapper canvas {
+            max-width: 400px;
+            max-height: 400px;
+        }
+
         @media screen and (max-width: 768px) {
             .restaurant-card {
                 width: 95%;
@@ -759,14 +817,23 @@
 
                 </div>
             </div>
-            <div class="content hidden" id="tagContent">
+            <div class="content">
                 <div class="restaurant-card">
-                    <h2>
-                        맛도리 태그누르기기
-                    </h2>
-                    <div class="tag-container">
-                        <div class="tag-name">태그 들어갈 자리리</div>
-                    </div>
+                    <h2>음식점 유형</h2>
+                        <div th:id="'tagVoteSection-' + ${shop.id}"
+                             th:class="'tag-vote-list' + (${isLoggedIn} ? '' : ' blurred')">
+                            <button
+                                th:each="tagName : ${tagCounts.keySet()}"
+                                th:class="'tag-item'" 
+                                th:classappend="${votedMap != null and votedMap[shop.id] != null and votedMap[shop.id][tagName]} ? ' voted' : ''"
+                                th:attr="onclick=|voteTag(${shop.id}, '${tagName}')|"
+                                th:data-tagname="${tagName}">
+                                <span th:text="${tagName + ' (' + (tagCounts[tagName] != null ? tagCounts[tagName] : 0) + ')'}"></span>
+                        </div>
+                        <div class="tag-chart-wrapper">
+                            <canvas th:id="'tagRadarChart-' + ${shop.id}" width="500" height="500"></canvas>
+                            <canvas th:id="'tagRadarChart5-' + ${shop.id}" width="500" height="500"></canvas>
+                        </div>
                 </div>
             </div>
 
@@ -905,7 +972,6 @@
                             <p th:text="${menu.menuName}"></p>
                         </div>
                     </div>
-
                 </div>
             </div>
 
@@ -964,8 +1030,10 @@
             </div>
 
         </div>
-
         <script th:inline="javascript">
+            const isLoggedIn = [[${isLoggedIn}]];
+            const shopId = [[${shop.id}]];
+            const memberId = isLoggedIn ? [[${memberId}]] : null;
             function initMap() {
                 const latitude = parseFloat('[[${shop.lat}]]');
                 const longitude = parseFloat('[[${shop.lng}]]');
@@ -1098,11 +1166,116 @@
                         }).catch(err => console.error("❌ 폴더 생성 실패:", err));
                 };
             });
+
+            if (isLoggedIn) {
+                document.querySelector(`#tagVoteSection-${shopId}`).classList.remove('blurred');
+            }
+
+            function voteTag(shopId, tagName) {
+            fetch("/voteTag", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `shopId=${shopId}&tagName=${encodeURIComponent(tagName)}`
+            })
+            .then(response => response.json())
+            .then(newCount => {
+                const buttons = document.querySelectorAll(`[data-tagname="${tagName}"]`);
+                buttons.forEach(btn => {
+                    const isVoted = btn.classList.contains("voted");
+                    btn.classList.toggle("voted", !isVoted);
+                    btn.querySelector("span").textContent = `${tagName} (${newCount})`;
+                });
+            })
+            .catch(error => console.error("❌ 투표 실패:", error));
+        }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const shopId = Number('[[${shop.id}]]');
+        console.log("🎯 shopId =", shopId);
+
+        fetch(`/api/chart/${shopId}`)
+            .then(response => response.json())
+            .then(data => {
+    console.log("📊 chartData:", data);
+
+    const canvas6 = document.getElementById(`tagRadarChart-${shopId}`);
+    const canvas5 = document.getElementById(`tagRadarChart5-${shopId}`);
+
+    if (!canvas6 || !canvas5) {
+        console.warn("⚠️ Canvas 요소를 찾지 못했습니다.");
+        return;
+    }
+
+    const ctx6 = canvas6.getContext('2d');
+    const ctx5 = canvas5.getContext('2d');
+
+    if (!ctx6 || !ctx5) {
+        console.warn("❌ Canvas context를 가져오지 못했습니다.");
+        return;
+    }
+
+    // ✅ 안전한 getter
+    const safeGet = (key) => {
+        const value = data[key];
+        return typeof value === 'number' ? value : 0;
+    };
+
+    const label6 = ['맛있어요', '신선해요', '가성비 좋아요', '청결해요', '친절해요', '분위기 좋아요'];
+    const label5 = ['혼밥하기 좋아요', '데이트하기 좋아요', '단체로 가기 좋아요', '주차가 가능해요', '아쉬워요'];
+
+    console.log("✅ label6 확인:", label6.map(k => `${k}: ${safeGet(k)}`));
+
+    // ✅ 6각형 Chart
+    new Chart(ctx6, {
+        type: 'radar',
+        data: {
+            labels: label6,
+            datasets: [{
+                label: '태그 종합 점수',
+                data: label6.map(k => safeGet(k)),
+                fill: true,
+                borderColor: 'orange',
+                backgroundColor: 'rgba(255, 165, 0, 0.3)',
+                pointBackgroundColor: 'orange'
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                r: { suggestedMin: 0, suggestedMax: 3000 }
+            }
+        }
+    });
+
+    // ✅ 5각형 Chart
+    new Chart(ctx5, {
+        type: 'radar',
+        data: {
+            labels: label5,
+            datasets: [{
+                label: '기타 태그',
+                data: label5.map(k => safeGet(k)),
+                fill: true,
+                borderColor: 'blue',
+                backgroundColor: 'rgba(0, 123, 255, 0.3)',
+                pointBackgroundColor: 'blue'
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                r: { suggestedMin: 0, suggestedMax: 3000 }
+            }
+        }
+    });
+});
+    });
         </script>
 
         <!-- Google Maps API 로딩 -->
         <script th:src="'https://maps.googleapis.com/maps/api/js?key=' + ${googleMapsApiKey} + '&loading=async'"
         async></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </body>
 

@@ -31,16 +31,13 @@ public class ShopTagMappingService {
             for (ShopTag tag : shopTags) {
                 if (shop.getName().trim().equalsIgnoreCase(tag.getName().trim())) {
                     // 연관관계 설정
-                    shop.getShopTags().add(tag);
-                    tag.getShops().add(shop);
+                    tag.setShop(shop);
                 }
             }
         }
 
         // 저장 (연관 관계가 업데이트됨)
-        shopRepository.saveAll(shops);
         shopTagRepository.saveAll(shopTags); // 양방향 관계인 경우 필요
     }
 
 }
-

@@ -31,8 +31,7 @@ public class GptSearchController {
         String url = "http://localhost:5000/chat";
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json; charset=UTF-8");  
-        headers.add("Accept-Charset", "UTF-8"); 
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
         Map<String, String> requestBody = new HashMap<>();
         requestBody.put("query", query);

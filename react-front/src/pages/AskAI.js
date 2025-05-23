@@ -37,6 +37,30 @@ const AskAI = () => {
 
   return (
     <div className="ask-container">
+      <header className="header-content">
+        <div className="common-desk-header">
+          <div className="header-wrap">
+            <div className="search-form">
+              <form>
+                <div className="input-wrap">
+                  <input
+                    className="search-input"
+                    type="search"
+                    placeholder="지역, 음식 또는 식당명 입력"
+                    maxLength={255}
+                    autoComplete="off"
+                  />
+                  <button type="submit" className="btn-search">
+                    <img src="https://github.com/user-attachments/assets/19865e59-1076-4b33-ae6a-9cfbd7b5bbb2" alt="검색버튼" />
+                  </button>
+                </div>
+              </form>
+            </div>
+            <div className="auth-Box"></div>
+          </div>
+        </div>
+      </header>
+
       <div className="chat-box">
         {messages.map((msg, idx) => (
           <div key={idx} className={`chat-message ${msg.type}`}>
@@ -79,6 +103,14 @@ const AskAI = () => {
                                 <line x1="15" y1="6" x2="15" y2="21" />
                             </svg>
                             <span>지도</span>
+                        </Link>
+
+                        <Link to="/myPage/bookmarkList" className="nav-item">
+                          <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 7h5l2 3h11v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" />
+                          </svg>
+                          <span>보관함</span>
                         </Link>
 
                         <Link to="/myPage" className="nav-item">

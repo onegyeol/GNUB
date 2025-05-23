@@ -61,11 +61,6 @@ public class GptSearchController {
 
     }
 
-    @GetMapping("/ask")
-    public String askPage() {
-        return "form/recommend";
-    }
-
  
 
 }

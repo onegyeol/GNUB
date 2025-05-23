@@ -11,7 +11,7 @@ export const askQuestion = async (query) => {
     const contentType = response.headers['content-type'];
     if (contentType && contentType.includes('text/html')) {
       alert("로그인이 필요한 서비스입니다.");
-      window.location.href = "/member/login";
+      window.location.href = "/mobile/member/login";
       return null;
     }
 

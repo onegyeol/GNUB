@@ -259,6 +259,26 @@ html {
     /* 마우스 올렸을 때 흐리게 만드는 효과 */
 }
 
+.campus-toggle-bar {
+    width: 98%;
+    max-width: 1070px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    box-sizing: border-box;
+}
+
 .campus-text {
     position: absolute;
     top: 50%;
@@ -291,12 +311,13 @@ html {
     border-radius: 15px;
     font-size: 16px;
     box-sizing: border-box;
-}
+}  
 
 .tag-list {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
+    margin-left:1%;
 }
 
 .tag-item {

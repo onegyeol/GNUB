@@ -31,7 +31,7 @@ export default function LoginPage() {
   return (
     <div className="login-wrapper">
       <div className="login-container">
-        <a href="/">
+        <a href="/mobile">
           <img
             src="https://github.com/onegyeol/GNUB/blob/main/%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9(%E1%84%87%E1%85%A2%E1%84%80%E1%85%A7%E1%86%BCX).png?raw=true"
             alt="로고"

@@ -27,6 +27,7 @@ function App() {
         <Route path="/myPage/bookmarkList" element={<BookmarkList />} />
         <Route path="/myPage/likeList" element={<LikeList />} />
         <Route path="/search" element={<SearchPage />} />
+        <Route path="/search/:tag" element={<SearchPage />} />
         <Route path="/board/main" element={<BoardMain />}/>
         <Route path="/board/:id" element={<BoardDetails />}/>
         <Route path="/ask" element={<ASKAI />}/>

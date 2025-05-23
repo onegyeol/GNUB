@@ -12,7 +12,7 @@ export const saveBookmark = (shopId, folderId = null) =>
   });
 
 export const deleteBookmark = (shopId) =>
-  axios.delete(`${BASE}/api/bookmarks/`, {
+  axios.delete(`${BASE}/api/bookmarks`, {
     params: { shopId },
     withCredentials: true,
   });

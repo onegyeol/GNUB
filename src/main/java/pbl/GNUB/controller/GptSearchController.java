@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.http.*;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,7 +29,7 @@ public class GptSearchController {
     public ResponseEntity<Map<String, String>> askQuestion(@RequestBody Map<String, String> body) throws JsonProcessingException {
         String query = body.get("query");
 
-        String url = "http://localhost:5000/chat";
+        String url = "http://localhost:5050/chat";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -49,7 +50,7 @@ public class GptSearchController {
         if (flaskResponse.getStatusCode().is2xxSuccessful() && flaskResponse.getBody() != null) {
             Object replyObj = flaskResponse.getBody().get("reply");
             if (replyObj instanceof String reply) {
-                result.put("reply", reply);  // ✅ key를 "reply"로 변경
+                result.put("reply", reply);  
             } else {
                 result.put("reply", "응답 형식이 잘못되었습니다.");
             }
@@ -59,5 +60,12 @@ public class GptSearchController {
         return ResponseEntity.ok(result);
 
     }
+
+    @GetMapping("/ask")
+    public String askPage() {
+        return "form/recommend";
+    }
+
+ 
 
 }

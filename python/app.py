@@ -48,9 +48,11 @@ def chat():
         
         return jsonify({"reply": final_response})
     except Exception as e:
+        import traceback
+        traceback.print_exc()  # 🔴 이 줄이 없으면 콘솔에 에러 로그가 안 보임
         app.logger.error(traceback.format_exc())
         return jsonify({"error": "서버 내부 오류가 발생했습니다."}), 500
 
 if __name__ == '__main__':
     # 0.0.0.0으로 외부 접근 가능하게 하고, 포트는 5000번으로 실행
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5050)

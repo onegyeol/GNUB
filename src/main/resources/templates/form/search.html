@@ -675,7 +675,7 @@
                     <div class="search-form">
                         <form action="/search" method="get">
                             <div class="input-wrap">
-                                <input class="search-input" type="search" id="query" name="query" placeholder="지역, 음식 또는 식당명 입력" th:value="${searchTerm}" maxlength="255" autocomplete="off">
+                                <input class="search-input" type="search" id="query" name="query" placeholder="메뉴 또는 식당명 입력" th:value="${searchTerm}" maxlength="255" autocomplete="off">
                                 <button type="submit" class="btn-search">
                                         <img src="https://github.com/user-attachments/assets/19865e59-1076-4b33-ae6a-9cfbd7b5bbb2" alt="검색버튼">
                                 </button>
@@ -771,7 +771,6 @@
                             <span class="restaurant_like" th:text="${shop.likeCount}"></span>
                         </div>                        
                         <span class="restaurant_address" th:text="${shop.address}"></span> <br>
-                        <span class="restaurant_addressinfo" th:text="${shop.addressInfo}"></span>
                         <div class="restaurant-menu-list">
                             <span th:each="menu, iterStat : ${shop.shopMenus}"
                                 th:class="${iterStat.index > 0} ? 'restaurant-menu hidden-menu' : 'restaurant-menu'"

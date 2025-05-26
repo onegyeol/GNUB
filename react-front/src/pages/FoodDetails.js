@@ -1,11 +1,13 @@
 // src/pages/FoodDetails.js
 
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate , Link} from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { fetchShopDetails } from '../service/FoodDetailsApi';
 import BookmarkButton from '../components/BookmarkButton';
 import LikeButton from '../components/LikeButton';
 import GoogleMapView from '../components/GoogleMapView';
+import TagVoteSection from '../components/TagVoteSection'; //태그 투표
+import RadarChartGroup from '../components/RadarChartGroup'; // 태그 육각형
 import './css/FoodDetails.css';
 
 const FoodDetailsPage = () => {
@@ -18,6 +20,8 @@ const FoodDetailsPage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [tagCounts, setTagCounts] = useState({});
+  const [votedMap, setVotedMap] = useState({}); // 사용자별 투표 여부
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -35,15 +39,47 @@ const FoodDetailsPage = () => {
         }
   
         setShop(data.shop);
-        setShopMenus(data.shopMenus || []); 
+        setShopMenus(data.shopMenus || []);
         setIsBookmarked(data.isBookmarked);
         setIsLoggedIn(data.isLoggedIn);
+        setTagCounts(data.tagCounts || {}); 
       })
       .catch(err => {
         console.error("API 오류:", err);
       });
   }, [id]);
   
+
+  const handleTagVote = (tagName) => {
+    if (!isLoggedIn) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+
+    fetch('/voteTag', {
+      method: 'POST',
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `shopId=${shop.id}&tagName=${encodeURIComponent(tagName)}`
+    })
+      .then(res => res.json())
+      .then(newCount => {
+        setTagCounts(prev => ({
+          ...prev,
+          [tagName]: newCount
+        }));
+
+        setVotedMap(prev => ({
+          ...prev,
+          [shop.id]: {
+            ...prev[shop.id],
+            [tagName]: !(prev[shop.id]?.[tagName])
+          }
+        }));
+      });
+  };
+
+
+
 
   if (!shop) return <div>로딩 중...</div>;
 
@@ -105,53 +141,71 @@ const FoodDetailsPage = () => {
           <LikeButton shopId={shop.id} />
         </div>
 
-          <div className="restaurant-card">
-            <h2>
-              <img src="https://github.com/user-attachments/assets/9b60d89e-c39c-4fca-ae68-78b49d267127" alt="영업시간 이모티콘" />
-              영업 시간
-            </h2>
-            <br/>
+        <div className="restaurant-card">
+          <h2>음식점 유형</h2>
 
-            {!shop.tue && !shop.wed && !shop.thu && !shop.fri && !shop.sat && !shop.sun ? (
-              <div>{shop.mon}</div>
-            ) : (
-              <div className="business-hours">
-                <p><b>월요일 :</b> {shop.mon || '휴무'}</p>
-                <p><b>화요일 :</b> {shop.tue || shop.mon || '휴무'}</p>
-                <p><b>수요일 :</b> {shop.wed || shop.mon || '휴무'}</p>
-                <p><b>목요일 :</b> {shop.thu || shop.mon || '휴무'}</p>
-                <p><b>금요일 :</b> {shop.fri || shop.mon || '휴무'}</p>
-                <p><b>토요일 :</b> {shop.sat || shop.mon || '휴무'}</p>
-                <p><b>일요일 :</b> {shop.sun || shop.mon || '휴무'}</p>
+          <TagVoteSection
+            shopId={shop.id}
+            tagCounts={tagCounts}
+            isLoggedIn={isLoggedIn}
+            votedMap={votedMap}
+            onVote={handleTagVote}
+          />
+
+          <div className={`tag-chart-wrapper ${!isLoggedIn ? 'blurred' : ''}`}>
+            <RadarChartGroup tagCounts={tagCounts} />
+          </div>
+
+        </div>
+
+
+        <div className="restaurant-card">
+          <h2>
+            <img src="https://github.com/user-attachments/assets/9b60d89e-c39c-4fca-ae68-78b49d267127" alt="영업시간 이모티콘" />
+            영업 시간
+          </h2>
+          <br />
+
+          {!shop.tue && !shop.wed && !shop.thu && !shop.fri && !shop.sat && !shop.sun ? (
+            <div>{shop.mon}</div>
+          ) : (
+            <div className="business-hours">
+              <p><b>월요일 :</b> {shop.mon || '휴무'}</p>
+              <p><b>화요일 :</b> {shop.tue || shop.mon || '휴무'}</p>
+              <p><b>수요일 :</b> {shop.wed || shop.mon || '휴무'}</p>
+              <p><b>목요일 :</b> {shop.thu || shop.mon || '휴무'}</p>
+              <p><b>금요일 :</b> {shop.fri || shop.mon || '휴무'}</p>
+              <p><b>토요일 :</b> {shop.sat || shop.mon || '휴무'}</p>
+              <p><b>일요일 :</b> {shop.sun || shop.mon || '휴무'}</p>
+            </div>
+          )}
+
+          <br /> <br />
+          <h2>
+            <img src="https://github.com/user-attachments/assets/7d9701cc-3c84-4f7d-9404-0af56f2afc16" alt="메뉴 이모티콘" />
+            메뉴
+          </h2>
+
+          <div className="menu-section">
+            <ul className="menu-grid">
+              {shopMenus.slice(0, isExpanded ? shopMenus.length : 4).map(menu => (
+                <li key={menu.id} className="menu-item">
+                  <span className="menu-name">{menu.menuName}</span>
+                  <span className="dots"></span>
+                  <span className="menu-price">{menu.price}</span>
+                </li>
+              ))}
+            </ul>
+
+            {shopMenus.length > 4 && (
+              <div className="more-menu-btn" onClick={() => setIsExpanded(!isExpanded)}>
+                <span>{isExpanded ? '접기' : '더보기'}</span>
+                <span>{isExpanded ? '▲' : '▼'}</span>
               </div>
             )}
-
-            <br/> <br/>
-            <h2>
-              <img src="https://github.com/user-attachments/assets/7d9701cc-3c84-4f7d-9404-0af56f2afc16" alt="메뉴 이모티콘" />
-              메뉴
-            </h2>
-
-            <div className="menu-section">
-              <ul className="menu-grid">
-                {shopMenus.slice(0, isExpanded ? shopMenus.length : 4).map(menu => (
-                  <li key={menu.id} className="menu-item">
-                    <span className="menu-name">{menu.menuName}</span>
-                    <span className="dots"></span>
-                    <span className="menu-price">{menu.price}</span>
-                  </li>
-                ))}
-              </ul>
-
-              {shopMenus.length > 4 && (
-                <div className="more-menu-btn" onClick={() => setIsExpanded(!isExpanded)}>
-                  <span>{isExpanded ? '접기' : '더보기'}</span>
-                  <span>{isExpanded ? '▲' : '▼'}</span>
-                </div>
-              )}
-            </div>
           </div>
-        
+        </div>
+
 
         <div className="restaurant-card">
           <h2>음식 사진 </h2>
@@ -166,51 +220,51 @@ const FoodDetailsPage = () => {
         </div>
 
         <div className="bottom-nav-wrapper">
-        <nav className="bottom-nav">
-          <div className="nav-container">
-            <Link to="/board/main" className="nav-item">
-              <svg className="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M3 9H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M9 21V9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              <span>매거진</span>
-            </Link>
+          <nav className="bottom-nav">
+            <div className="nav-container">
+              <Link to="/board/main" className="nav-item">
+                <svg className="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M3 9H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M9 21V9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                <span>매거진</span>
+              </Link>
 
-            <Link to="/" className="nav-item">
-              <svg className="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M3 9.5L12 3l9 6.5V21a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-5H10v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z" />
-              </svg>
-              <span>홈</span>
-            </Link>
+              <Link to="/" className="nav-item">
+                <svg className="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M3 9.5L12 3l9 6.5V21a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-5H10v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z" />
+                </svg>
+                <span>홈</span>
+              </Link>
 
-            <Link to="/map" className="nav-item">
-              <svg className="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21 3 6" />
-                <line x1="9" y1="3" x2="9" y2="18" />
-                <line x1="15" y1="6" x2="15" y2="21" />
-              </svg>
-              <span>지도</span>
-            </Link>
+              <Link to="/map" className="nav-item">
+                <svg className="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21 3 6" />
+                  <line x1="9" y1="3" x2="9" y2="18" />
+                  <line x1="15" y1="6" x2="15" y2="21" />
+                </svg>
+                <span>지도</span>
+              </Link>
 
-            <Link to="/myPage/bookmarkList" className="nav-item">
-              <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 7h5l2 3h11v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" />
-              </svg>
-              <span>보관함</span>
-            </Link>
+              <Link to="/myPage/bookmarkList" className="nav-item">
+                <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 7h5l2 3h11v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" />
+                </svg>
+                <span>보관함</span>
+              </Link>
 
-            <Link to="/myPage" className="nav-item">
-              <svg className="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                <circle cx="12" cy="7" r="4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              <span>마이</span>
-            </Link>
-          </div>
-        </nav>
-      </div>
+              <Link to="/myPage" className="nav-item">
+                <svg className="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  <circle cx="12" cy="7" r="4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                <span>마이</span>
+              </Link>
+            </div>
+          </nav>
+        </div>
       </div>
     </div>
   );

@@ -1,0 +1,47 @@
+.tag-vote-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 30px;
+  }
+  
+  /* 흐림 효과 (비로그인 상태) */
+  .tag-vote-list.blurred {
+    filter: blur(5px);
+    pointer-events: none;
+    user-select: none;
+  }
+  
+  /* 기본 태그 버튼 스타일 */
+  .tag-item {
+    background-color: #e0e0e0;
+    border: none;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  /* 호버 시 */
+  .tag-item:hover {
+    background-color: #d0d0d0;
+  }
+  
+  /* 클릭 시 효과 */
+  .tag-item:active {
+    transform: scale(0.96);
+  }
+  
+  /* 투표된 버튼 */
+  .tag-item.voted {
+    background-color: white;
+    font-weight: bold;
+    color: black;
+    border: 1px solid #ccc;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
+  }
+  

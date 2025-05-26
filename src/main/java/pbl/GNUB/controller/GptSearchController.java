@@ -29,7 +29,7 @@ public class GptSearchController {
     public ResponseEntity<Map<String, String>> askQuestion(@RequestBody Map<String, String> body) throws JsonProcessingException {
         String query = body.get("query");
 
-        String url = "http://localhost:5050/chat";
+        String url = "http://localhost:5000/chat";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { fetchSearchResults, fetchTagSearchResults } from '../service/SearchApi';
-import { useNavigate, Link, useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, Link, useParams, useSearchParams, useLocation } from 'react-router-dom';
 import './css/Search.css';
 
 const SearchPage = () => {
@@ -13,8 +13,9 @@ const SearchPage = () => {
     const [showCampusBanner, setShowCampusBanner] = useState(true);
     const [activeTags, setActiveTags] = useState([]);
     const [campusFilter, setCampusFilter] = useState({ gajwa: true, chilam: true });
-    const [taggedShops, setTaggedShops] = useState({});
     const { tag } = useParams();
+    const [isLoading, setIsLoading] = useState(false);
+    const location = useLocation();
 
     const handleSearchSubmit = (e) => {
         e.preventDefault();
@@ -23,42 +24,55 @@ const SearchPage = () => {
         }
     };
 
-    const toggleTag = (tag) => {
-        setActiveTags((prev) =>
-            prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
-        );
-    };
-
     const toggleCampus = (campus) => {
-        setCampusFilter((prev) => ({ ...prev, [campus]: !prev[campus] }));
+        setCampusFilter((prev) => ({
+            ...prev,
+            [campus]: !prev[campus],
+        }));
     };
 
     const filteredShops = (shops) =>
         shops.filter((shop) => {
             const isChilam = shop.restId?.startsWith('C');
             const campus = isChilam ? 'chilam' : 'gajwa';
-            return campusFilter[campus];
+            const campusMatch = campusFilter[campus];
+            const tagMatch =
+                activeTags.length === 0 ||
+                (shop.tags && shop.tags.some((tag) => activeTags.includes(tag)));
+            const menuMatch = true;
+            return campusMatch && tagMatch && menuMatch;
         });
 
     useEffect(() => {
         const q = searchParams.get('query');
+        const menuFilter = searchParams.get('menu');
         const target = q || tag;
 
         if (target) {
             setQuery(target);
             setSearchQuery(target);
+            setSearchTerm(menuFilter || '');
+            setIsLoading(true); // 검색 시작
 
             const fetchData = q ? fetchSearchResults : fetchTagSearchResults;
 
             fetchData(target)
                 .then(data => {
-                    console.log("✅ 받은 데이터", data); // ← 확인 필수
-                    setShops(data.shops);
+                    let resultShops = data.shops;
+                    if (menuFilter) {
+                        resultShops = resultShops.filter(shop =>
+                            (shop.shopMenus || []).some(menu =>
+                                menu.menuName && menu.menuName.includes(menuFilter)
+                            )
+                        );
+                    }
+                    setShops(resultShops);
                 })
                 .catch(err => {
                     console.error('검색 에러:', err);
                     setShops([]);
-                });
+                })
+                .finally(() => setIsLoading(false)); // 검색 완료
         } else {
             setQuery('');
             setShops([]);
@@ -72,12 +86,14 @@ const SearchPage = () => {
                 <div className="common-desk-header">
                     <div className="header-wrap">
                         <div className="search-form">
-                            <form>
+                            <form onSubmit={handleSearchSubmit}>
                                 <div className="input-wrap">
                                     <input
                                         className="search-input"
                                         type="search"
-                                        placeholder="지역, 음식 또는 식당명 입력"
+                                        value={searchQuery}
+                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                        placeholder="메뉴 또는 식당명 입력"
                                         maxLength={255}
                                         autoComplete="off"
                                     />
@@ -99,6 +115,7 @@ const SearchPage = () => {
                             <div
                                 className={`image-wrapper left-image ${!campusFilter.gajwa ? 'blurred' : ''}`}
                                 onClick={() => toggleCampus('gajwa')}
+                                style={{ pointerEvents: 'auto' }}
                             >
                                 <img src="https://www.gnu.ac.kr/upload/main/na/bbs_1047/ntt_2258160/img_796b61c4-e42a-44bc-8dff-4887eaa1c37f1730876309843.jpg" alt="가좌캠퍼스" />
                                 <p className="campus-text">가좌캠퍼스</p>
@@ -106,6 +123,7 @@ const SearchPage = () => {
                             <div
                                 className={`image-wrapper right-image ${!campusFilter.chilam ? 'blurred' : ''}`}
                                 onClick={() => toggleCampus('chilam')}
+                                style={{ pointerEvents: 'auto' }}
                             >
                                 <img src="https://www.gnu.ac.kr/common/nttEditorImgView.do?imgKey=96b1e7e4b113c43914996108683bca1b" alt="칠암캠퍼스" />
                                 <p className="campus-text">칠암캠퍼스</p>
@@ -127,38 +145,44 @@ const SearchPage = () => {
                 {query ? `"${query}" 검색결과` : '검색 결과'}
             </p>
 
-            <div className="tag-container">
-                <div className="tag-search">
-                    <input
-                        type="text"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        placeholder="태그 검색..."
-                        className="tag-search-input"
-                    />
+            {!searchParams.get('query') && (
+                <div className="tag-container">
+                    <form
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            const base = tag || '전체';
+                            const menu = searchTerm.trim();
+                            if (menu) {
+                                fetchTagSearchResults(base, menu)
+                                    .then((data) => {
+                                        setShops(data.shops || []);
+                                    })
+                                    .catch((err) => {
+                                        console.error('검색 실패:', err);
+                                        setShops([]);
+                                    });
+                            }
+                        }}
+                    >
+                        <input
+                            type="text"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            placeholder="메뉴명을 입력하세요 (예: 국밥)"
+                            className="tag-search-input"
+                        />
+                    </form>
                 </div>
-                <div className="tag-list">
-                    <button className="tag-item active" onClick={() => setActiveTags([])}>
-                        모두보기
-                    </button>
-                    {Object.keys(taggedShops)
-                        .filter((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase()))
-                        .map((tag) => (
-                            <button
-                                key={tag}
-                                className={`tag-item ${activeTags.includes(tag) ? 'active' : ''}`}
-                                onClick={() => toggleTag(tag)}
-                            >
-                                {tag}
-                            </button>
-                        ))}
-                </div>
-            </div>
+            )}
+
+
 
             <main className="search_menu">
                 <div className="restaurant_list">
-                    {shops.length > 0 ? (
-                        shops.map(shop => (
+                    {isLoading ? (
+                        <p style={{ textAlign: 'center', color: '#666' }}>🔍 검색 중...</p>
+                    ) : filteredShops(shops).length > 0 ? (
+                        filteredShops(shops).map(shop => (
                             <div className="restaurant_item" key={shop.id}>
                                 <div className="restaurant_info">
                                     <Link to={`/foodDetails/${shop.id}`}>

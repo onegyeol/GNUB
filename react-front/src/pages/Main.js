@@ -9,6 +9,8 @@ const Main = () => {
   const [campusFilter, setCampusFilter] = useState({ gajwa: true, chilam: true });
   const [searchTerm, setSearchTerm] = useState('');
   const [showCampusBanner, setShowCampusBanner] = useState(true);
+  const [searchInput, setSearchInput] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchMainPageData().then((data) => {
@@ -23,20 +25,36 @@ const Main = () => {
   };
 
   const toggleCampus = (campus) => {
-    setCampusFilter((prev) => ({ ...prev, [campus]: !prev[campus] }));
+    setCampusFilter((prev) => ({
+      ...prev,
+      [campus]: !prev[campus], 
+    }));
+  };
+  
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (searchInput.trim()) {
+      navigate(`/search?query=${encodeURIComponent(searchInput.trim())}`);
+    }
   };
 
   const filteredSections = Object.entries(taggedShops)
     .filter(([tag]) => activeTags.length === 0 || activeTags.includes(tag))
     .filter(([_, value]) => value && value.shops);
 
-  const filteredShops = (shops) =>
-    shops.filter((shop) => {
-      const isChilam = shop.restId?.startsWith('C');
-      const campus = isChilam ? 'chilam' : 'gajwa';
-      return campusFilter[campus];
+    const filteredShops = (shops) =>
+      shops.filter((shop) => {
+        const isChilam = shop.restId?.startsWith('C');
+        const campus = isChilam ? 'chilam' : 'gajwa';
+        return campusFilter[campus];
     });
 
+    useEffect(() => {
+      console.log('캠퍼스 상태 변경됨:', campusFilter);
+    }, [campusFilter]);
+    
+    
 
   return (
     <div id="root">
@@ -44,20 +62,23 @@ const Main = () => {
         <div className="common-desk-header">
           <div className="header-wrap">
             <div className="search-form">
-              <form>
+              <form onSubmit={handleSubmit}>  {/* ✅ onSubmit 추가 */}
                 <div className="input-wrap">
                   <input
                     className="search-input"
                     type="search"
-                    placeholder="지역, 음식 또는 식당명 입력"
+                    placeholder="메뉴 또는 식당명 입력"
                     maxLength={255}
                     autoComplete="off"
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
                   />
                   <button type="submit" className="btn-search">
                     <img src="https://github.com/user-attachments/assets/19865e59-1076-4b33-ae6a-9cfbd7b5bbb2" alt="검색버튼" />
                   </button>
                 </div>
               </form>
+
             </div>
             <div className="auth-Box"></div>
           </div>
@@ -71,16 +92,18 @@ const Main = () => {
               <div
                 className={`image-wrapper left-image ${!campusFilter.gajwa ? 'blurred' : ''}`}
                 onClick={() => toggleCampus('gajwa')}
+                style={{ pointerEvents: 'auto' }}
               >
-                <img src="https://www.gnu.ac.kr/upload/main/na/bbs_1047/ntt_2258160/img_796b61c4-e42a-44bc-8dff-4887eaa1c37f1730876309843.jpg" alt="가좌캠퍼스" />
-                <p className="campus-text">가좌캠퍼스</p>
+                  <img src="https://www.gnu.ac.kr/upload/main/na/bbs_1047/ntt_2258160/img_796b61c4-e42a-44bc-8dff-4887eaa1c37f1730876309843.jpg" alt="가좌캠퍼스" />
+                  <p className="campus-text">가좌캠퍼스</p>
               </div>
               <div
                 className={`image-wrapper right-image ${!campusFilter.chilam ? 'blurred' : ''}`}
                 onClick={() => toggleCampus('chilam')}
+                style={{ pointerEvents: 'auto' }}
               >
-                <img src="https://www.gnu.ac.kr/common/nttEditorImgView.do?imgKey=96b1e7e4b113c43914996108683bca1b" alt="칠암캠퍼스" />
-                <p className="campus-text">칠암캠퍼스</p>
+                  <img src="https://www.gnu.ac.kr/common/nttEditorImgView.do?imgKey=96b1e7e4b113c43914996108683bca1b" alt="칠암캠퍼스" />
+                  <p className="campus-text">칠암캠퍼스</p>
               </div>
             </div>
           </div>

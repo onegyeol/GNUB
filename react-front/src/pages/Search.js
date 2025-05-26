@@ -16,6 +16,16 @@ const SearchPage = () => {
     const [taggedShops, setTaggedShops] = useState({});
     const { tag } = useParams();
 
+    const handleMenuKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            const targetTag = tag || '전체';
+            if (searchTerm.trim()) {
+                navigate(`/search/${encodeURIComponent(targetTag)}?menu=${encodeURIComponent(searchTerm.trim())}`);
+            }
+        }
+    };
+
     const handleSearchSubmit = (e) => {
         e.preventDefault();
         if (searchQuery.trim()) {
@@ -37,23 +47,37 @@ const SearchPage = () => {
         shops.filter((shop) => {
             const isChilam = shop.restId?.startsWith('C');
             const campus = isChilam ? 'chilam' : 'gajwa';
-            return campusFilter[campus];
+            const campusMatch = campusFilter[campus];
+            const tagMatch =
+                activeTags.length === 0 ||
+                (shop.tags && shop.tags.some((tag) => activeTags.includes(tag)));
+            const menuMatch = true;
+            return campusMatch && tagMatch && menuMatch;
         });
 
     useEffect(() => {
         const q = searchParams.get('query');
+        const menuFilter = searchParams.get('menu');
         const target = q || tag;
 
         if (target) {
             setQuery(target);
             setSearchQuery(target);
+            setSearchTerm(menuFilter || '');
 
             const fetchData = q ? fetchSearchResults : fetchTagSearchResults;
 
             fetchData(target)
                 .then(data => {
-                    console.log("✅ 받은 데이터", data); // ← 확인 필수
-                    setShops(data.shops);
+                    let resultShops = data.shops;
+                    if (menuFilter) {
+                        resultShops = resultShops.filter(shop =>
+                            (shop.shopMenus || []).some(menu =>
+                                menu.menuName && menu.menuName.includes(menuFilter)
+                            )
+                        );
+                    }
+                    setShops(resultShops);
                 })
                 .catch(err => {
                     console.error('검색 에러:', err);
@@ -65,19 +89,20 @@ const SearchPage = () => {
         }
     }, [searchParams, tag]);
 
-
     return (
         <div id="root">
             <header className="header-content">
                 <div className="common-desk-header">
                     <div className="header-wrap">
                         <div className="search-form">
-                            <form>
+                            <form onSubmit={handleSearchSubmit}>
                                 <div className="input-wrap">
                                     <input
                                         className="search-input"
                                         type="search"
-                                        placeholder="지역, 음식 또는 식당명 입력"
+                                        value={searchQuery}
+                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                        placeholder="메뉴 또는 식당명 입력"
                                         maxLength={255}
                                         autoComplete="off"
                                     />
@@ -128,37 +153,41 @@ const SearchPage = () => {
             </p>
 
             <div className="tag-container">
-                <div className="tag-search">
+                <form
+                    onSubmit={(e) => {
+                        e.preventDefault();
+                        const base = tag || '전체';
+                        const menu = searchTerm.trim();
+                        if (menu) {
+                            fetchTagSearchResults(base, menu)
+                                .then((data) => {
+                                    setShops(data.shops || []);
+                                })
+                                .catch((err) => {
+                                    console.error('검색 실패:', err);
+                                    setShops([]);
+                                });
+                        }
+                    }}
+                >
                     <input
                         type="text"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        placeholder="태그 검색..."
+                        placeholder="메뉴명을 입력하세요 (예: 국밥)"
                         className="tag-search-input"
                     />
-                </div>
-                <div className="tag-list">
-                    <button className="tag-item active" onClick={() => setActiveTags([])}>
-                        모두보기
+                    <button type="submit" className="edit-btn">
+                        검색
                     </button>
-                    {Object.keys(taggedShops)
-                        .filter((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase()))
-                        .map((tag) => (
-                            <button
-                                key={tag}
-                                className={`tag-item ${activeTags.includes(tag) ? 'active' : ''}`}
-                                onClick={() => toggleTag(tag)}
-                            >
-                                {tag}
-                            </button>
-                        ))}
-                </div>
+                </form>
             </div>
+
 
             <main className="search_menu">
                 <div className="restaurant_list">
-                    {shops.length > 0 ? (
-                        shops.map(shop => (
+                    {filteredShops(shops).length > 0 ? (
+                        filteredShops(shops).map(shop => (
                             <div className="restaurant_item" key={shop.id}>
                                 <div className="restaurant_info">
                                     <Link to={`/foodDetails/${shop.id}`}>

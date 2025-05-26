@@ -346,6 +346,12 @@
   padding: 16px;
 }
 
+.blurred {
+  filter: blur(5px);
+  pointer-events: none;
+  user-select: none;
+}
+
 
 .menu-image {
   border-radius: 10px;

@@ -254,11 +254,6 @@ html {
     /* 흐려지는 효과 부드럽게 전환 */
 }
 
-.image-wrapper:hover img {
-    filter: blur(5px);
-    /* 마우스 올렸을 때 흐리게 만드는 효과 */
-}
-
 .campus-toggle-bar {
     width: 98%;
     max-width: 1070px;

@@ -13,30 +13,14 @@ const SearchPage = () => {
     const [showCampusBanner, setShowCampusBanner] = useState(true);
     const [activeTags, setActiveTags] = useState([]);
     const [campusFilter, setCampusFilter] = useState({ gajwa: true, chilam: true });
-    const [taggedShops, setTaggedShops] = useState({});
     const { tag } = useParams();
-
-    const handleMenuKeyDown = (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            const targetTag = tag || '전체';
-            if (searchTerm.trim()) {
-                navigate(`/search/${encodeURIComponent(targetTag)}?menu=${encodeURIComponent(searchTerm.trim())}`);
-            }
-        }
-    };
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSearchSubmit = (e) => {
         e.preventDefault();
         if (searchQuery.trim()) {
             navigate(`/search?query=${encodeURIComponent(searchQuery.trim())}`);
         }
-    };
-
-    const toggleTag = (tag) => {
-        setActiveTags((prev) =>
-            prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
-        );
     };
 
     const toggleCampus = (campus) => {
@@ -64,6 +48,7 @@ const SearchPage = () => {
             setQuery(target);
             setSearchQuery(target);
             setSearchTerm(menuFilter || '');
+            setIsLoading(true); // 검색 시작
 
             const fetchData = q ? fetchSearchResults : fetchTagSearchResults;
 
@@ -82,12 +67,14 @@ const SearchPage = () => {
                 .catch(err => {
                     console.error('검색 에러:', err);
                     setShops([]);
-                });
+                })
+                .finally(() => setIsLoading(false)); // 검색 완료
         } else {
             setQuery('');
             setShops([]);
         }
     }, [searchParams, tag]);
+
 
     return (
         <div id="root">
@@ -177,16 +164,15 @@ const SearchPage = () => {
                         placeholder="메뉴명을 입력하세요 (예: 국밥)"
                         className="tag-search-input"
                     />
-                    <button type="submit" className="edit-btn">
-                        검색
-                    </button>
                 </form>
             </div>
 
 
             <main className="search_menu">
                 <div className="restaurant_list">
-                    {filteredShops(shops).length > 0 ? (
+                    {isLoading ? (
+                        <p style={{ textAlign: 'center', color: '#666' }}>🔍 검색 중...</p>
+                    ) : filteredShops(shops).length > 0 ? (
                         filteredShops(shops).map(shop => (
                             <div className="restaurant_item" key={shop.id}>
                                 <div className="restaurant_info">

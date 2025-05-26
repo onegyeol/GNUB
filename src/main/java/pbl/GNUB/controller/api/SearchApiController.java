@@ -21,7 +21,7 @@ import pbl.GNUB.service.TagService;
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class SearchApiController {
-    
+
     private final ShopService shopService;
     private final TagMappingService tagMappingService;
     private final TagService tagService;
@@ -29,28 +29,38 @@ public class SearchApiController {
     @GetMapping("/search")
     public Map<String, Object> searchShops(
             @RequestParam(value = "query", required = false) String query) {
-        
+
         List<Shop> shops = shopService.searchShops(query);
 
         return Map.of(
-            "shops", shops,
-            "query", query
-        );
+                "shops", shops,
+                "query", query);
     }
 
     @GetMapping("/search/{tag}")
-    public Map<String, Object> searchShopsByTag(@PathVariable("tag") String tag) {
+    public Map<String, Object> searchShopsByTag(
+            @PathVariable("tag") String tag,
+            @RequestParam(value = "menu", required = false) String menu) {
+
         List<Shop> shops = tagService.getTop100ShopsByTag(tag);
 
+        // ✅ 메뉴 먼저 세팅
         Map<Long, List<ShopMenu>> menuMap = shopService.getMenusForShops(shops);
         for (Shop shop : shops) {
             shop.setShopMenus(menuMap.getOrDefault(shop.getId(), List.of()));
         }
 
-        return Map.of(
-            "shops", shops,
-            "query", tag
-        );
-    }
-}
+        // ✅ 이후 필터링
+        if (menu != null && !menu.isBlank()) {
+            shops = shops.stream()
+                    .filter(shop -> shop.getShopMenus().stream()
+                            .anyMatch(m -> m.getMenuName() != null && m.getMenuName().contains(menu)))
+                    .collect(Collectors.toList());
+        }
 
+        return Map.of(
+                "shops", shops,
+                "query", tag);
+    }
+
+}

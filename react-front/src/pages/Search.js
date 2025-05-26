@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { fetchSearchResults, fetchTagSearchResults } from '../service/SearchApi';
-import { useNavigate, Link, useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, Link, useParams, useSearchParams, useLocation } from 'react-router-dom';
 import './css/Search.css';
 
 const SearchPage = () => {
@@ -15,6 +15,7 @@ const SearchPage = () => {
     const [campusFilter, setCampusFilter] = useState({ gajwa: true, chilam: true });
     const { tag } = useParams();
     const [isLoading, setIsLoading] = useState(false);
+    const location = useLocation();
 
     const handleSearchSubmit = (e) => {
         e.preventDefault();
@@ -24,7 +25,10 @@ const SearchPage = () => {
     };
 
     const toggleCampus = (campus) => {
-        setCampusFilter((prev) => ({ ...prev, [campus]: !prev[campus] }));
+        setCampusFilter((prev) => ({
+            ...prev,
+            [campus]: !prev[campus],
+        }));
     };
 
     const filteredShops = (shops) =>
@@ -111,6 +115,7 @@ const SearchPage = () => {
                             <div
                                 className={`image-wrapper left-image ${!campusFilter.gajwa ? 'blurred' : ''}`}
                                 onClick={() => toggleCampus('gajwa')}
+                                style={{ pointerEvents: 'auto' }}
                             >
                                 <img src="https://www.gnu.ac.kr/upload/main/na/bbs_1047/ntt_2258160/img_796b61c4-e42a-44bc-8dff-4887eaa1c37f1730876309843.jpg" alt="가좌캠퍼스" />
                                 <p className="campus-text">가좌캠퍼스</p>
@@ -118,6 +123,7 @@ const SearchPage = () => {
                             <div
                                 className={`image-wrapper right-image ${!campusFilter.chilam ? 'blurred' : ''}`}
                                 onClick={() => toggleCampus('chilam')}
+                                style={{ pointerEvents: 'auto' }}
                             >
                                 <img src="https://www.gnu.ac.kr/common/nttEditorImgView.do?imgKey=96b1e7e4b113c43914996108683bca1b" alt="칠암캠퍼스" />
                                 <p className="campus-text">칠암캠퍼스</p>
@@ -139,33 +145,36 @@ const SearchPage = () => {
                 {query ? `"${query}" 검색결과` : '검색 결과'}
             </p>
 
-            <div className="tag-container">
-                <form
-                    onSubmit={(e) => {
-                        e.preventDefault();
-                        const base = tag || '전체';
-                        const menu = searchTerm.trim();
-                        if (menu) {
-                            fetchTagSearchResults(base, menu)
-                                .then((data) => {
-                                    setShops(data.shops || []);
-                                })
-                                .catch((err) => {
-                                    console.error('검색 실패:', err);
-                                    setShops([]);
-                                });
-                        }
-                    }}
-                >
-                    <input
-                        type="text"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        placeholder="메뉴명을 입력하세요 (예: 국밥)"
-                        className="tag-search-input"
-                    />
-                </form>
-            </div>
+            {!searchParams.get('query') && (
+                <div className="tag-container">
+                    <form
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            const base = tag || '전체';
+                            const menu = searchTerm.trim();
+                            if (menu) {
+                                fetchTagSearchResults(base, menu)
+                                    .then((data) => {
+                                        setShops(data.shops || []);
+                                    })
+                                    .catch((err) => {
+                                        console.error('검색 실패:', err);
+                                        setShops([]);
+                                    });
+                            }
+                        }}
+                    >
+                        <input
+                            type="text"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            placeholder="메뉴명을 입력하세요 (예: 국밥)"
+                            className="tag-search-input"
+                        />
+                    </form>
+                </div>
+            )}
+
 
 
             <main className="search_menu">

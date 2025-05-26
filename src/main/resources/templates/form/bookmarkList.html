@@ -700,7 +700,7 @@
                             <div class="card-slide-wrap">
                                 <ul class="slide-card-list">
                                     <li th:each="bookmark : ${entry.value}" class="slide-card-item">
-                                        <a th:href="@{'/shopDetails/' + ${bookmark.shop.id}}">
+                                        <a th:href="@{'/foodDetails/' + ${bookmark.shop.id}}">
                                             <img th:src="@{${bookmark.shop.imgUrl}}" alt="" loading="lazy">
                                             <p class="card-rest-name" th:text="${bookmark.shop.name}"></p>
                                         </a>

@@ -629,7 +629,7 @@
         
                                 marker.addListener("mouseover", () => infoWindow.open(map, marker));
                                 marker.addListener("mouseout", () => infoWindow.close());
-                                marker.addListener("click", () => window.location.href = `/shopDetails/${shop.id}`);
+                                marker.addListener("click", () => window.location.href = `/foodDetails/${shop.id}`);
         
                                 markers.push(marker);
                             }

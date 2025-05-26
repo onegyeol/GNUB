@@ -796,7 +796,7 @@
                                         th:classappend="${iterStat.index  >= 50} ? ' hidden' : ''"
                                         class="slide-card-item">
                                         <!-- /*<li th:each="shop : ${entry.value.shops}" class="slide-card-item">*/-->
-                                        <a th:href="@{'/shopDetails/' + ${shop.id}}">
+                                        <a th:href="@{'/foodDetails/' + ${shop.id}}">
                                             <img th:src="@{${shop.imgUrl}}" alt="" loading="lazy">
                                             <p class="card-rest-name" th:text="${shop.name}"></p>
                                         </a>

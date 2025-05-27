@@ -2,7 +2,7 @@
 
 import torch
 from sentence_transformers import SentenceTransformer, util
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple, Union
 import numpy as np
 
 # 상수 설정: 별칭(alias) -> 정규명(canonical) 매핑
@@ -14,21 +14,23 @@ PLACE_ALIASES: Dict[str, str] = {
     "가좌동": "가좌",
 }
 
-# 카테고리 별칭: 사용자가 입력할 수 있는 동의어 → 데이터베이스/임베딩 기준 정규명
-CATEGORY_ALIASES: Dict[str, str] = {
-    "스파게티": "파스타",
-    "초밥": "스시",
-    "롤": "스시",
-    "다이어트": "샐러드",
-    "(BAR)": "바",
-    "베이커리":"빵",
-    "립": "스테이크",
-    # 필요 시 계속 추가
+CATEGORY_ALIASES: Dict[str, List[str]] = {
+    "스파게티": ["파스타"],
+    "초밥": ["스시"],
+    "롤": ["스시"],
+    "다이어트": ["샐러드"],
+    "(BAR)": ["바"],
+    "베이커리": ["빵"],
+    "립": ["스테이크"],
+    "술": ["술집","맥주", "호프", "요리주점", "민속주점", "이자카야", "포장마차"],
+    "술집": ["술집","맥주", "호프", "요리주점", "민속주점", "이자카야", "포장마차"]
+    # 필요 시 추가
 }
 
 # 카테고리 정규화 함수: 별칭이 있으면 정규명으로, 없으면 그대로 반환
-def normalize_category(cat: str) -> str:
-    return CATEGORY_ALIASES.get(cat, cat)
+def normalize_category(cat: str, query: str, model: SentenceTransformer) -> List[str]:
+    return CATEGORY_ALIASES.get(cat, [cat])
+
 
 
 # 카테고리 사전 생성 및 임베딩 로드
@@ -72,33 +74,29 @@ def get_category_embeddings(
 
 def parse_keywords(
     query: str,
-    category_dict: Dict[str, List[str]]
-) -> Dict[str, Optional[str]]:
-    """
-    키워드 매핑만으로 place, time, category를 추출합니다.
-    """
-    parsed: Dict[str, Optional[str]] = {"place": None, "time": None, "category": None}
+    category_dict: Dict[str, List[str]],
+    model: SentenceTransformer
+) -> Dict[str, Optional[Union[str, List[str]]]]:
+    parsed: Dict[str, Optional[Union[str, List[str]]]] = {"place": None, "time": None, "category": None}
     q = query.lower()
 
-    # 장소 키워드
     for alias, canonical in PLACE_ALIASES.items():
         if alias in q:
             parsed["place"] = canonical
             break
 
-    # 시간 키워드
     for t in category_dict["time"]:
         if t in q:
             parsed["time"] = t
             break
-    
-    # 카테고리 키워드
+
     for c in category_dict["category"] + list(CATEGORY_ALIASES.keys()):
         if c in q:
-            norm = normalize_category(c)
-            if parsed["time"] and norm == parsed["time"]:
+            norm = normalize_category(c, query, model)
+            if parsed["time"] and isinstance(norm, list) and parsed["time"] in norm:
                 continue
-            parsed["category"] = norm
+            parsed["category"] = norm  # List[str] 형태로 저장
+            break
 
     return parsed
 
@@ -167,22 +165,23 @@ def parse_query(
     model: SentenceTransformer,
     category_embeddings: Dict[str, np.ndarray],
     category_dict: Dict[str, List[str]]
-) -> Dict[str, Optional[str]]:
+) -> Dict[str, Optional[Union[str, List[str]]]]:
     """
     통합 파싱: 키워드 매핑 후 SBERT 보완 로직을 적용하여 결과를 반환합니다.
     """
-    # 1) 키워드 우선 매핑
-    result = parse_keywords(query, category_dict)
-    # 2) SBERT 기반 보완
+    # 1) 키워드 기반 + SBERT 정규화
+    result = parse_keywords(query, category_dict, model)
+    # 2) SBERT 임베딩 기반 보완
     sbert_result = parse_with_sbert(query, model, category_embeddings, category_dict)
+
     # 3) None인 항목만 보완
     for key in ("place", "time"):
         if result[key] is None:
             result[key] = sbert_result[key]
     if result["category"] is None:
-            result["category"] = sbert_result["category"]  
-    return result
+        result["category"] = sbert_result["category"]
 
+    return result
 
 def get_best_sentence_index(
     query: str,

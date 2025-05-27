@@ -77,22 +77,25 @@ def get_time_condition(day_column: str, time: str) -> str:
     """
 
 def generate_sql_query(parsed: dict):
-    """
-    parsed: {'place':…, 'category':…, 'time':…} 형태로 들어오면
-    SQL WHERE 절을 만들어 반환.
-    """
     current_day = get_today_column()
     place    = parsed.get("place")
     category = parsed.get("category")
     time     = parsed.get("time")
     conditions = []
-    if pd.notna(place) and place:
+
+    if place is not None:
         conditions.append(f"campus LIKE '%{place}%'")
-    # ✅ 카테고리 필터는 항상 적용
-    if pd.notna(category) and category:
-        conditions.append(f"category LIKE '%{category}%'")
-    #if pd.notna(time) and time:
-    #    conditions.append(get_time_condition(current_day, time))
+
+    if category is not None:
+        if isinstance(category, list):
+            or_conditions = [f"category LIKE '%{c}%'" for c in category]
+            conditions.append("(" + " OR ".join(or_conditions) + ")")
+        else:
+            conditions.append(f"category LIKE '%{category}%'")
+    # 시간 조건 (필요 시 주석 해제, 일단 안씀)
+    # if time is not None:
+    #     conditions.append(get_time_condition(current_day, time))
+
 
     sql = "SELECT * FROM shop"
     if conditions:

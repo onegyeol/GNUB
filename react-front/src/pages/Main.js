@@ -100,7 +100,7 @@ const Main = () => {
               <div
                 className={`image-wrapper right-image ${!campusFilter.chilam ? 'blurred' : ''}`}
                 onClick={() => toggleCampus('chilam')}
-                style={{ pointerEvents: 'auto' }}
+                
               >
                   <img src="https://www.gnu.ac.kr/common/nttEditorImgView.do?imgKey=96b1e7e4b113c43914996108683bca1b" alt="칠암캠퍼스" />
                   <p className="campus-text">칠암캠퍼스</p>

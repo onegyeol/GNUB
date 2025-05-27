@@ -202,7 +202,7 @@ public class MainController {
         return "form/main";
     }
 
-    @GetMapping("/shopDetails/{id}")
+    @GetMapping("/foodDetails/{id}")
     public String foodDetailsPage(@PathVariable("id") Long id, Model model, Principal principal) {
         Shop shop = shopService.findShopById(id);
         if (shop == null) {

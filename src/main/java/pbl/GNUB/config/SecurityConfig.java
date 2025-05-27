@@ -45,7 +45,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/springBatch/**", "/member/**", "/main", "/css/**", "/js/**", "/img/**",
-                                "/Terms/**", "/shopDetails/**", "/search/**", "/map/**", "/board/**", "/uploads/**", "/image/**", "/mobile/**")
+                                "/Terms/**", "/foodDetails/**", "/search/**", "/map/**", "/board/**", "/uploads/**", "/image/**", "/mobile/**")
                         .permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form

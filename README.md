@@ -18,3 +18,5 @@
          PC와 동일한 경로지만, 앞에 mobile 경로만 추가적으로 명시하면 됨
 - PC : gnubob.com:8080
 <img width="754" alt="스크린샷 2025-05-26 오전 11 31 15" src="https://github.com/user-attachments/assets/3c7e4362-d042-4b5d-b742-5d94ed291d89" />
+
+![image](https://github.com/user-attachments/assets/ca1e270b-ea87-446f-a5f6-35321985a768)

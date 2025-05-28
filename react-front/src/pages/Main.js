@@ -1,41 +1,60 @@
 import React, { useEffect, useState } from 'react';
-import { fetchTaggedShops } from '../service/MainApi';
+import { fetchMainPageData } from '../service/MainApi';
 import { useNavigate, Link } from 'react-router-dom';
 import './css/Main.css';
 
 const Main = () => {
   const [taggedShops, setTaggedShops] = useState({});
-  const [uniqueShopCount, setUniqueShopCount] = useState(0);
-  const [tagSearch, setTagSearch] = useState('');
   const [activeTags, setActiveTags] = useState([]);
   const [campusFilter, setCampusFilter] = useState({ gajwa: true, chilam: true });
+  const [searchTerm, setSearchTerm] = useState('');
+  const [showCampusBanner, setShowCampusBanner] = useState(true);
+  const [searchInput, setSearchInput] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchTaggedShops().then(data => {
-      console.log('✅ fetchTaggedShops 응답:', data); // 응답 전체 확인
-      setTaggedShops(data.taggedShops);
-      setUniqueShopCount(data.uniqueShopCount);
+    fetchMainPageData().then((data) => {
+      setTaggedShops(data.taggedShops || {});
     });
   }, []);
 
   const toggleTag = (tag) => {
-    setActiveTags(prev =>
-      prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
+    setActiveTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
     );
   };
 
-  const isTagVisible = (tag) => {
-    return activeTags.length === 0 || activeTags.includes(tag);
-  };
-
   const toggleCampus = (campus) => {
-    setCampusFilter(prev => ({ ...prev, [campus]: !prev[campus] }));
+    setCampusFilter((prev) => ({
+      ...prev,
+      [campus]: !prev[campus], 
+    }));
+  };
+  
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (searchInput.trim()) {
+      navigate(`/search?query=${encodeURIComponent(searchInput.trim())}`);
+    }
   };
 
-  const isCampusVisible = (restId) => {
-    return restId.startsWith('C') ? campusFilter.chilam : campusFilter.gajwa;
-  };
+  const filteredSections = Object.entries(taggedShops)
+    .filter(([tag]) => activeTags.length === 0 || activeTags.includes(tag))
+    .filter(([_, value]) => value && value.shops);
+
+    const filteredShops = (shops) =>
+      shops.filter((shop) => {
+        const isChilam = shop.restId?.startsWith('C');
+        const campus = isChilam ? 'chilam' : 'gajwa';
+        return campusFilter[campus];
+    });
+
+    useEffect(() => {
+      console.log('캠퍼스 상태 변경됨:', campusFilter);
+    }, [campusFilter]);
+    
+    
 
   return (
     <div id="root">
@@ -43,40 +62,59 @@ const Main = () => {
         <div className="common-desk-header">
           <div className="header-wrap">
             <div className="search-form">
-              <form>
+              <form onSubmit={handleSubmit}>  {/* ✅ onSubmit 추가 */}
                 <div className="input-wrap">
                   <input
                     className="search-input"
                     type="search"
-                    placeholder="지역, 음식 또는 식당명 입력"
+                    placeholder="메뉴 또는 식당명 입력"
                     maxLength={255}
                     autoComplete="off"
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
                   />
                   <button type="submit" className="btn-search">
                     <img src="https://github.com/user-attachments/assets/19865e59-1076-4b33-ae6a-9cfbd7b5bbb2" alt="검색버튼" />
                   </button>
                 </div>
               </form>
+
             </div>
             <div className="auth-Box"></div>
           </div>
         </div>
       </header>
 
-      <div className="banner-box" onClick={() => { }}>
-        <p className="banner-content">클릭하면 원하는 캠퍼스를 선택할 수 있어용</p>
-      </div>
-
-      <div className="top-nav-content">
-        <div className="image-container">
-          <div className={`image-wrapper ${!campusFilter.gajwa ? 'blurred' : ''}`} onClick={() => toggleCampus('gajwa')}>
-            <img src="https://www.gnu.ac.kr/upload/main/na/bbs_1047/ntt_2258160/img_796b61c4-e42a-44bc-8dff-4887eaa1c37f1730876309843.jpg" alt="가좌캠퍼스" />
-            <p className="campus-text">가좌캠퍼스</p>
+      <div className="banner-content-wrap">
+        {showCampusBanner && (
+          <div className="top-nav-key-visual">
+            <div className="image-container">
+              <div
+                className={`image-wrapper left-image ${!campusFilter.gajwa ? 'blurred' : ''}`}
+                onClick={() => toggleCampus('gajwa')}
+                style={{ pointerEvents: 'auto' }}
+              >
+                  <img src="https://www.gnu.ac.kr/upload/main/na/bbs_1047/ntt_2258160/img_796b61c4-e42a-44bc-8dff-4887eaa1c37f1730876309843.jpg" alt="가좌캠퍼스" />
+                  <p className="campus-text">가좌캠퍼스</p>
+              </div>
+              <div
+                className={`image-wrapper right-image ${!campusFilter.chilam ? 'blurred' : ''}`}
+                onClick={() => toggleCampus('chilam')}
+                
+              >
+                  <img src="https://www.gnu.ac.kr/common/nttEditorImgView.do?imgKey=96b1e7e4b113c43914996108683bca1b" alt="칠암캠퍼스" />
+                  <p className="campus-text">칠암캠퍼스</p>
+              </div>
+            </div>
           </div>
-          <div className={`image-wrapper ${!campusFilter.chilam ? 'blurred' : ''}`} onClick={() => toggleCampus('chilam')}>
-            <img src="https://www.gnu.ac.kr/common/nttEditorImgView.do?imgKey=96b1e7e4b113c43914996108683bca1b" alt="칠암캠퍼스" />
-            <p className="campus-text">칠암캠퍼스</p>
-          </div>
+        )}
+        <div className="campus-toggle-bar" onClick={() => setShowCampusBanner(!showCampusBanner)}>
+          <p>
+            {showCampusBanner
+              ? '원하지 않는 캠퍼스를 숨길 수 있어요'
+              : '캠퍼스를 다시 보고 싶다면 여기를 클릭하세요'}
+            <span>{showCampusBanner ? '▲' : '▼'}</span>
+          </p>
         </div>
       </div>
 
@@ -84,21 +122,24 @@ const Main = () => {
         <div className="tag-search">
           <input
             type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="태그 검색..."
             className="tag-search-input"
-            value={tagSearch}
-            onChange={e => setTagSearch(e.target.value)}
           />
         </div>
         <div className="tag-list">
-          <button className={`tag-item ${activeTags.length === 0 ? 'active' : ''}`} onClick={() => setActiveTags([])}>모두보기</button>
-          {Object.entries(taggedShops)
-            .filter(([tag]) => tag.toLowerCase().includes(tagSearch.toLowerCase()))
-            .map(([tag]) => (
+          <button className="tag-item active" onClick={() => setActiveTags([])}>
+            모두보기
+          </button>
+          {Object.keys(taggedShops)
+            .filter((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+            .map((tag) => (
               <button
                 key={tag}
                 className={`tag-item ${activeTags.includes(tag) ? 'active' : ''}`}
-                onClick={() => toggleTag(tag)}>
+                onClick={() => toggleTag(tag)}
+              >
                 {tag}
               </button>
             ))}
@@ -107,40 +148,40 @@ const Main = () => {
 
       <main className="content">
         <div className="body-box">
-          {Object.entries(taggedShops)
-            .filter(([tag]) => isTagVisible(tag))
-            .map(([tag, info]) => (
-              <section key={tag} className="card-section">
-                <div className="card-section-title-box">
-                  <h2 className="card-section-title">{tag}</h2>
-                  <span className="card-section-rest-cnt">({uniqueShopCount})</span>
-                </div>
-                <div className="card-slide-wrap">
-                  <ul className="slide-card-list">
-                    {info?.filter(shop => isCampusVisible(shop.restId))
-                      .slice(0, 100)
-                      .map(shop => (
-                        <li key={shop.id} className="slide-card-item">
-                          <Link to={`/foodDetails/${shop.id}`}>
-                            <img src={shop.imgUrl} alt={shop.name} />
-                            <p className="card-rest-name">{shop.name}</p>
-                          </Link>
+          {filteredSections.map(([tag, info]) => (
+            <section key={tag} className="card-section" data-tag={tag}>
+              <div className="card-section-title-box">
+                <h2 className="card-section-title">
+                  <Link to={`/search/${encodeURIComponent(tag)}`}>{tag}</Link>
+                </h2>
+              </div>
+              <div className="card-slide-wrap">
+                <ul className="slide-card-list">
+                  {filteredShops(info.shops).slice(0, 100).map((shop) => (
+                    <li key={shop.id} className="slide-card-item">
+                      <Link to={`/foodDetails/${shop.id}`}>
+                        <img src={shop.imgUrl} alt={shop.name} loading="lazy" />
+                        <p className="card-rest-name">{shop.name}</p>
+                      </Link>
 
-                          <div className="image-btn-container">
-                            <div className="like-section">
-                              <button className="like-btn">
-                                <img className="like-icon" src="https://cdn-icons-png.flaticon.com/512/833/833472.png" alt="Heart Icon" />
-                              </button>
-                              <p className="like-count">{shop.likeCount}</p>
-                            </div>
-                          </div>
-                        </li>
-                      ))}
-                  </ul>
-                </div>
-              </section>
-            ))}
-
+                      <div className="image-btn-container">
+                        <div className="like-section">
+                          <button className="like-btn">
+                            <img
+                              className="like-icon"
+                              src="https://cdn-icons-png.flaticon.com/512/833/833472.png"
+                              alt="Heart Icon"
+                            />
+                          </button>
+                          <p className="like-count">{shop.likeCount}</p>
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </section>
+          ))}
           <Link to="/ask" className="fixed-button">
             <img src="https://www.gnu.ac.kr/images/web/main/sub_cnt/bs03.png" alt="캐릭터 기본형" width="50" height="50" />
           </Link>
@@ -173,6 +214,14 @@ const Main = () => {
                 <line x1="15" y1="6" x2="15" y2="21" />
               </svg>
               <span>지도</span>
+            </Link>
+
+            <Link to="/myPage/bookmarkList" className="nav-item">
+              <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 7h5l2 3h11v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" />
+              </svg>
+              <span>보관함</span>
             </Link>
 
             <Link to="/myPage" className="nav-item">

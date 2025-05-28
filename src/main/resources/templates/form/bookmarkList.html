@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <title>GNU BOB</title>
-    <link rel="icon" type="image/png" href="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144">
+    <link rel="icon" type="image/png"
+        href="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144">
     <style>
         * {
             margin: 0;
@@ -13,20 +15,24 @@
         }
 
         .body {
-            padding-bottom: 80px; /* 푸터 높이만큼 여백을 추가하여 푸터가 겹치지 않도록 설정 */
+            padding-bottom: 80px;
+            /* 푸터 높이만큼 여백을 추가하여 푸터가 겹치지 않도록 설정 */
         }
 
-        body, html {
+        body,
+        html {
             background-color: #f0f0f0;
             min-width: 1070px;
-            overflow: auto; /* 스크롤 가능하도록 설정 */
+            overflow: auto;
+            /* 스크롤 가능하도록 설정 */
         }
 
         #root {
             width: 100%;
             min-height: auto;
             overflow-x: hidden;
-            padding-bottom: 70px; /* 푸터 높이만큼 패딩 추가 */
+            padding-bottom: 70px;
+            /* 푸터 높이만큼 패딩 추가 */
         }
 
         .header-content {
@@ -67,7 +73,7 @@
             justify-content: center;
             align-items: center;
             position: relative;
-            z-index: 1; 
+            z-index: 1;
         }
 
         .banner-wrap {
@@ -156,6 +162,7 @@
             color: inherit;
             background-color: transparent;
         }
+
         .header-wrap {
             display: flex;
             justify-content: space-between;
@@ -250,7 +257,8 @@
 
         .image-wrapper {
             position: relative;
-            width: 50%; /* 원하는 크기로 설정 */
+            width: 50%;
+            /* 원하는 크기로 설정 */
             height: 100%;
             overflow: hidden;
             cursor: pointer;
@@ -261,11 +269,13 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: filter 0.3s ease; /* 흐려지는 효과 부드럽게 전환 */
+            transition: filter 0.3s ease;
+            /* 흐려지는 효과 부드럽게 전환 */
         }
 
         .image-wrapper:hover img {
-            filter: blur(5px); /* 마우스 올렸을 때 흐리게 만드는 효과 */
+            filter: blur(5px);
+            /* 마우스 올렸을 때 흐리게 만드는 효과 */
         }
 
         .tag-container {
@@ -333,7 +343,7 @@
             background-color: #fff;
             border-radius: 40px;
             padding: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
 
@@ -407,9 +417,11 @@
         .header-container {
             width: 100%;
             display: flex;
-            justify-content: center; /* 가운데 정렬 */
+            justify-content: center;
+            /* 가운데 정렬 */
             align-items: center;
-            margin: 30px 0; /* 위아래 여백 */
+            margin: 30px 0;
+            /* 위아래 여백 */
         }
 
         .header-container .h1 {
@@ -421,15 +433,17 @@
 
         /* 식당 이름 스타일 */
         .card-rest-name {
-            text-decoration: none !important; /* 밑줄 제거 */
-            color: #333 !important;           /* 검정색 글씨 */
+            text-decoration: none !important;
+            /* 밑줄 제거 */
+            color: #333 !important;
+            /* 검정색 글씨 */
             margin-top: 10px;
             text-align: center;
             font-weight: bold;
             padding: 0 10px;
         }
 
-        .card-rest-nam a:hover{
+        .card-rest-nam a:hover {
             color: #41bbca;
         }
 
@@ -478,7 +492,7 @@
         }
 
         .toggle-btn {
-            background-color: #41bbca; 
+            background-color: #41bbca;
             color: white;
             border: none;
             padding: 6px 12px;
@@ -497,7 +511,7 @@
         .toggle-btn:active {
             transform: scale(0.98);
         }
-        
+
         .bottom-nav-wrapper {
             width: 100%;
             position: fixed;
@@ -508,7 +522,8 @@
         }
 
         .bottom-nav {
-            width: 1070px; /* 헤더와 동일한 너비 */
+            width: 1070px;
+            /* 헤더와 동일한 너비 */
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
@@ -534,7 +549,7 @@
 
         @media screen and (max-width: 1070px) {
             .bottom-nav {
-                    width: 100%;
+                width: 100%;
             }
         }
 
@@ -557,7 +572,7 @@
         }
 
         .nav-container .menu-item {
-            margin: 0 15px; 
+            margin: 0 15px;
         }
 
         .nav-container .login-logout {
@@ -566,11 +581,16 @@
 
         .fixed-button {
             position: fixed;
-            bottom: 80px; /* 푸터 위로 띄우기 */
-            right: calc((100% - 1070px) / 2); /* 헤더와 푸터에 맞춰 정렬 */
-            width: 56px; /* 너비 조정 */
-            height: 56px; /* 높이 조정 */
-            border-radius: 50%; /* 완전한 원형 */
+            bottom: 80px;
+            /* 푸터 위로 띄우기 */
+            right: calc((100% - 1070px) / 2);
+            /* 헤더와 푸터에 맞춰 정렬 */
+            width: 56px;
+            /* 너비 조정 */
+            height: 56px;
+            /* 높이 조정 */
+            border-radius: 50%;
+            /* 완전한 원형 */
             background-color: #41bbca;
             color: white;
             font-size: 24px;
@@ -618,6 +638,7 @@
         }
     </style>
 </head>
+
 <body>
     <div id="root">
         <header class="header-content">
@@ -625,17 +646,22 @@
                 <div class="header-wrap">
                     <div class="main-logo">
                         <a href="/main">
-                            <img class="logo" src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo">
+                            <img class="logo"
+                                src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144"
+                                alt="Logo">
                         </a>
                     </div>
 
-                    
+
                     <div class="search-form">
                         <form action="/search" method="get">
                             <div class="input-wrap">
-                                <input class="search-input" type="search" id="query" name="query" placeholder="지역, 음식 또는 식당명 입력" th:value="${searchTerm}" maxlength="255" autocomplete="off">
+                                <input class="search-input" type="search" id="query" name="query"
+                                    placeholder="지역, 음식 또는 식당명 입력" th:value="${searchTerm}" maxlength="255"
+                                    autocomplete="off">
                                 <button type="submit" class="btn-search">
-                                        <img src="https://github.com/user-attachments/assets/19865e59-1076-4b33-ae6a-9cfbd7b5bbb2" alt="검색버튼">
+                                    <img src="https://github.com/user-attachments/assets/19865e59-1076-4b33-ae6a-9cfbd7b5bbb2"
+                                        alt="검색버튼">
                                 </button>
                             </div>
                         </form>
@@ -654,24 +680,27 @@
                 <th:block th:each="entry : ${groupedBookmarks}">
                     <section class="card-section">
                         <div class="card-section-wrap">
-                             <!-- 폴더명: key가 null이면 '저장한 음식점들'로 표시 -->
-                             <div class="card-section-title-box">
-                                <h2 class="card-section-title" th:text="${entry.key == null ? '저장한 음식점들' : entry.key + ' (' + #lists.size(entry.value) + ')'}"></h2>
-                                
+                            <!-- 폴더명: key가 null이면 '저장한 음식점들'로 표시 -->
+                            <div class="card-section-title-box">
+                                <h2 class="card-section-title"
+                                    th:text="${entry.key == null ? '저장한 음식점들' : entry.key + ' (' + #lists.size(entry.value) + ')'}">
+                                </h2>
+
                                 <!-- key가 null이 아닌 경우에만 삭제 버튼 보이도록 -->
-                                <form th:if="${entry.key != null}" th:action="@{/bookmarks/folder/delete}" method="post" style="margin-left: 10px;">
+                                <form th:if="${entry.key != null}" th:action="@{/bookmarks/folder/delete}" method="post"
+                                    style="margin-left: 10px;">
                                     <input type="hidden" name="memberId" th:value="${member.id}">
                                     <input type="hidden" name="folderName" th:value="${entry.key}">
                                     <button type="submit" class="toggle-btn">삭제</button>
-                                </form>                                
+                                </form>
                             </div>
-                            
+
 
 
                             <div class="card-slide-wrap">
                                 <ul class="slide-card-list">
                                     <li th:each="bookmark : ${entry.value}" class="slide-card-item">
-                                        <a th:href="@{'/shopDetails/' + ${bookmark.shop.id}}">
+                                        <a th:href="@{'/foodDetails/' + ${bookmark.shop.id}}">
                                             <img th:src="@{${bookmark.shop.imgUrl}}" alt="" loading="lazy">
                                             <p class="card-rest-name" th:text="${bookmark.shop.name}"></p>
                                         </a>
@@ -681,7 +710,9 @@
                                                 <form th:action="@{/toggleLike}" method="POST">
                                                     <input type="hidden" name="shopId" th:value="${bookmark.shop.id}">
                                                     <button type="submit" class="like-btn">
-                                                        <img class="like-icon" src="https://cdn-icons-png.flaticon.com/512/833/833472.png" alt="Heart Icon">
+                                                        <img class="like-icon"
+                                                            src="https://cdn-icons-png.flaticon.com/512/833/833472.png"
+                                                            alt="Heart Icon">
                                                     </button>
                                                 </form>
                                                 <p id="likeCount" th:text="${bookmark.shop.likeCount}"></p>
@@ -697,52 +728,68 @@
             </div>
         </main>
     </div>
-    
+
     <script src="/javascript/script.js" defer></script>
-    
+
     <div class="bottom-nav-wrapper">
         <nav class="bottom-nav">
             <div class="nav-container">
 
                 <a th:href="@{/board/main}" class="nav-item">
                     <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M3 9H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M9 21V9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path
+                            d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M3 9H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M9 21V9" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
                     </svg>
                     <span>매거진</span>
                 </a>
-                
+
                 <a th:href="@{/main}" class="nav-item">
-                    <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M3 9.5L12 3l9 6.5V21a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-5H10v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z" />
+                    <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M3 9.5L12 3l9 6.5V21a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-5H10v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z" />
                     </svg>
                     <span>홈</span>
                 </a>
-                
-                
+
+
                 <a th:href="@{/map}" class="nav-item">
-                    <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21 3 6"></polygon>
                         <line x1="9" y1="3" x2="9" y2="18"></line>
                         <line x1="15" y1="6" x2="15" y2="21"></line>
                     </svg>
                     <span>지도</span>
                 </a>
-                
+
+                <a th:href="@{/myPage/bookmarkList}" class="nav-item">
+                    <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 7h5l2 3h11v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" />
+                    </svg>
+                    <span>보관함</span>
+                </a>
+
                 <a th:href="@{/myPage}" class="nav-item">
                     <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                        <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
                     </svg>
                     <span>마이</span>
                 </a>
             </div>
         </nav>
     </div>
-    
-    
+
+
 </body>
+
 </html>

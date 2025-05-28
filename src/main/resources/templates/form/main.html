@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html xmlns="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <title>GNU BOB</title>
-    <link rel="icon" type="image/png" href="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144">
+    <link rel="icon" type="image/png"
+        href="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144">
     <link rel="stylesheet" th:href="@{/css/bottom.css}">
     <style>
         * {
@@ -15,20 +16,24 @@
         }
 
         .body {
-            padding-bottom: 80px; /* 푸터 높이만큼 여백을 추가하여 푸터가 겹치지 않도록 설정 */
+            padding-bottom: 80px;
+            /* 푸터 높이만큼 여백을 추가하여 푸터가 겹치지 않도록 설정 */
         }
 
-        body, html {
+        body,
+        html {
             background-color: #f0f0f0;
             min-width: 1070px;
-            overflow: auto; /* 스크롤 가능하도록 설정 */
+            overflow: auto;
+            /* 스크롤 가능하도록 설정 */
         }
 
         #root {
             width: 100%;
             min-height: auto;
             overflow-x: hidden;
-            padding-bottom: 70px; /* 푸터 높이만큼 패딩 추가 */
+            padding-bottom: 70px;
+            /* 푸터 높이만큼 패딩 추가 */
         }
 
         .header-content {
@@ -67,7 +72,8 @@
             align-items: center;
             width: 100%;
             position: relative;
-            z-index: 1; /* 배너와 이미지 겹침 방지 */
+            z-index: 1;
+            /* 배너와 이미지 겹침 방지 */
         }
 
         .campus-toggle-bar {
@@ -77,7 +83,7 @@
             background-color: white;
             padding: 10px 20px;
             border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             text-align: center;
             cursor: pointer;
             font-size: 16px;
@@ -177,6 +183,7 @@
             color: inherit;
             background-color: transparent;
         }
+
         .header-wrap {
             display: flex;
             justify-content: space-between;
@@ -246,7 +253,8 @@
         .top-nav-content {
             display: none;
             margin-top: 0;
-            transition: all 0.3s ease;  /* 부드러운 토글 */
+            transition: all 0.3s ease;
+            /* 부드러운 토글 */
             position: relative;
             width: 100%;
             display: flex;
@@ -272,7 +280,8 @@
 
         .image-wrapper {
             position: relative;
-            width: 50%; /* 원하는 크기로 설정 */
+            width: 50%;
+            /* 원하는 크기로 설정 */
             height: 100%;
             overflow: hidden;
             cursor: pointer;
@@ -283,11 +292,13 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: filter 0.3s ease; /* 흐려지는 효과 부드럽게 전환 */
+            transition: filter 0.3s ease;
+            /* 흐려지는 효과 부드럽게 전환 */
         }
 
         .image-wrapper:hover img {
-            filter: blur(5px); /* 마우스 올렸을 때 흐리게 만드는 효과 */
+            filter: blur(5px);
+            /* 마우스 올렸을 때 흐리게 만드는 효과 */
         }
 
         .campus-text {
@@ -298,8 +309,9 @@
             color: white;
             font-size: 24px;
             font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
+
         .blurred {
             filter: blur(2px);
             opacity: 0.5;
@@ -372,7 +384,7 @@
             background-color: #fff;
             border-radius: 40px;
             padding: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .card-section-wrap {
@@ -381,7 +393,8 @@
             min-height: 300px;
         }
 
-        .slide-prev-btn, .slide-next-btn {
+        .slide-prev-btn,
+        .slide-next-btn {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
@@ -392,16 +405,22 @@
             z-index: 10;
             padding: 10px;
             border-radius: 50%;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
         }
 
-        .slide-prev-btn { left: 0; }
-        .slide-next-btn { right: 0; }
+        .slide-prev-btn {
+            left: 0;
+        }
+
+        .slide-next-btn {
+            right: 0;
+        }
 
         .slide-card-list {
             display: flex;
             flex-wrap: nowrap;
-            transition: transform 0.3s ease; /* 슬라이드 애니메이션 추가할 경우 */
+            transition: transform 0.3s ease;
+            /* 슬라이드 애니메이션 추가할 경우 */
             will-change: transform;
         }
 
@@ -421,15 +440,17 @@
 
         .card-slide-wrap {
             width: 100%;
-            overflow-x: auto;  /* ✅ 가로 스크롤 활성화 */
+            overflow-x: auto;
+            /* ✅ 가로 스크롤 활성화 */
             overflow-y: hidden;
-            -webkit-overflow-scrolling: touch;  /* ✅ 모바일 부드러운 스크롤 */
-            
-        
+            -webkit-overflow-scrolling: touch;
+            /* ✅ 모바일 부드러운 스크롤 */
+
+
         }
 
         .slide-card-item {
-            flex: 0 0 auto; 
+            flex: 0 0 auto;
             width: 238px;
             height: auto;
             margin-right: 20px;
@@ -455,21 +476,24 @@
         a:hover {
             color: #007bff;
         }
+
         .hidden {
             display: none;
         }
 
         /* 식당 이름 스타일 */
         .card-rest-name {
-            text-decoration: none !important; /* 밑줄 제거 */
-            color: #333 !important;           /* 검정색 글씨 */
+            text-decoration: none !important;
+            /* 밑줄 제거 */
+            color: #333 !important;
+            /* 검정색 글씨 */
             margin-top: 10px;
             text-align: center;
             font-weight: bold;
             padding: 0 10px;
         }
 
-        .card-rest-nam a:hover{
+        .card-rest-nam a:hover {
             color: #41bbca;
         }
 
@@ -526,6 +550,17 @@
             cursor: pointer;
         }
 
+        .tag-guide-text {
+            font-size: 16px;
+            color: #333;
+            font-weight: 500;
+            margin: 10px 0;
+            padding: 10px 15px;
+            border-left: 4px solid #41bbca;;
+            border-radius: 6px;
+        }
+
+
         .toggle-btn:hover {
             background-color: #0056b3;
         }
@@ -533,7 +568,8 @@
         .bottom-nav-wrapper {
             width: 100%;
             display: flex;
-            justify-content: center; /* 중앙 정렬 */
+            justify-content: center;
+            /* 중앙 정렬 */
             position: fixed;
             bottom: 0;
             left: 0;
@@ -542,7 +578,8 @@
         }
 
         .bottom-nav {
-            width: 1070px; /* 헤더와 동일한 너비 */
+            width: 1070px;
+            /* 헤더와 동일한 너비 */
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
@@ -568,7 +605,7 @@
 
         @media screen and (max-width: 1070px) {
             .bottom-nav {
-                    width: 100%;
+                width: 100%;
             }
         }
 
@@ -591,7 +628,7 @@
         }
 
         .nav-container .menu-item {
-            margin: 0 15px; 
+            margin: 0 15px;
         }
 
         .nav-container .login-logout {
@@ -600,11 +637,16 @@
 
         .fixed-button {
             position: fixed;
-            bottom: 80px; /* 푸터 위로 띄우기 */
-            right: calc((100% - 1070px) / 2); /* 헤더와 푸터에 맞춰 정렬 */
-            width: 56px; /* 너비 조정 */
-            height: 56px; /* 높이 조정 */
-            border-radius: 50%; /* 완전한 원형 */
+            bottom: 80px;
+            /* 푸터 위로 띄우기 */
+            right: calc((100% - 1070px) / 2);
+            /* 헤더와 푸터에 맞춰 정렬 */
+            width: 56px;
+            /* 너비 조정 */
+            height: 56px;
+            /* 높이 조정 */
+            border-radius: 50%;
+            /* 완전한 원형 */
             background-color: #41bbca;
             color: white;
             font-size: 24px;
@@ -652,6 +694,7 @@
         }
     </style>
 </head>
+
 <body>
     <div id="root">
         <header class="header-content">
@@ -659,17 +702,22 @@
                 <div class="header-wrap">
                     <div class="main-logo">
                         <a href="/main">
-                            <img class="logo" src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo">
+                            <img class="logo"
+                                src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144"
+                                alt="Logo">
                         </a>
                     </div>
 
-                    
+
                     <div class="search-form">
                         <form action="/search" method="get">
                             <div class="input-wrap">
-                                <input class="search-input" type="search" id="query" name="query" placeholder="지역, 음식 또는 식당명 입력" th:value="${searchTerm}" maxlength="255" autocomplete="off">
+                                <input class="search-input" type="search" id="query" name="query"
+                                    placeholder="지역, 음식 또는 식당명 입력" th:value="${searchTerm}" maxlength="255"
+                                    autocomplete="off">
                                 <button type="submit" class="btn-search">
-                                        <img src="https://github.com/user-attachments/assets/19865e59-1076-4b33-ae6a-9cfbd7b5bbb2" alt="검색버튼">
+                                    <img src="https://github.com/user-attachments/assets/19865e59-1076-4b33-ae6a-9cfbd7b5bbb2"
+                                        alt="검색버튼">
                                 </button>
                             </div>
                         </form>
@@ -685,14 +733,16 @@
                 <div class="top-nav-key-visual">
                     <div class="image-container">
                         <div class="image-wrapper left-image" data-campus-toggle="gajwa">
-                            <img src="https://www.gnu.ac.kr/upload/main/na/bbs_1047/ntt_2258160/img_796b61c4-e42a-44bc-8dff-4887eaa1c37f1730876309843.jpg" alt="가좌캠퍼스">
+                            <img src="https://www.gnu.ac.kr/upload/main/na/bbs_1047/ntt_2258160/img_796b61c4-e42a-44bc-8dff-4887eaa1c37f1730876309843.jpg"
+                                alt="가좌캠퍼스">
                             <p class="campus-text">가좌캠퍼스</p>
                         </div>
                         <div class="image-wrapper right-image" data-campus-toggle="chilam">
-                            <img src="https://www.gnu.ac.kr/common/nttEditorImgView.do?imgKey=96b1e7e4b113c43914996108683bca1b" alt="칠암캠퍼스">
+                            <img src="https://www.gnu.ac.kr/common/nttEditorImgView.do?imgKey=96b1e7e4b113c43914996108683bca1b"
+                                alt="칠암캠퍼스">
                             <p class="campus-text">칠암캠퍼스</p>
                         </div>
-                    </div>                
+                    </div>
                 </div>
             </div>
             <div class="campus-toggle-bar" id="campusToggleBar">
@@ -709,26 +759,25 @@
             <div class="tag-search">
                 <input type="text" id="tagSearchInput" placeholder="태그 검색..." class="tag-search-input">
             </div>
+            <p class="tag-guide-text">보고싶지 않은 태그를 숨길 수 있어요.</p>
+
             <div class="tag-list">
                 <button class="tag-item active" id="allTagsBtn">모두보기</button>
                 <th:block th:each="entry : ${taggedShops}">
-                    <button class="tag-item active"
-                            th:text="${entry.key}"
-                            th:data-tag="${entry.key}"
-                            onclick="toggleTag(this)">
+                    <button class="tag-item active" th:text="${entry.key}" th:data-tag="${entry.key}"
+                        onclick="toggleTag(this)">
                     </button>
                 </th:block>
             </div>
         </div>
 
-        
-        
+
+
         <main class="content">
             <div class="body-box">
                 <th:block th:each="entry : ${taggedShops}">
-                    <section th:id="${'tag-' + entry.value.hashId}"
-                            th:attr="data-tag=${entry.key}"
-                            class="card-section">
+                    <section th:id="${'tag-' + entry.value.hashId}" th:attr="data-tag=${entry.key}"
+                        class="card-section"> 
                         <div class="card-section-wrap">
                             <div class="card-section-title-box">
                                 <h2 class="card-section-title">
@@ -740,14 +789,14 @@
                                 </span>
                                 */-->
                             </div>
-                            <div class="card-slide-wrap">
-                                <ul class="slide-card-list">
-                                    <li th:each="shop, iterStat : ${entry.value.shops}" 
+                            <div class="card-slide-wrap"> 
+                                <ul class="slide-card-list"> 
+                                    <li th:each="shop, iterStat : ${entry.value.shops}"
                                         th:data-campus="${shop.restId.startsWith('C')} ? 'chilam' : 'gajwa'"
                                         th:classappend="${iterStat.index  >= 50} ? ' hidden' : ''"
-                                        class="slide-card-item">  
-                                    <!-- /*<li th:each="shop : ${entry.value.shops}" class="slide-card-item">*/-->
-                                        <a th:href="@{'/shopDetails/' + ${shop.id}}">
+                                        class="slide-card-item">
+                                        <!-- /*<li th:each="shop : ${entry.value.shops}" class="slide-card-item">*/-->
+                                        <a th:href="@{'/foodDetails/' + ${shop.id}}">
                                             <img th:src="@{${shop.imgUrl}}" alt="" loading="lazy">
                                             <p class="card-rest-name" th:text="${shop.name}"></p>
                                         </a>
@@ -756,7 +805,9 @@
                                                 <form th:action="@{/toggleLike}" method="POST">
                                                     <input type="hidden" name="shopId" th:value="${shop.id}">
                                                     <button type="submit" class="like-btn">
-                                                        <img class="like-icon" src="https://cdn-icons-png.flaticon.com/512/833/833472.png" alt="Heart Icon">
+                                                        <img class="like-icon"
+                                                            src="https://cdn-icons-png.flaticon.com/512/833/833472.png"
+                                                            alt="Heart Icon">
                                                     </button>
                                                 </form>
                                                 <p id="likeCount" th:text="${shop.likeCount}"></p>
@@ -803,171 +854,180 @@
                 </th:block> */-->
 
                 <a href="/ask" class="fixed-button">
-                    <img src="https://www.gnu.ac.kr/images/web/main/sub_cnt/bs03.png" alt="캐릭터 기본형" width="50" height="50">
+                    <img src="https://www.gnu.ac.kr/images/web/main/sub_cnt/bs03.png" alt="캐릭터 기본형" width="50"
+                        height="50">
                 </a>
             </div>
         </main>
-    <th:block th:replace="~{form/bottom :: body}"></th:block>
-    <script src="/javascript/script.js" defer></script>
-    
-    <div class="bottom-nav-wrapper">
-        <nav class="bottom-nav">
-            <div class="nav-container">
+        <th:block th:replace="~{form/bottom :: body}"></th:block>
+        <script src="/javascript/script.js" defer></script>
 
-                <a th:href="@{/board/main}" class="nav-item">
-                    <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M3 9H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M9 21V9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    <span>게시판</span>
-                </a>
+        <div class="bottom-nav-wrapper">
+            <nav class="bottom-nav">
+                <div class="nav-container">
 
-                <a th:href="@{/map}" class="nav-item">
-                    <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21 3 6"></polygon>
-                        <line x1="9" y1="3" x2="9" y2="18"></line>
-                        <line x1="15" y1="6" x2="15" y2="21"></line>
-                    </svg>
-                    <span>지도</span>
-                </a>
-                
-                <a th:href="@{/main}" class="nav-item">
-                    <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M3 9.5L12 3l9 6.5V21a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-5H10v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z" />
-                    </svg>
-                    <span>홈</span>
-                </a>
+                    <a th:href="@{/board/main}" class="nav-item">
+                        <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M3 9H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <path d="M9 21V9" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                        <span>게시판</span>
+                    </a>
 
-                <a th:href="${#authentication.authenticated} ? @{/myPage/bookmarkList} : @{/member/login}" 
-                    class="nav-item">
+                    <a th:href="@{/map}" class="nav-item">
                         <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M3 7h5l2 3h11v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/>
+                            <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21 3 6"></polygon>
+                            <line x1="9" y1="3" x2="9" y2="18"></line>
+                            <line x1="15" y1="6" x2="15" y2="21"></line>
+                        </svg>
+                        <span>지도</span>
+                    </a>
+
+                    <a th:href="@{/main}" class="nav-item">
+                        <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M3 9.5L12 3l9 6.5V21a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-5H10v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z" />
+                        </svg>
+                        <span>홈</span>
+                    </a>
+
+                    <a th:href="@{/myPage/bookmarkList}"
+                        class="nav-item">
+                        <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 7h5l2 3h11v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" />
                         </svg>
                         <span>보관함</span>
                     </a>
-                
-                <a th:href="@{/myPage}" class="nav-item">
-                    <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    <span>마이</span>
-                </a>
-            </div>
-        </nav>
-    </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const toggleBanner = document.getElementById('campusToggleBar');
-            const campusImages = document.getElementById('campusImages');
-            const bannerText = document.getElementById('bannerText');
-            const bannerIcon = document.getElementById('bannerIcon');
-            const searchInput = document.getElementById('tagSearchInput');
-            const tagItems = document.querySelectorAll('.tag-item');
-            const allBtn = document.getElementById("allTagsBtn");
-            const tagButtons = document.querySelectorAll(".tag-item[data-tag]");
-            const tagSections = document.querySelectorAll("section.card-section");
 
-            let filterState = { gajwa: true, chilam: true };
+                    <a th:href="@{/myPage}" class="nav-item">
+                        <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                        <span>마이</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const toggleBanner = document.getElementById('campusToggleBar');
+                const campusImages = document.getElementById('campusImages');
+                const bannerText = document.getElementById('bannerText');
+                const bannerIcon = document.getElementById('bannerIcon');
+                const searchInput = document.getElementById('tagSearchInput');
+                const tagItems = document.querySelectorAll('.tag-item');
+                const allBtn = document.getElementById("allTagsBtn");
+                const tagButtons = document.querySelectorAll(".tag-item[data-tag]");
+                const tagSections = document.querySelectorAll("section.card-section");
 
-            // 캠퍼스 필터 클릭
-            document.querySelectorAll('[data-campus-toggle]').forEach(wrapper => {
-                wrapper.addEventListener('click', () => {
-                    const campus = wrapper.dataset.campusToggle;
-                    filterState[campus] = !filterState[campus];
-                    updateShopVisibility();
-                    wrapper.classList.toggle('blurred', !filterState[campus]);
+                let filterState = { gajwa: true, chilam: true };
+
+                // 캠퍼스 필터 클릭
+                document.querySelectorAll('[data-campus-toggle]').forEach(wrapper => {
+                    wrapper.addEventListener('click', () => {
+                        const campus = wrapper.dataset.campusToggle;
+                        filterState[campus] = !filterState[campus];
+                        updateShopVisibility();
+                        wrapper.classList.toggle('blurred', !filterState[campus]);
+                    });
                 });
-            });
 
-            function updateShopVisibility() {
-                const shopCards = document.querySelectorAll('.slide-card-item');
-                shopCards.forEach(card => {
-                    const campus = card.dataset.campus;
-                    card.style.display = filterState[campus] ? '' : 'none';
+                function updateShopVisibility() {
+                    const shopCards = document.querySelectorAll('.slide-card-item');
+                    shopCards.forEach(card => {
+                        const campus = card.dataset.campus;
+                        card.style.display = filterState[campus] ? '' : 'none';
+                    });
+                }
+
+                // 캠퍼스 이미지 토글
+                toggleBanner.addEventListener('click', function toggleCampusView() {
+                    const isOpen = campusImages.style.display === 'block';
+                    campusImages.style.display = isOpen ? 'none' : 'block';
+                    bannerIcon.textContent = isOpen ? '▼' : '▲';
+                    bannerText.childNodes[0].nodeValue = isOpen
+                        ? '캠퍼스를 다시 보고 싶다면 여기를 클릭하세요 '
+                        : '원하지 않는 캠퍼스를 숨길 수 있어요 ';
                 });
-            }
 
-            // 캠퍼스 이미지 토글
-            toggleBanner.addEventListener('click', function toggleCampusView() {
-                const isOpen = campusImages.style.display === 'block';
-                campusImages.style.display = isOpen ? 'none' : 'block';
-                bannerIcon.textContent = isOpen ? '▼' : '▲';
-                bannerText.childNodes[0].nodeValue = isOpen
-                    ? '캠퍼스를 다시 보고 싶다면 여기를 클릭하세요 '
-                    : '원하지 않는 캠퍼스를 숨길 수 있어요 ';
-            });
+                // 가로 드래그
+                document.querySelectorAll('.card-slide-wrap').forEach(wrapper => {
+                    let isDown = false, startX, scrollLeft;
 
-            // 가로 드래그
-            document.querySelectorAll('.card-slide-wrap').forEach(wrapper => {
-                let isDown = false, startX, scrollLeft;
-
-                wrapper.addEventListener('mousedown', (e) => {
-                    isDown = true;
-                    wrapper.classList.add('active');
-                    startX = e.pageX - wrapper.offsetLeft;
-                    scrollLeft = wrapper.scrollLeft;
+                    wrapper.addEventListener('mousedown', (e) => {
+                        isDown = true;
+                        wrapper.classList.add('active');
+                        startX = e.pageX - wrapper.offsetLeft;
+                        scrollLeft = wrapper.scrollLeft;
+                    });
+                    wrapper.addEventListener('mouseleave', () => {
+                        isDown = false;
+                        wrapper.classList.remove('active');
+                    });
+                    wrapper.addEventListener('mouseup', () => {
+                        isDown = false;
+                        wrapper.classList.remove('active');
+                    });
+                    wrapper.addEventListener('mousemove', (e) => {
+                        if (!isDown) return;
+                        e.preventDefault();
+                        const x = e.pageX - wrapper.offsetLeft;
+                        const walk = (x - startX);
+                        wrapper.scrollLeft = scrollLeft - walk;
+                    });
                 });
-                wrapper.addEventListener('mouseleave', () => {
-                    isDown = false;
-                    wrapper.classList.remove('active');
+
+                // 태그 전체 보기
+                allBtn.addEventListener("click", () => {
+                    allBtn.classList.add("active");
+                    tagButtons.forEach(btn => btn.classList.remove("active"));
+                    tagSections.forEach(section => section.style.display = "block");
                 });
-                wrapper.addEventListener('mouseup', () => {
-                    isDown = false;
-                    wrapper.classList.remove('active');
+
+                // 개별 태그 필터
+                tagButtons.forEach(button => {
+                    button.addEventListener("click", () => {
+                        button.classList.toggle("active");
+                        allBtn.classList.remove("active");
+
+                        const activeTags = Array.from(tagButtons)
+                            .filter(btn => btn.classList.contains("active"))
+                            .map(btn => btn.dataset.tag);
+
+                        if (activeTags.length === 0) {
+                            allBtn.classList.add("active");
+                            tagSections.forEach(section => section.style.display = "block");
+                            return;
+                        }
+
+                        tagSections.forEach(section => {
+                            const tagName = section.dataset.tag;
+                            section.style.display = activeTags.includes(tagName) ? "block" : "none";
+                        });
+                    });
                 });
-                wrapper.addEventListener('mousemove', (e) => {
-                    if (!isDown) return;
-                    e.preventDefault();
-                    const x = e.pageX - wrapper.offsetLeft;
-                    const walk = (x - startX);
-                    wrapper.scrollLeft = scrollLeft - walk;
-                });
-            });
 
-            // 태그 전체 보기
-            allBtn.addEventListener("click", () => {
-                allBtn.classList.add("active");
-                tagButtons.forEach(btn => btn.classList.remove("active"));
-                tagSections.forEach(section => section.style.display = "block");
-            });
-
-            // 개별 태그 필터
-            tagButtons.forEach(button => {
-                button.addEventListener("click", () => {
-                    button.classList.toggle("active");
-                    allBtn.classList.remove("active");
-
-                    const activeTags = Array.from(tagButtons)
-                        .filter(btn => btn.classList.contains("active"))
-                        .map(btn => btn.dataset.tag);
-
-                    if (activeTags.length === 0) {
-                        allBtn.classList.add("active");
-                        tagSections.forEach(section => section.style.display = "block");
-                        return;
-                    }
-
-                    tagSections.forEach(section => {
-                        const tagName = section.dataset.tag;
-                        section.style.display = activeTags.includes(tagName) ? "block" : "none";
+                // 태그 검색
+                searchInput.addEventListener('input', function () {
+                    const searchTerm = this.value.toLowerCase();
+                    tagItems.forEach(item => {
+                        const tagText = item.textContent.toLowerCase();
+                        item.style.display = tagText.includes(searchTerm) ? '' : 'none';
                     });
                 });
             });
-
-            // 태그 검색
-            searchInput.addEventListener('input', function () {
-                const searchTerm = this.value.toLowerCase();
-                tagItems.forEach(item => {
-                    const tagText = item.textContent.toLowerCase();
-                    item.style.display = tagText.includes(searchTerm) ? '' : 'none';
-                });
-            });
-        });
-    </script>
+        </script>
 </body>
+
 </html>

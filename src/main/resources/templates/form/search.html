@@ -675,7 +675,7 @@
                     <div class="search-form">
                         <form action="/search" method="get">
                             <div class="input-wrap">
-                                <input class="search-input" type="search" id="query" name="query" placeholder="지역, 음식 또는 식당명 입력" th:value="${searchTerm}" maxlength="255" autocomplete="off">
+                                <input class="search-input" type="search" id="query" name="query" placeholder="메뉴 또는 식당명 입력" th:value="${searchTerm}" maxlength="255" autocomplete="off">
                                 <button type="submit" class="btn-search">
                                         <img src="https://github.com/user-attachments/assets/19865e59-1076-4b33-ae6a-9cfbd7b5bbb2" alt="검색버튼">
                                 </button>
@@ -719,14 +719,14 @@
         </p>
 
         <div class="tag-container">
-            <form id="menuFilterForm" th:action="@{'/search/' + ${query}}" method="get">
-                <input type="text" id="menuFilterInput" name="menu" placeholder="메뉴명을 입력하세요 (예: 국밥)" class="tag-search-input" th:value="${selectedMenu}">
-                <button class="edit-btn" type="submit">검색</button>
-            </form>
+            th:if="${requestURI != null and #strings.startsWith(requestURI, '/search/') and requestURI != '/search'}">
+                <form id="menuFilterForm" th:action="@{'/search/' + ${query}}" method="get">
+                    <input type="text" id="menuFilterInput" name="menu"
+                        placeholder="메뉴명을 입력하세요 (예: 국밥)"
+                        class="tag-search-input"
+                        th:value="${selectedMenu}">
+                </form>
         </div>
-        <th:block th:if="${selectedMenu != null}">
-            <button class="tag-item active" onclick="window.location.href='/search/'+[[${query}]]">초기화</button>
-        </th:block>
         
 
         <!--
@@ -771,7 +771,6 @@
                             <span class="restaurant_like" th:text="${shop.likeCount}"></span>
                         </div>                        
                         <span class="restaurant_address" th:text="${shop.address}"></span> <br>
-                        <span class="restaurant_addressinfo" th:text="${shop.addressInfo}"></span>
                         <div class="restaurant-menu-list">
                             <span th:each="menu, iterStat : ${shop.shopMenus}"
                                 th:class="${iterStat.index > 0} ? 'restaurant-menu hidden-menu' : 'restaurant-menu'"
@@ -834,6 +833,15 @@
                             <line x1="15" y1="6" x2="15" y2="21"></line>
                         </svg>
                         <span>지도</span>
+                    </a>
+                    
+                    <a th:href="@{/myPage/bookmarkList}"
+                        class="nav-item">
+                        <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 7h5l2 3h11v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" />
+                        </svg>
+                        <span>보관함</span>
                     </a>
                     
                     <a th:href="@{/myPage}" class="nav-item">

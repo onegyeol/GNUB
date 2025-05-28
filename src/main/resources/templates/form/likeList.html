@@ -504,7 +504,7 @@
                 <div th:each="shop : ${likedShops}" class="restaurant_item">
                     <!-- 가게 정보 (왼쪽) -->
                     <div class="restaurant_info">
-                        <a th:href="@{'/shopDetails/' + ${shop.id}}">
+                        <a th:href="@{'/foodDetails/' + ${shop.id}}">
                             <span class="restaurant_name" th:text="${shop.name}"></span> 
                         </a>
                         <div class="like-section">
@@ -567,6 +567,15 @@
                             <line x1="15" y1="6" x2="15" y2="21"></line>
                         </svg>
                         <span>지도</span>
+                    </a>
+
+                    <a th:href="@{/myPage/bookmarkList}"
+                        class="nav-item">
+                        <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 7h5l2 3h11v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" />
+                        </svg>
+                        <span>보관함</span>
                     </a>
                     
                     <a th:href="@{/myPage}" class="nav-item">

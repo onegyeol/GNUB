@@ -278,6 +278,12 @@
         .save-button {
             cursor: pointer;
         }
+        .save-button-container {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        }
+
 
         .restaurant-card img {
             width: 20px;
@@ -646,13 +652,33 @@
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
-            margin-top: 10px;
+            margin-top: 30px;
         }
         .blurred {
             filter: blur(5px); /* 흐릿하게 */
             pointer-events: none; /* 클릭 막기 */
             user-select: none;    /* 드래그 막기 */
             }
+
+        .chart-blur-wrapper {
+            position: relative;
+        }
+
+        .blur-overlay-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 14px 20px;
+            border-radius: 12px;
+            font-size: 26px;
+            font-weight: bold;
+            color: #333;
+            z-index: 10;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
         /* 버튼 기본 스타일 */
         .tag-vote-list button {
             background-color: #e0e0e0;
@@ -691,13 +717,13 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 20px;
-            padding: 20px 0;
+            gap: 60px;
+            padding: 50px 0;
         }
 
         .tag-chart-wrapper canvas {
-            max-width: 400px;
-            max-height: 400px;
+            max-width: 420px;
+            max-height: 420px;
         }
 
         @media screen and (max-width: 768px) {
@@ -745,15 +771,16 @@
             <!-- 음식점 정보 -->
             <div class="restaurant-card">
                 <div class="restaurant-name-container">
-                    <h1 class="restaurant-name" th:text="${shop.name}"></h1>
-                    <!-- 저장 버튼 영역 -->
-                    <div class="save-button" onclick="toggleBookmark()">
-                        <svg id="bookmarkIcon" class="save-icon" width="24" height="24" viewBox="0 0 24 24">
+                    <div class="save-button-container">
+                        <div class="save-button" onclick="toggleBookmark()">
+                            <svg id="bookmarkIcon" class="save-icon" width="34" height="34" viewBox="0 0 24 24">
                             <polygon id="bookmarkIconPolygon" th:attr="fill=${isBookmarked} ? 'black' : 'none'"
-                                points="20 21 12 13.44 4 21 4 3 20 3 20 21" stroke="black" stroke-linecap="round"
-                                stroke-linejoin="round" stroke-width="2" />
-                        </svg>
-                    </div>
+                                points="20 21 12 13.44 4 21 4 3 20 3 20 21" stroke="black"
+                                stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                            </svg>
+                        </div>
+                        <h1 class="restaurant-name" th:text="${shop.name}"></h1>
+                        </div>
 
                     <!-- Dimmed Background -->
                     <div class="modal-overlay" id="modalOverlay" onclick="closeModal()" style="display: none;"></div>
@@ -820,8 +847,10 @@
             <div class="content">
                 <div class="restaurant-card">
                     <h2>음식점 유형</h2>
-                        <div th:id="'tagVoteSection-' + ${shop.id}"
-                             th:class="'tag-vote-list' + (${isLoggedIn} ? '' : ' blurred')">
+                    <div class="chart-blur-wrapper">
+                     <div th:id="'tagVoteContainer-' + ${shop.id}"
+                            th:class="'tag-vote-container' + (${isLoggedIn} ? '' : ' blurred')">
+                        <div th:id="'tagVoteSection-' + ${shop.id}" class="tag-vote-list">
                             <button
                                 th:each="tagName : ${tagCounts.keySet()}"
                                 th:class="'tag-item'" 
@@ -834,6 +863,11 @@
                             <canvas th:id="'tagRadarChart-' + ${shop.id}" width="500" height="500"></canvas>
                             <canvas th:id="'tagRadarChart5-' + ${shop.id}" width="500" height="500"></canvas>
                         </div>
+                    </div>
+                    <div th:if="${!isLoggedIn}" class="blur-overlay-message">
+                        로그인하면 음식점 유형을 볼 수 있어요.
+                    </div>
+                    </div>
                 </div>
             </div>
 
@@ -1015,6 +1049,16 @@
                             </svg>
                             <span>지도</span>
                         </a>
+
+                        <a th:href="@{/myPage/bookmarkList}"
+                            class="nav-item">
+                            <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 7h5l2 3h11v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" />
+                            </svg>
+                            <span>보관함</span>
+                        </a>
+
 
                         <a th:href="@{/myPage}" class="nav-item">
                             <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -1231,7 +1275,7 @@
         data: {
             labels: label6,
             datasets: [{
-                label: '태그 종합 점수',
+                label: '음식점 유형1',
                 data: label6.map(k => safeGet(k)),
                 fill: true,
                 borderColor: 'orange',
@@ -1242,7 +1286,29 @@
         options: {
             responsive: true,
             scales: {
-                r: { suggestedMin: 0, suggestedMax: 3000 }
+                r: { suggestedMin: 0, suggestedMax: 3000,
+                    pointLabels: {
+                    font: {
+                        size: 16, // ✅ 라벨 글씨 크기
+                        family: 'Noto Sans KR',
+                        weight: 'bold' // ✅ 볼드체
+
+                    },
+                    color: '#333'
+                },
+                ticks: {
+                display: false // ✅ 숫자 숨김
+            }
+            }
+        },
+        plugins: {
+            legend: {
+                labels: {
+                    font: {
+                        size: 20 // ✅ 범례 글자 크기
+                    }
+                }
+            }
             }
         }
     });
@@ -1253,7 +1319,7 @@
         data: {
             labels: label5,
             datasets: [{
-                label: '기타 태그',
+                label: '음식점 유형2',
                 data: label5.map(k => safeGet(k)),
                 fill: true,
                 borderColor: 'blue',
@@ -1264,7 +1330,28 @@
         options: {
             responsive: true,
             scales: {
-                r: { suggestedMin: 0, suggestedMax: 3000 }
+                r: { suggestedMin: 0, suggestedMax: 3000,
+                    pointLabels: {
+                    font: {
+                        size: 16, // ✅ 라벨 글씨 크기
+                        family: 'Noto Sans KR',
+                        weight: 'bold' // ✅ 볼드체
+                    },
+                    color: '#333'
+                },
+                ticks: {
+                display: false // ✅ 숫자 숨김
+            }
+            }
+        },
+        plugins: {
+            legend: {
+                labels: {
+                    font: {
+                        size: 20 // ✅ 범례 글자 크기
+                    }
+                }
+            }
             }
         }
     });

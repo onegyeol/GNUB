@@ -11,6 +11,7 @@ html {
     max-width: 1070px;
     margin: 0 auto;
     padding-bottom: 70px;
+    padding-top:10%;
 }
 
 .auth-box {
@@ -106,6 +107,7 @@ html {
 /* 가게 정보 (왼쪽) */
 .restaurant_info {
     flex: 1;
+    margin-right: 3%;
 }
 
 /* a 태그의 기본 스타일 제거 */
@@ -296,12 +298,10 @@ a {
     }
 
     .restaurant_item {
-        flex-direction: column;
         align-items: flex-start;
     }
 
     .restaurant_image img {
-        width: 100%;
         height: auto;
     }
 }

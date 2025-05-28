@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html xmlns="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html xmlns="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>마이페이지</title>
-    <link rel="icon" type="image/png" href="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144">
-   
+    <link rel="icon" type="image/png"
+        href="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144">
+
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/bottom.css}">
     <style>
@@ -17,20 +18,24 @@
         }
 
         .body {
-            padding-bottom: 80px; /* 푸터 높이만큼 여백을 추가하여 푸터가 겹치지 않도록 설정 */
+            padding-bottom: 80px;
+            /* 푸터 높이만큼 여백을 추가하여 푸터가 겹치지 않도록 설정 */
         }
 
-        body, html {
+        body,
+        html {
             background-color: #f0f0f0;
             min-width: 1070px;
-            overflow: auto; /* 스크롤 가능하도록 설정 */
+            overflow: auto;
+            /* 스크롤 가능하도록 설정 */
         }
 
         #root {
             width: 100%;
             min-height: auto;
             overflow-x: hidden;
-            padding-bottom: 70px; /* 푸터 높이만큼 패딩 추가 */
+            padding-bottom: 70px;
+            /* 푸터 높이만큼 패딩 추가 */
         }
 
         .header-content {
@@ -71,7 +76,7 @@
             justify-content: center;
             align-items: center;
             position: relative;
-            z-index: 1; 
+            z-index: 1;
         }
 
         .banner-wrap {
@@ -159,7 +164,7 @@
             width: 24px;
             height: 24px;
         }
-        
+
 
         .main-logo {
             flex: 1;
@@ -176,6 +181,7 @@
             color: inherit;
             background-color: transparent;
         }
+
         .header-wrap {
             display: flex;
             justify-content: space-between;
@@ -229,17 +235,19 @@
             background-color: #f0f0f0;
             padding: 20px;
         }
+
         .header-container h1 {
             font-size: 40px;
             text-align: left;
         }
+
         .profile {
             text-align: center;
             margin-bottom: 20px;
             padding: 20px;
             background: white;
             border-radius: 16px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
         .profile .name {
@@ -257,7 +265,7 @@
         .content-container {
             border-radius: 16px;
             background: white;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
             margin-top: 24px;
             padding: 24px;
         }
@@ -267,27 +275,38 @@
             font-weight: 600;
             color: #333;
         }
-        .content-body { /* 공통 body 스타일 */
+
+        .content-body {
+            /* 공통 body 스타일 */
             padding: 15px;
         }
-        .content-item { /* 공통 item 스타일 */
+
+        .content-item {
+            /* 공통 item 스타일 */
             display: flex;
             padding: 15px;
             border-bottom: 1px solid #e0e0e0;
-            align-items: center; /* 세로 정렬 추가 */
+            align-items: center;
+            /* 세로 정렬 추가 */
         }
+
         .content-item:last-child {
             border-bottom: none;
         }
-        .content-label { /* 공통 label 스타일 */
+
+        .content-label {
+            /* 공통 label 스타일 */
             font-weight: bold;
             width: 150px;
-            text-align: left; /* 텍스트 왼쪽 정렬 */
+            text-align: left;
+            /* 텍스트 왼쪽 정렬 */
         }
-        .content-value { /* 공통 value 스타일 */
+
+        .content-value {
+            /* 공통 value 스타일 */
             margin-left: 20px;
         }
-        
+
         .activity-section {
             margin-top: 40px;
         }
@@ -310,7 +329,7 @@
             background-color: #fff;
             border-radius: 20px;
             padding: 24px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -347,14 +366,17 @@
 
 
         .modal {
-            display: none; /* 초기 상태에서 숨김 */
-            position: fixed; /* 화면 고정 */
+            display: none;
+            /* 초기 상태에서 숨김 */
+            position: fixed;
+            /* 화면 고정 */
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.4);
-            z-index: 9999; /* 다른 요소 위에 표시 */
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 9999;
+            /* 다른 요소 위에 표시 */
         }
 
         .modal-content {
@@ -378,8 +400,9 @@
             color: white;
             font-size: 24px;
             font-weight: bold;
-            text-align:center /* 새로 추가한부분 */
-            
+            text-align: center
+                /* 새로 추가한부분 */
+
         }
 
         .modal-content .close {
@@ -390,17 +413,20 @@
             font-size: 32px;
             font-weight: bold;
             cursor: pointer;
-            transform: none; /* 변경한부분 */
+            transform: none;
+            /* 변경한부분 */
         }
-    
+
 
         .modal-content .content-body {
             padding: 16px;
         }
 
         .modal-content .content-item {
-            margin-bottom: 15px; /* 간격 조정 */
-            align-items: center; /* 세로 중앙 정렬 */
+            margin-bottom: 15px;
+            /* 간격 조정 */
+            align-items: center;
+            /* 세로 중앙 정렬 */
             /* flex-direction: column; */
             justify-content: space-between;
         }
@@ -408,14 +434,17 @@
         .modal-content .content-label {
             font-size: 17px;
             font-weight: bold;
-            display: inline-block; /* 인라인 블록으로 변경 */
-            width: 35%; /* 너비 조정 */
+            display: inline-block;
+            /* 인라인 블록으로 변경 */
+            width: 35%;
+            /* 너비 조정 */
             text-align: left;
             vertical-align: middle;
         }
 
         .modal-content input[type="password"] {
-            width: 63%;  /* 텍스트 상자 크기 조정 */
+            width: 63%;
+            /* 텍스트 상자 크기 조정 */
             padding: 14px;
             margin-top: 5px;
             border: none;
@@ -436,8 +465,10 @@
             cursor: pointer;
             font-size: 18px;
             text-align: center;
-            margin-top: 10px; /* 위쪽 간격 추가 */
-            margin-bottom: 10px; /* 아래쪽 간격 추가 */
+            margin-top: 10px;
+            /* 위쪽 간격 추가 */
+            margin-bottom: 10px;
+            /* 아래쪽 간격 추가 */
         }
 
         .modal-content .edit-btn:hover {
@@ -453,8 +484,10 @@
             border-radius: 100px;
             cursor: pointer;
             text-align: center;
-            margin-top: 1%; /* 위쪽 간격 추가 */
-            margin-bottom: 1%; /* 아래쪽 간격 추가 */
+            margin-top: 1%;
+            /* 위쪽 간격 추가 */
+            margin-bottom: 1%;
+            /* 아래쪽 간격 추가 */
             margin-left: 1%;
         }
 
@@ -464,7 +497,8 @@
 
         #passwordMatchMessage {
             font-size: 13px;
-            height: 20px; /* 공간 확보 */
+            height: 20px;
+            /* 공간 확보 */
             margin-bottom: 10px;
             text-align: center;
         }
@@ -503,9 +537,9 @@
         }
 
         @media screen and (max-width: 1070px) {
-        .bottom-nav {
+            .bottom-nav {
                 width: 100%;
-        }
+            }
         }
 
         .nav-container {
@@ -519,16 +553,17 @@
             padding: 0 16px;
             border-top: 1px solid rgba(138, 138, 138, 0.1);
         }
+
         .nav-container .menu-items {
             display: flex;
             align-items: center;
         }
 
         .nav-container .menu-item {
-            margin: 0 15px; 
+            margin: 0 15px;
         }
 
-        .nav-container  {
+        .nav-container {
             margin-left: auto;
         }
 
@@ -548,9 +583,9 @@
                 padding: 20px;
             }
         }
-
     </style>
 </head>
+
 <body>
     <div id="root">
 
@@ -559,17 +594,22 @@
                 <div class="header-wrap">
                     <div class="main-logo">
                         <a href="/main">
-                            <img class="logo" src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144" alt="Logo">
+                            <img class="logo"
+                                src="https://github.com/user-attachments/assets/fc7341a0-da3e-4971-9100-ddac29772144"
+                                alt="Logo">
                         </a>
                     </div>
 
-                    
+
                     <div class="search-form">
                         <form action="/search" method="get">
                             <div class="input-wrap">
-                                <input class="search-input" type="search" id="query" name="query" placeholder="지역, 음식 또는 식당명 입력" th:value="${searchTerm}" maxlength="255" autocomplete="off">
+                                <input class="search-input" type="search" id="query" name="query"
+                                    placeholder="지역, 음식 또는 식당명 입력" th:value="${searchTerm}" maxlength="255"
+                                    autocomplete="off">
                                 <button type="submit" class="btn-search">
-                                        <img src="https://github.com/user-attachments/assets/19865e59-1076-4b33-ae6a-9cfbd7b5bbb2" alt="검색버튼">
+                                    <img src="https://github.com/user-attachments/assets/19865e59-1076-4b33-ae6a-9cfbd7b5bbb2"
+                                        alt="검색버튼">
                                 </button>
                             </div>
                         </form>
@@ -607,21 +647,22 @@
                     <div class="content-item">
                         <span class="content-label">비밀번호:</span>
                         <span class="content-value">********</span>
-                        <button class="edit-btn" onclick="openPasswordModal()">수정</button>
                     </div>
                 </div>
             </div>
-        
+
             <div class="activity-section">
                 <h2 class="activity-title">✨ 활동 내역</h2>
                 <div class="activity-grid">
                     <div class="activity-card">
                         <div class="activity-text">🏠 내가 저장한 가게</div>
-                        <button class="go-btn" th:onclick="'window.location.href=\'' + @{/myPage/bookmarkList} + '\''">바로가기</button>
+                        <button class="go-btn"
+                            th:onclick="'window.location.href=\'' + @{/myPage/bookmarkList} + '\''">바로가기</button>
                     </div>
                     <div class="activity-card">
                         <div class="activity-text">👍 내가 좋아요한 가게</div>
-                        <button class="go-btn" th:onclick="'window.location.href=\'' + @{/myPage/likeList} + '\''">바로가기</button>
+                        <button class="go-btn"
+                            th:onclick="'window.location.href=\'' + @{/myPage/likeList} + '\''">바로가기</button>
                     </div>
                 </div>
             </div>
@@ -633,7 +674,7 @@
                     </button>
                 </form>
             </div>
-            
+
 
 
             <div class="bottom-nav-wrapper">
@@ -642,22 +683,28 @@
 
                         <a th:href="@{/board/main}" class="nav-item">
                             <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                <path d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M3 9H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M9 21V9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path
+                                    d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M3 9H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M9 21V9" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
                             </svg>
                             <span>매거진</span>
                         </a>
-                        
+
                         <a th:href="@{/main}" class="nav-item">
                             <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M3 9.5L12 3l9 6.5V21a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-5H10v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z" />
+                                <path
+                                    d="M3 9.5L12 3l9 6.5V21a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-5H10v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z" />
                             </svg>
                             <span>홈</span>
                         </a>
-                        
-                        
+
+
                         <a th:href="@{/map}" class="nav-item">
                             <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -667,11 +714,21 @@
                             </svg>
                             <span>지도</span>
                         </a>
-                        
+
+                        <a th:href="@{/myPage/bookmarkList}" class="nav-item">
+                            <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 7h5l2 3h11v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" />
+                            </svg>
+                            <span>보관함</span>
+                        </a>
+
                         <a th:href="@{/myPage}" class="nav-item">
                             <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                             <span>마이</span>
                         </a>
@@ -680,75 +737,10 @@
             </div>
         </div>
 
-
-        <th:block th:replace="~{form/bottom :: body}"></th:block>
     </div>
-        
-    <div id="passwordModal" class="modal">
-        <div class="modal-content content-container">
-            <div class="content-title">
-                <span class="content-title-text">비밀번호 변경</span>
-                <span class="close" onclick="closePasswordModal()">&times;</span>
-            </div>
-            <div class="content-body">
-                <form th:action="@{/member/change-password}" method="post">
-                    <div class="content-item">
-                        <label for="currentPassword" class="content-label">현재 비밀번호:</label>
-                        <input type="password" id="currentPassword" name="currentPassword" class="content-value" required>
-                    </div>
-                    <div class="content-item">
-                        <label for="newPassword" class="content-label">새 비밀번호:</label>
-                        <input type="password" id="newPassword" name="newPassword" class="content-value" required>
-                    </div>
-                    <div class="content-item">
-                        <label for="confirmPassword" class="content-label">새 비밀번호 확인:</label>
-                        <input type="password" id="confirmPassword" class="content-value" required onkeyup="checkPasswordMatch()">
-                    </div>
-                    <p id="passwordMatchMessage" style="color: red; font-size: 13px;"></p>
-                    <div class="content-item">
-                        <button type="submit" class="edit-btn" id="changePasswordButton" disabled>변경</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    
-    <script>
-        function checkPasswordMatch() {
-            var newPassword = document.getElementById("newPassword").value;
-            var confirmPassword = document.getElementById("confirmPassword").value;
-            var messageElement = document.getElementById("passwordMatchMessage");
-            var changePasswordButton = document.getElementById("changePasswordButton");
 
-            if (newPassword === confirmPassword) {
-                messageElement.textContent = "비밀번호가 서로 일치합니다.";
-                messageElement.style.color = "green";
-                changePasswordButton.disabled = false;
-            } else {
-                messageElement.textContent = "새 비밀번호가 서로 일치하지 않습니다.";
-                messageElement.style.color = "red";
-                changePasswordButton.disabled = true;
-            }
-        }
-        function openPasswordModal() {
-            document.getElementById('passwordModal').style.display = 'block';
-        }
-
-        function closePasswordModal() {
-            document.getElementById('passwordModal').style.display = 'none';
-            document.getElementById('currentPassword').value = '';
-            document.getElementById('newPassword').value = '';
-            document.getElementById('confirmPassword').value = '';
-            document.getElementById('passwordMatchMessage').textContent = ''; // 메시지 초기화
-            document.getElementById('changePasswordButton').disabled = true; // 버튼 초기화
-        }
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                closePasswordModal();
-            }
-        });
-    </script>
 
 
 </body>
+
 </html>

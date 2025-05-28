@@ -5,6 +5,8 @@ from sentence_transformers import SentenceTransformer, util
 from typing import Dict, List, Optional, Tuple, Union
 import numpy as np
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 # 상수 설정: 별칭(alias) -> 정규명(canonical) 매핑
 PLACE_ALIASES: Dict[str, str] = {
     "칠암": "칠암",
@@ -34,9 +36,8 @@ def normalize_category(cat: str, query: str, model: SentenceTransformer) -> List
 
 
 # 카테고리 사전 생성 및 임베딩 로드
-def load_model() -> SentenceTransformer:
-    model = SentenceTransformer("python/fine_tuned_sbert_v17")
-    return model
+def load_model():
+    return SentenceTransformer('paraphrase-MiniLM-L6-v2')
 
 
 def get_category_embeddings(
@@ -115,12 +116,12 @@ def parse_with_sbert(
     """
     SBERT 임베딩 기반으로 place, time, category를 분석합니다.
     """
-    query_embedding = model.encode(query, convert_to_tensor=True)
+    query_embedding = model.encode(query, convert_to_tensor=True).to(device)
     best_matches: Dict[str, Tuple[Optional[str], float]] = {}
     parsed: Dict[str, Optional[str]] = {"place": None, "time": None, "category": None}
 
     for key, embeddings in category_embeddings.items():
-        embeddings_tensor = torch.tensor(embeddings)
+        embeddings_tensor = torch.tensor(embeddings).to(device)
         similarities = util.cos_sim(query_embedding, embeddings_tensor)[0]
         top_k_indices = torch.argsort(similarities, descending=True)[:top_k]
         top_k_values = [category_dict[key][i] for i in top_k_indices]
@@ -191,8 +192,8 @@ def get_best_sentence_index(
     """
     사용자 질문과 문장 리스트 간 유사도를 계산하여 가장 유사한 문장 인덱스를 반환합니다.
     """
-    query_emb = model.encode(query, convert_to_tensor=True)
-    sentence_embs = model.encode(sentences, convert_to_tensor=True)
+    query_emb = model.encode(query, convert_to_tensor=True).to(device)
+    sentence_embs = model.encode(sentences, convert_to_tensor=True).to(device)
     cos_sim = util.cos_sim(query_emb, sentence_embs)[0]
     best_idx = torch.argmax(cos_sim).item()
     return best_idx

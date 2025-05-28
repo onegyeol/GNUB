@@ -1,9 +1,8 @@
 import axios from 'axios';
 
-const BASE = process.env.REACT_APP_API_URL; // 스프링 서버 주소
+const BASE = process.env.REACT_APP_API_URL;
 
-
-export const fetchTaggedShops = async () => {
-  const response = await axios.get(`${BASE}/api/main/tags`);
+export const fetchMainPageData = async () => {
+  const response = await axios.get(`${BASE}/api/main`);
   return response.data;
 };

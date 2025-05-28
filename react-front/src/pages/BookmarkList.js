@@ -25,14 +25,14 @@ export default function BookmarkList() {
       })
       .catch(err => {
         console.error("❌ fetchBookmarks 에러:", err);
-  
+
         // ✅ 401 Unauthorized 처리
         if (err.response && err.response.status === 401) {
           navigate("/member/login");
         }
       });
   }, []);
-  
+
 
   const handleDeleteFolder = (folderName) => {
     if (!window.confirm(`'${folderName}' 폴더를 정말 삭제할까요?`)) {
@@ -151,13 +151,6 @@ export default function BookmarkList() {
               <span>매거진</span>
             </Link>
 
-            <Link to="/" className="nav-item">
-              <svg className="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M3 9.5L12 3l9 6.5V21a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-5H10v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z" />
-              </svg>
-              <span>홈</span>
-            </Link>
-
             <Link to="/map" className="nav-item">
               <svg className="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21 3 6" />
@@ -165,6 +158,13 @@ export default function BookmarkList() {
                 <line x1="15" y1="6" x2="15" y2="21" />
               </svg>
               <span>지도</span>
+            </Link>
+
+            <Link to="/" className="nav-item">
+              <svg className="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 9.5L12 3l9 6.5V21a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-5H10v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z" />
+              </svg>
+              <span>홈</span>
             </Link>
 
             <Link to="/myPage/bookmarkList" className="nav-item">

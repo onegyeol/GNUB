@@ -719,14 +719,14 @@
         </p>
 
         <div class="tag-container">
-            <form id="menuFilterForm" th:action="@{'/search/' + ${query}}" method="get">
-                <input type="text" id="menuFilterInput" name="menu" placeholder="메뉴명을 입력하세요 (예: 국밥)" class="tag-search-input" th:value="${selectedMenu}">
-                <button class="edit-btn" type="submit">검색</button>
-            </form>
+            th:if="${requestURI != null and #strings.startsWith(requestURI, '/search/') and requestURI != '/search'}">
+                <form id="menuFilterForm" th:action="@{'/search/' + ${query}}" method="get">
+                    <input type="text" id="menuFilterInput" name="menu"
+                        placeholder="메뉴명을 입력하세요 (예: 국밥)"
+                        class="tag-search-input"
+                        th:value="${selectedMenu}">
+                </form>
         </div>
-        <th:block th:if="${selectedMenu != null}">
-            <button class="tag-item active" onclick="window.location.href='/search/'+[[${query}]]">초기화</button>
-        </th:block>
         
 
         <!--

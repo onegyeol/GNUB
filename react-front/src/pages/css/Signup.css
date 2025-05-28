@@ -44,34 +44,47 @@
     box-sizing: border-box;
 }
 
-/* 이메일 라인 */
-.email-row {
+/* 이메일 입력 - React 구조 */
+.email-container {
     display: flex;
-    width: 100%;
+    align-items: center;
     gap: 10px;
+    width: 100%;
     margin: 10px 0;
 }
 
-.email-input {
-    flex: 2;
-    padding: 10px;
+.email-id-input,
+.email-domain-select,
+.email-check-button {
+    height: 42px;
+    font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    font-size: 16px;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+.email-id-input {
+    flex: 2;
+}
+
+.email-domain-select {
+  flex: 1.6;
+  font-size: 12.5px !important;
+  white-space: nowrap;
+  box-sizing: border-box !important;
+  padding: 0 8px !important;        
+  height: 42px;            
+  line-height: 1.4;      
 }
 
 .email-check-button {
-    border: none;
-    border-radius: 5px;
+    flex: 1;
     background-color: #41bbca;
     color: white;
-    font-size: 14px;
+    border: none;
     cursor: pointer;
-    white-space: nowrap;
-    padding: 0 10px;
-    /* 가로만 padding 주기 */
 }
-
 
 /* 상태 메시지 */
 .status-message {
@@ -108,7 +121,7 @@
         font-size: 18px;
     }
 
-    .email-button {
+    .email-check-button {
         font-size: 12px;
     }
 }

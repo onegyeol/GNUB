@@ -89,6 +89,41 @@
             padding: 10px; /* 내부 여백 */
         }
 
+        .email-container {
+            display: flex;
+            align-items: center; /* ← 세로 정렬 핵심 */
+            gap: 10px;
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        .email-id-input,
+        .email-domain-select,
+        .email-check-button {
+            height: 42px;              /* 모든 요소 높이 통일 */
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 0 10px;
+            box-sizing: border-box;
+        }
+
+        .email-id-input {
+            flex: 2;
+        }
+
+        .email-domain-select {
+            flex: 1.3;
+        }
+
+        .email-check-button {
+            flex: 1.2;
+            background-color: #41bbca;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
     </style>
 </head>
 
@@ -151,10 +186,18 @@
                     <option value="">단과대를 선택하세요</option>
                 </select>
 
-                <label for="email">이메일</label>
-                <div style="display: flex; align-items: center; width: 100%;">
-                    <input type="text" id="email" name="email" placeholder="이메일을 입력하세요." required style="flex: 1; margin-right: 10px;">
-                    <button type="button" onclick="emailCheck()" style="width: 90px; height: 100%;">중복 확인</button>
+                <!-- ✅ 숨겨진 email 필드 (서버 전송용) -->
+                <input type="hidden" id="email" name="email">
+
+                <div class="email-container">
+                    <input type="text" id="emailId" placeholder="아이디" required class="email-id-input">
+                    <select id="emailDomain" required class="email-domain-select">
+                        <option value="@naver.com">@naver.com</option>
+                        <option value="@gmail.com">@gmail.com</option>
+                        <option value="@daum.net">@daum.net</option>
+                        <option value="@gnu.ac.kr">@gnu.ac.kr</option>
+                    </select>
+                    <button type="button" onclick="emailCheck()" class="email-check-button">중복 확인</button>
                 </div>
 
                 <label for="password">비밀번호</label>
@@ -399,36 +442,54 @@
         }
 
         let isEmailAvailable = false; // 이메일 중복 확인 상태
+
+        // 이메일 입력 변경 시 중복 확인 상태 리셋
+        window.onload = function () {
+            document.getElementById('emailId').addEventListener('input', () => isEmailAvailable = false);
+            document.getElementById('emailDomain').addEventListener('change', () => isEmailAvailable = false);
+        };
+
+        // 이메일 전체 문자열 생성 및 ID 유효성 검사
+        function getFullEmail() {
+            const id = document.getElementById('emailId').value.trim();
+            const domain = document.getElementById('emailDomain').value;
+            const emailIdRegex = /^[a-zA-Z0-9._%+-]{3,30}$/;
+
+            if (!emailIdRegex.test(id)) {
+                alert("이메일 아이디는 영문, 숫자, 일부 특수문자만 가능하며 3~30자여야 합니다.");
+                isEmailAvailable = false;
+                return '';
+            }
+
+            return id + domain;
+        }
+
         // 이메일 중복 확인 (예시)
         function emailCheck() {
-            const email = document.getElementById('email').value;
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const email = getFullEmail();
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@(gmail\.com|naver\.com|daum\.net|gnu\.ac\.kr)$/;
 
             if (!emailRegex.test(email)) {
-                alert('올바른 이메일 형식을 입력해주세요.');
-                return;
-            }
-            
-            if (email.trim() === '') {
-                alert('이메일을 입력해주세요.');
+                alert("허용된 이메일 형식만 입력 가능합니다.");
+                isEmailAvailable = false;
                 return;
             }
 
             $.ajax({
-                type: 'GET',  // GET 메서드 사용
-                url: '/member/check-email',  // 당신의 엔드포인트 주소
+                type: 'GET',
+                url: '/member/check-email',
                 data: { email: email },
                 success: function(response) {
-                    if (response.exists) {  // response.exists로 확인
-                        alert('이미 사용중인 이메일입니다.');
+                    if (response.exists) {
+                        alert("이미 사용 중인 이메일입니다.");
                         isEmailAvailable = false;
                     } else {
-                        alert('사용 가능한 이메일입니다.');
+                        alert("사용 가능한 이메일입니다.");
                         isEmailAvailable = true;
                     }
                 },
                 error: function() {
-                    alert('중복 확인 중 오류가 발생했습니다.');
+                    alert("중복 확인 중 오류가 발생했습니다.");
                     isEmailAvailable = false;
                 }
             });
@@ -456,31 +517,35 @@
             }
         }
 
-        // 회원가입 버튼 클릭 시 알림
+        // 회원가입 버튼 클릭 시 검증 및 제출
         function showAlert() {
             console.log("showAlert 호출됨");
+
+            const fullEmail = getFullEmail();
+            if (!fullEmail) return; // 이메일 ID가 부적합한 경우
+
+            document.getElementById('email').value = fullEmail; // hidden 필드에 세팅
+
             const name = document.getElementById('name').value.trim();
             const college = document.getElementById('college').value;
             const department = document.getElementById('department').value;
-            const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
 
-            if (!name || !college || !department || !email || !password || !confirmPassword) {
+            if (!name || !college || !department || !fullEmail || !password || !confirmPassword) {
                 alert("모든 항목을 입력하세요.");
                 return;
             }
 
             const termsCheckboxes = document.querySelectorAll('.terms-container input[type="checkbox"]');
             const allChecked = Array.from(termsCheckboxes).every(checkbox => checkbox.checked);
-
             if (!allChecked) {
                 alert("모든 약관에 동의해야 합니다.");
                 return;
             }
 
             if (!isEmailAvailable) {
-                alert("이메일 중복 확인을 완료해야 합니다."); // 이메일 중복 확인이 완료되지 않았음
+                alert("이메일 중복 확인을 완료해야 합니다.");
                 return;
             }
 

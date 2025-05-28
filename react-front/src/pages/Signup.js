@@ -170,14 +170,32 @@ export default function Signup() {
     }
   };
 
+
+  const getFullEmail = () => {
+    const id = $('#emailId').val().trim();
+    const domain = $('#emailDomain').val();
+    const regex = /^[a-zA-Z0-9._%+-]{3,30}$/;
+    if (!regex.test(id)) {
+      alert("이메일 아이디는 3~30자의 영문, 숫자, 특수문자만 가능합니다.");
+      setIsEmailAvailable(false);
+      return '';
+    }
+    return id + domain;
+  };
+
   const emailCheck = () => {
-    const email = $('#email').val().trim();
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!regex.test(email)) return alert('올바른 이메일 형식이 아닙니다.');
+    const email = getFullEmail();
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@(gmail\.com|naver\.com|daum\.net|gnu\.ac\.kr)$/;
+
+    if (!emailRegex.test(email)) {
+      alert("허용된 이메일 도메인만 선택 가능합니다.");
+      setIsEmailAvailable(false);
+      return;
+    }
 
     $.get('/member/check-email', { email }, (res) => {
       if (res.exists) {
-        alert('이미 사용중인 이메일입니다.');
+        alert('이미 사용 중인 이메일입니다.');
         setIsEmailAvailable(false);
       } else {
         alert('사용 가능한 이메일입니다.');
@@ -189,8 +207,7 @@ export default function Signup() {
   const checkPasswordMatch = () => {
     const pw = $('#password').val();
     const confirmPw = $('#confirmPassword').val();
-    const regex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\[\]{};':"\\|,.<>/?]).{8,16}$/;
-
+    const regex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+[\]{};':"\\|,.<>/?]).{8,16}$/;
 
     if (!regex.test(pw)) {
       setStatusMessage('비밀번호: 8~16자의 영문, 숫자, 특수문자를 사용해 주세요.');
@@ -275,11 +292,18 @@ export default function Signup() {
             <option value="">단과대를 선택하세요</option>
           </select>
 
-          <label>이메일</label>
-          <div className="email-row">
-            <input type="text" id="email" name="email" className="email-input" placeholder="이메일 입력" required />
-            <button type="button" className="email-check-button" onClick={emailCheck}>중복 확인</button>
+          <div className="email-container">
+            <input type="text" id="emailId" placeholder="아이디" required className="email-id-input" />
+            <select id="emailDomain" required className="email-domain-select">
+              <option value="@naver.com">@naver.com</option>
+              <option value="@gmail.com">@gmail.com</option>
+              <option value="@daum.net">@daum.net</option>
+              <option value="@gnu.ac.kr">@gnu.ac.kr</option>
+            </select>
+            <button type="button" onClick={emailCheck} className="email-check-button">중복 확인</button>
           </div>
+          <input type="hidden" id="email" name="email" />
+
 
           <label>비밀번호</label>
           <input type="password" id="password" name="password" required />

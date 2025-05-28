@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { login } from '../service/MemberApi';
 
 import './css/Login.css';
@@ -61,9 +62,9 @@ export default function LoginPage() {
           </button>
         </form>
         <div className="login-footer-links">
-          <a href="#">비밀번호 찾기</a>
-          <a href="#">아이디 찾기</a>
-          <a href="/member/new">회원가입</a>
+          <Link to="#">비밀번호 찾기</Link>
+          <Link to="#">아이디 찾기</Link>
+          <Link to="/member/new">회원가입</Link>
         </div>
       </div>
     </div>

@@ -110,8 +110,10 @@ def get_weather_forecast(nx="81", ny="76", forecast_datetime=None):
         recommendation = "날씨 정보를 확인할 수 없습니다."
     elif temp > 30:
         recommendation = "매우 덥습니다. 실내 음식점이나 시원한 메뉴를 추천합니다."
+    elif temp > 25:
+        recommendation = "더운 날씨입니다. 가볍고 시원한 메뉴를 즐기기 좋은 날이에요."
     elif temp > 20:
-        recommendation = "따뜻한 날씨입니다. 가벼운 외부 테라스나 여유로운 분위기의 식당을 추천합니다."
+        recommendation = "따뜻한 날씨입니다. 여유로운 분위기의 식당을 추천합니다."
     elif temp > 10:
         recommendation = "약간 쌀쌀합니다. 따뜻한 분위기의 식당을 추천합니다."
     else:

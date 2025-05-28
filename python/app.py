@@ -14,7 +14,7 @@ CORS(app)
 # 앱 시작 시에 모델과 카테고리 임베딩, 음식점 데이터 로드 (한번만 로드)
 model = load_model()
 category_dict, category_embeddings = get_category_embeddings(model)
-df = pd.read_csv("python/prepare_sentence_utf8.csv", encoding="utf-8-sig")
+df = pd.read_csv("prepare_sentence_utf8.csv", encoding="utf-8-sig")
 restaurant_sentences = df['sentence'].tolist()
 
 @app.route('/chat', methods=['POST'])

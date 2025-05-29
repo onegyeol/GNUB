@@ -162,7 +162,7 @@ export default function Signup() {
 
     const selectedCollege = $('#college').val();
     const $department = $('#department');
-    $department.empty().append('<option value="">단과대를 선택하세요</option>');
+    $department.empty().append('<option value="">학과를 선택하세요</option>');
     if (departments[selectedCollege]) {
       departments[selectedCollege].forEach(d => {
         $department.append(`<option value="${d.id}">${d.name}</option>`);
@@ -267,7 +267,7 @@ export default function Signup() {
 
           <label>단과대</label>
           <select id="college" onChange={updateDepartments}>
-            <option value="">선택하세요</option>
+            <option value="">단과대를 선택하세요</option>
             <option value="Humanities">인문대학</option>
             <option value="Social_Science">사회과학대학</option>
             <option value="Natural_Sciences">자연과학대학</option>
@@ -289,7 +289,7 @@ export default function Signup() {
 
           <label>학과</label>
           <select id="department" name="departmentId">
-            <option value="">단과대를 선택하세요</option>
+            <option value="">학과를 선택하세요</option>
           </select>
 
           <div className="email-container">

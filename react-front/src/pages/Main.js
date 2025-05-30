@@ -27,11 +27,11 @@ const Main = () => {
   const toggleCampus = (campus) => {
     setCampusFilter((prev) => ({
       ...prev,
-      [campus]: !prev[campus], 
+      [campus]: !prev[campus],
     }));
   };
-  
-  
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (searchInput.trim()) {
@@ -43,18 +43,23 @@ const Main = () => {
     .filter(([tag]) => activeTags.length === 0 || activeTags.includes(tag))
     .filter(([_, value]) => value && value.shops);
 
-    const filteredShops = (shops) =>
-      shops.filter((shop) => {
-        const isChilam = shop.restId?.startsWith('C');
-        const campus = isChilam ? 'chilam' : 'gajwa';
-        return campusFilter[campus];
-    });
+  const filteredShops = (shops) =>
+    shops.filter((shop) => {
+      const isChilam = shop.restId?.startsWith('C');
+      const campus = isChilam ? 'chilam' : 'gajwa';
+      const campusMatch = campusFilter[campus];
+      const tagMatch =
+        activeTags.length === 0 ||
+        (shop.tags && shop.tags.some((tag) => activeTags.includes(tag)));
+      const menuMatch = true;
+      return campusMatch && tagMatch && menuMatch;
+  });
 
-    useEffect(() => {
-      console.log('캠퍼스 상태 변경됨:', campusFilter);
-    }, [campusFilter]);
-    
-    
+  useEffect(() => {
+    console.log('캠퍼스 상태 변경됨:', campusFilter);
+  }, [campusFilter]);
+
+
 
   return (
     <div id="root">
@@ -94,16 +99,16 @@ const Main = () => {
                 onClick={() => toggleCampus('gajwa')}
                 style={{ pointerEvents: 'auto' }}
               >
-                  <img src="https://www.gnu.ac.kr/upload/main/na/bbs_1047/ntt_2258160/img_796b61c4-e42a-44bc-8dff-4887eaa1c37f1730876309843.jpg" alt="가좌캠퍼스" />
-                  <p className="campus-text">가좌캠퍼스</p>
+                <img src="https://www.gnu.ac.kr/upload/main/na/bbs_1047/ntt_2258160/img_796b61c4-e42a-44bc-8dff-4887eaa1c37f1730876309843.jpg" alt="가좌캠퍼스" />
+                <p className="campus-text">가좌캠퍼스</p>
               </div>
               <div
                 className={`image-wrapper right-image ${!campusFilter.chilam ? 'blurred' : ''}`}
                 onClick={() => toggleCampus('chilam')}
-                
+                style={{ pointerEvents: 'auto' }}
               >
-                  <img src="https://www.gnu.ac.kr/common/nttEditorImgView.do?imgKey=96b1e7e4b113c43914996108683bca1b" alt="칠암캠퍼스" />
-                  <p className="campus-text">칠암캠퍼스</p>
+                <img src="https://www.gnu.ac.kr/common/nttEditorImgView.do?imgKey=96b1e7e4b113c43914996108683bca1b" alt="칠암캠퍼스" />
+                <p className="campus-text">칠암캠퍼스</p>
               </div>
             </div>
           </div>
@@ -117,7 +122,6 @@ const Main = () => {
           </p>
         </div>
       </div>
-
       <div className="tag-container">
         <div className="tag-search">
           <input

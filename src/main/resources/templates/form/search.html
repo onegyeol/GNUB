@@ -718,14 +718,15 @@
             <button class="edit-btn" onclick="filterMenuByKeyword()">검색</button>
         </p>
 
-        <div class="tag-container">
-            th:if="${requestURI != null and #strings.startsWith(requestURI, '/search/') and requestURI != '/search'}">
+        <div class="tag-container" 
+                th:if="${requestURI != null and #strings.startsWith(requestURI, '/search/') and requestURI != '/search'}">
                 <form id="menuFilterForm" th:action="@{'/search/' + ${query}}" method="get">
                     <input type="text" id="menuFilterInput" name="menu"
                         placeholder="메뉴명을 입력하세요 (예: 국밥)"
                         class="tag-search-input"
                         th:value="${selectedMenu}">
                 </form>
+            </div>
         </div>
         
 

@@ -5,7 +5,10 @@
 임재선  김성광  최한결
 
 ## 개발 기간
-2024.09.13 ~ 
+2024.09.13 ~ 2025.05.30
+
+## 기술 스택
+[![stackticon](https://firebasestorage.googleapis.com/v0/b/stackticon-81399.appspot.com/o/images%2F1748678306777?alt=media&token=ee8f711e-c933-475d-b841-4c9a9ad74cb1)](https://github.com/msdio/stackticon)
 
 ## 시스템 아키텍쳐
 ![image](https://github.com/user-attachments/assets/604a34c6-0345-4696-a9e9-15be588768be)

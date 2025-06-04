@@ -236,7 +236,7 @@ export default function Signup() {
     };
   
     try {
-      const res = await fetch('http://localhost:8080/api/member/new', {
+      const res = await fetch('http://gnubob.com:8080/api/member/new', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

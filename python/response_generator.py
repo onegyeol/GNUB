@@ -4,7 +4,7 @@ import openai
 from dotenv import load_dotenv
 
 # 환경 변수 로드
-load_dotenv(override=True) 
+load_dotenv(override=True)
 openai.api_key = os.getenv("OPENAI_API_KEY")
 USE_MOCK = os.getenv("USE_MOCK", "false").lower() == "true"
 
@@ -33,12 +33,20 @@ def apply_category_filters(restaurant_list, parsed_query):
 
     if time in EXCLUDE_CATEGORY_BY_TIME:
         exclude.update(EXCLUDE_CATEGORY_BY_TIME[time])
-    if category in EXCLUDE_CATEGORY_BY_CATEGORY:
-        exclude.update(EXCLUDE_CATEGORY_BY_CATEGORY[category])
+
+    if category:
+        if isinstance(category, list):
+            for cat in category:
+                if cat in EXCLUDE_CATEGORY_BY_CATEGORY:
+                    exclude.update(EXCLUDE_CATEGORY_BY_CATEGORY[cat])
+        else:
+            if category in EXCLUDE_CATEGORY_BY_CATEGORY:
+                exclude.update(EXCLUDE_CATEGORY_BY_CATEGORY[category])
 
     if exclude:
         return [r for r in restaurant_list if all(x not in r.get("category", "") for x in exclude)]
     return restaurant_list
+
 
 # 순환식 샘플링
 def rotate_sample(results: list, k: int = 3, tag: str = ""):
@@ -95,7 +103,7 @@ def generate_response(user_query: str, restaurant_results: list, weather_info: d
 
     few_shot = [
         {"role": "user", "content": "저녁에 뭐 먹을까?"},
-        {"role": "assistant", "content": "저녁으로는 [본도시락 가좌점]을 추천드려요. "}
+        {"role": "assistant", "content": "저녁으로는 [본도시락 가좌점]을 추천드려요."}
     ]
 
     weather_text = (
@@ -105,26 +113,32 @@ def generate_response(user_query: str, restaurant_results: list, weather_info: d
     )
 
     sampled = []
-    if restaurant_results:
-        base_list = list(restaurant_results)
-        print("🔍 DB에서 넘어온 원본:", [r["name"] for r in base_list])
-        scored_list = []
-        for r in base_list:
-            score = r.get("like_count", 0) + random.uniform(0, 20)
-            r["recommend_score"] = score
-            scored_list.append(r)
-        scored_list.sort(key=lambda r: r["recommend_score"], reverse=True)
-        print("❤️ 추천 후보 점수:")
-        for r in scored_list[:10]:
-            print(f"  - {r['name']:20} | 좋아요: {r['like_count']:>4} | 점수: {r['recommend_score']:.2f}")
-        sampled = scored_list[:2]
+    base_list = list(restaurant_results)
+    print("🔍 DB에서 넘어온 원본:", [r["name"] for r in base_list])
+
+    if parsed_query:
+        base_list = apply_category_filters(base_list, parsed_query)
+        print("🧹 필터링 결과:", [r["name"] for r in base_list])
+    else:
+        print("🧹 필터링 결과: 없음 (parsed_query 없음)")
+
+
+    scored_list = []
+    for r in base_list:
+        score = r.get("like_count", 0) + random.uniform(0, 20)
+        r["recommend_score"] = score
+        scored_list.append(r)
+    scored_list.sort(key=lambda r: r["recommend_score"], reverse=True)
+    print("❤️ 추천 후보 점수:")
+    for r in scored_list[:10]:
+        print(f"  - {r['name']:20} | 좋아요: {r['like_count']:>4} | 점수: {r['recommend_score']:.2f}")
+
+    sampled = scored_list[:2]
 
     resto_text = (
         "추천 음식점 (2곳):\n" +
-        "\n".join(f"- {r['name']} (주소: {r['address']})" for r in sampled) + #, 특징: {r['info']}
-        "\n"
-        if sampled else
-        "추천할 음식점이 없습니다.\n"
+        "\n".join(f"- {r['name']} (주소: {r['address']})" for r in sampled) +
+        "\n" if sampled else "추천할 음식점이 없습니다.\n"
     )
 
     user_msg = {

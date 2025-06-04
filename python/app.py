@@ -14,7 +14,7 @@ CORS(app)
 # 앱 시작 시에 모델과 카테고리 임베딩, 음식점 데이터 로드 (한번만 로드)
 model = load_model()
 category_dict, category_embeddings = get_category_embeddings(model)
-df = pd.read_csv("prepare_sentence_utf8.csv", encoding="utf-8-sig")
+df = pd.read_csv("python/prepare_sentence_utf8.csv", encoding="utf-8-sig")
 restaurant_sentences = df['sentence'].tolist()
 
 @app.route('/chat', methods=['POST'])
@@ -44,7 +44,7 @@ def chat():
         weather_info = get_weather_forecast()
         
         # 4. GPT를 통해 최종 응답 생성
-        final_response = generate_response(user_query, restaurant_results, weather_info)
+        final_response = generate_response(user_query, restaurant_results, weather_info, parsed)
         
         return jsonify({"reply": final_response})
     except Exception as e:
@@ -55,4 +55,4 @@ def chat():
 
 if __name__ == '__main__':
     # 0.0.0.0으로 외부 접근 가능하게 하고, 포트는 5000번으로 실행
-    app.run(host='0.0.0.0', port=5050)
+    app.run(host='0.0.0.0', port=5000)

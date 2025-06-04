@@ -186,13 +186,13 @@ export default function Signup() {
   const emailCheck = () => {
     const email = getFullEmail();
     const emailRegex = /^[a-zA-Z0-9._%+-]+@(gmail\.com|naver\.com|daum\.net|gnu\.ac\.kr)$/;
-
+  
     if (!emailRegex.test(email)) {
       alert("허용된 이메일 도메인만 선택 가능합니다.");
       setIsEmailAvailable(false);
       return;
     }
-
+  
     $.get('/member/check-email', { email }, (res) => {
       if (res.exists) {
         alert('이미 사용 중인 이메일입니다.');
@@ -200,9 +200,11 @@ export default function Signup() {
       } else {
         alert('사용 가능한 이메일입니다.');
         setIsEmailAvailable(true);
+        $('#email').val(email);  
       }
     }).fail(() => alert('중복 확인 실패'));
   };
+  
 
   const checkPasswordMatch = () => {
     const pw = $('#password').val();
@@ -245,7 +247,7 @@ export default function Signup() {
   
       if (res.ok) {
         alert('회원가입이 완료되었습니다!');
-        window.location.href = '/'; // 리디렉션 등 원하는 동작
+        window.location.href = '/mobile'; // 리디렉션 등 원하는 동작
       } else {
         const err = await res.json();
         alert(`회원가입 실패: ${err.message}`);

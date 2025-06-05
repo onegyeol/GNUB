@@ -14,9 +14,11 @@ const Main = () => {
 
   useEffect(() => {
     fetchMainPageData().then((data) => {
+      console.log("📦 받아온 taggedShops 데이터:", data); // ← 여기에서 확인
       setTaggedShops(data.taggedShops || {});
     });
   }, []);
+  
 
   const toggleTag = (tag) => {
     setActiveTags((prev) =>
@@ -43,17 +45,16 @@ const Main = () => {
     .filter(([tag]) => activeTags.length === 0 || activeTags.includes(tag))
     .filter(([_, value]) => value && value.shops);
 
-  const filteredShops = (shops) =>
-    shops.filter((shop) => {
-      const isChilam = shop.restId?.startsWith('C');
-      const campus = isChilam ? 'chilam' : 'gajwa';
-      const campusMatch = campusFilter[campus];
-      const tagMatch =
-        activeTags.length === 0 ||
-        (shop.tags && shop.tags.some((tag) => activeTags.includes(tag)));
-      const menuMatch = true;
-      return campusMatch && tagMatch && menuMatch;
-  });
+    const filteredShops = (shops, tagName) =>
+      shops.filter((shop) => {
+        const isChilam = shop.restId?.startsWith('C');
+        const campus = isChilam ? 'chilam' : 'gajwa';
+        const campusMatch = campusFilter[campus];
+        const tagMatch =
+          activeTags.length === 0 || activeTags.includes(tagName);
+        return campusMatch && tagMatch;
+      });
+    
 
   useEffect(() => {
     console.log('캠퍼스 상태 변경됨:', campusFilter);
@@ -161,7 +162,7 @@ const Main = () => {
               </div>
               <div className="card-slide-wrap">
                 <ul className="slide-card-list">
-                  {filteredShops(info.shops).slice(0, 100).map((shop) => (
+                  {filteredShops(info.shops, tag).slice(0, 100).map((shop) => (
                     <li key={shop.id} className="slide-card-item">
                       <Link to={`/foodDetails/${shop.id}`}>
                         <img src={shop.imgUrl} alt={shop.name} loading="lazy" />

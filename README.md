@@ -30,3 +30,6 @@
 ## 주요 화면
 ![image](https://github.com/user-attachments/assets/e022c613-4403-4a78-a321-c2c63999cd68)
 ![image](https://github.com/user-attachments/assets/34589ef2-6ae0-4cc9-9a4f-b3583aaae99b)
+
+## 시연 영상
+https://github.com/user-attachments/assets/4069bfc7-708c-4240-b7cd-4fcafecce0d5

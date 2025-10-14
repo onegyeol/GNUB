@@ -44,13 +44,13 @@ public class SearchApiController {
 
         List<Shop> shops = tagService.getTop100ShopsByTag(tag);
 
-        // ✅ 메뉴 먼저 세팅
+        // 메뉴 먼저 세팅
         Map<Long, List<ShopMenu>> menuMap = shopService.getMenusForShops(shops);
         for (Shop shop : shops) {
             shop.setShopMenus(menuMap.getOrDefault(shop.getId(), List.of()));
         }
 
-        // ✅ 이후 필터링
+        // 이후 필터링
         if (menu != null && !menu.isBlank()) {
             shops = shops.stream()
                     .filter(shop -> shop.getShopMenus().stream()

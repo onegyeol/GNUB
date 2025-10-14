@@ -39,7 +39,6 @@ public class MemberApiController {
             );
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            // ✅ 여기가 핵심
             session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
 
             System.out.println("로그인 성공: " + loginResult);

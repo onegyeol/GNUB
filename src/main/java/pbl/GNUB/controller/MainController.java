@@ -81,9 +81,9 @@ public class MainController {
         mappingService.mapShopAndShopTagsByName();
 
         if (principal != null) {
-            System.out.println("✅ 로그인된 사용자: " + principal.getName());
+            System.out.println("로그인된 사용자: " + principal.getName());
         } else {
-            System.out.println("❌ 비로그인 상태");
+            System.out.println("비로그인 상태");
         }
 
         // 카테고리 분류
@@ -122,7 +122,7 @@ public class MainController {
         model.addAttribute("taggedShops", taggedShops);
 
         if (principal != null) {
-            String email = principal.getName(); // ✅ 선언한 변수 email 사용!
+            String email = principal.getName();
             Member member = memberRepository.findByEmail(email)
                     .orElseThrow(() -> new RuntimeException("로그인 사용자 정보를 찾을 수 없음: " + email));
 
@@ -195,7 +195,7 @@ public class MainController {
 
             // 직접 Job 인스턴스를 가져와서 실행
             JobExecution jobExecution = jobLauncher.run(csvShopJob, params);
-            log.info("🟣 Job Execution Status: {}", jobExecution.getStatus());
+            log.info("Job Execution Status: {}", jobExecution.getStatus());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -229,7 +229,6 @@ public class MainController {
 
         model.addAttribute("isBookmarked", isBookmarked);
 
-        // ✅ [여기부터 삽입] 태그 점수 + 투표 수 반영
         List<String> allTagNames = Arrays.asList("맛있어요", "청결해요", "친절해요", "신선해요", "혼밥하기 좋아요",
                 "데이트하기 좋아요", "가성비 좋아요", "단체로 가기 좋아요", "분위기 좋아요", "주차가 가능해요", "아쉬워요");
 
@@ -259,7 +258,7 @@ public class MainController {
                 tagCounts.put(tagName, base + votes);
             }
         }
-        model.addAttribute("tagCounts", tagCounts); // ✅ 이게 뷰에 들어감
+        model.addAttribute("tagCounts", tagCounts);
 
         return "form/foodDetails";
     }

@@ -15,9 +15,7 @@ import pbl.GNUB.service.ShopService;
 @RestController
 @RequestMapping("/api")
 public class MapApiController {
-
-
-    // Google Maps API Key 제공 (React 등에서 필요 시)
+    // Google Maps API Key 제공 
     @Value("${google.maps.api.key}")
     private String googleMapsApiKey;
 

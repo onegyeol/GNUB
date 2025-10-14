@@ -47,7 +47,7 @@ public class MainApiController {
 
         Map<String, Object> response = new HashMap<>();
 
-        // ✅ 1. 카테고리 분류
+        // 카테고리 분류
         List<Shop> shops = shopService.getAllShops();
         Map<String, List<ShopDto>> categorizedShops = new HashMap<>();
         for (Shop shop : shops) {
@@ -58,7 +58,7 @@ public class MainApiController {
         }
         response.put("categorizedShops", categorizedShops);
 
-        // ✅ 2. 태그 기반 가게 목록 및 해시 ID
+        // 태그 기반 가게 목록 및 해시 ID
         Map<String, List<Shop>> tagMap = tagService.getAllTaggedShopsTop100();
         Map<String, Object> taggedShops = new LinkedHashMap<>();
         Set<Long> uniqueShopIds = new HashSet<>();
@@ -82,7 +82,7 @@ public class MainApiController {
         response.put("taggedShops", taggedShops);
         response.put("uniqueShopCount", uniqueShopIds.size());
 
-        // ✅ 3. 사용자 투표 여부 (votedMap)
+        // 사용자 투표 여부 (votedMap)
         if (principal != null) {
             String email = principal.getName();
             Member member = memberRepository.findByEmail(email)

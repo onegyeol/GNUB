@@ -18,7 +18,7 @@ import pbl.GNUB.service.MemberService;
 public class BookmarkApiController {
 
     private final BookmarkService bookmarkService;
-    private final MemberService memberService;  // 👈 memberId 조회용
+    private final MemberService memberService;
 
     @PostMapping
     public ResponseEntity<Void> bookmarkShop(Principal principal,
